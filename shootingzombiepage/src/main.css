@@ -1,0 +1,160 @@
+@font-face{
+    font-family: "DUBAIBT";
+    src: url(../fonts/dubaibt_semibold.otf);
+}
+body{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.background
+{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(./background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.center-container
+{
+    position: absolute;
+    width: 60vmin;
+    height: 80vmin;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    border: solid 0.6vmin #8210AD;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.creative-view
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: none;
+}
+
+.logo{
+    position: absolute;
+    bottom: 5vmin;
+    right: 5vmin;
+    width: 25vmin;
+    height: 9.1vmin;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.title
+{
+    position: absolute;
+    top: 3vmin;
+    left: 3vmin;
+    color: white;
+    font-family: DUBAIBT;
+    font-size: 2.2vw;
+    line-height: 3vw;
+}
+
+.fullscreen-touchzone
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: none;
+    opacity: 0;
+    z-index: 999999;
+}
+
+.center-container.mobile
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: none;
+    transform: translate(0,0);
+    -webkit-transform: translate(0,0);
+    -moz-transform: translate(0,0);
+}
+
+.cookie-notices
+{
+    position: absolute;
+    width: 100%;
+    background-color: black;
+    opacity: 0.8;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    color: lightgray;
+    font-size: 0.6vw;
+    font-family: "Arial";
+    padding: 2vh 10vw;
+    box-sizing: border-box;
+    line-height: 1.5vw;
+}
+
+.cookie-notices a
+{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cookie-notices .bt-gotit
+{
+    padding: 0.3vw 2vw;
+    border: solid 1px white;
+    text-align: right;
+    margin-left: 1vw;
+}
+
+.cookie-notices .bt-gotit:hover
+{
+    background-color: white;
+    color: #131313;
+}
+
+
+@media all and (min-aspect-ratio: 16/9) and (orientation: landscape) {
+    /*landscape iphone ratio*/
+
+}
+
+@media all and (min-aspect-ratio: 4/3) and (max-aspect-ratio: 16/9) and (orientation: landscape) {
+    /*landscape ipad ratio*/
+
+}
+
+@media all  and (max-aspect-ratio: 3/4) and (orientation: portrait) {
+    /*landscape iphone ratio*/
+
+}
+
+@media all and (max-aspect-ratio: 3/4) and (min-aspect-ratio: 9/16) and (orientation: portrait) {
+    /*landscape ipad ratio*/
+
+}
