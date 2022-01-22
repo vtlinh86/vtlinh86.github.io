@@ -67,7 +67,7 @@ var main = function ()
 {
     checkAcceptCookie();
     var iframe_link = $("meta[name=iframe_link]").attr("content");
-    var creative = $("meta[name=creative]").attr("content");
+    
     if (isMobileDevice())
     {
         $(".center-container").addClass("mobile").appendTo($("body"));
