@@ -125,6 +125,7 @@ async function app() {
     alert(error);
   }
 
+  
   camera = await Camera.setupCamera(STATE.camera);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
@@ -134,4 +135,7 @@ async function app() {
   renderPrediction();
 };
 
-app();
+// app();
+setTimeout(() => {
+  app();
+}, 5000);

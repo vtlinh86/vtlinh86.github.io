@@ -93407,9 +93407,10 @@ exports.RED = RED;
 const BLUE = '#157AB3';
 exports.BLUE = BLUE;
 const VIDEO_SIZE = {
+  // 'full_screen': {width: window.innerWidth*0.2, height: window.innerHeight*0.2},
   'full_screen': {
-    width: window.innerWidth * 0.2,
-    height: window.innerHeight * 0.2
+    width: 200,
+    height: 200
   },
   '640 X 480': {
     width: 640,
@@ -93924,7 +93925,10 @@ async function app() {
   renderPrediction();
 }
 
-;
-app();
+; // app();
+
+setTimeout(() => {
+  app();
+}, 5000);
 },{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","@tensorflow/tfjs-backend-wasm":"node_modules/@tensorflow/tfjs-backend-wasm/dist/index.js","@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","./camera":"src/camera.js","./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}]},{},["src/index.js"], null)
 //# sourceMappingURL=/src.a2b27638.js.map
