@@ -155,7 +155,7 @@ async function app() {
 
   stats = setupStats();
 
-  STATE.camera.sizeOption = Object.keys(VIDEO_SIZE).[0] || 'full_screen';
+  STATE.camera.sizeOption = Object.keys(VIDEO_SIZE)[0] || 'full_screen';
   camera = await Camera.setupCamera(STATE.camera);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
