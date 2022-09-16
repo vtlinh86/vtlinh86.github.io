@@ -29,10 +29,11 @@ export const VIDEO_SIZE = {
   '360 X 270': {width: 360, height: 270}
 };
 export const STATE = {
-  camera: {targetFPS: 60, sizeOption: '640 X 480'},
-  backend: '',
+  camera: {targetFPS: 60, sizeOption: 'full_screen'},
+  backend: 'mediapipe-',
   flags: {},
-  modelConfig: {}
+  modelConfig: {},
+  model: faceDetection.SupportedModels.MediaPipeFaceDetector,
 };
 export const MEDIAPIPE_FACE_CONFIG = {
   maxFaces: 1,
@@ -46,14 +47,14 @@ export async function createDetector() {
     case faceDetection.SupportedModels.MediaPipeFaceDetector:
       const runtime = STATE.backend.split('-')[0];
       if (runtime === 'mediapipe') {
-        return faceDetection.createDetector(STATE.model, {
+        let config = {
           runtime,
           modelType: STATE.modelConfig.modelType,
           maxFaces: STATE.modelConfig.maxFaces,
-          solutionPath:
-              `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${
-                  mpFaceDetection.VERSION}`
-        });
+          solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}`,
+          // solutionPath: '../face_detection',
+        };
+        return faceDetection.createDetector(STATE.model, config);
       } else if (runtime === 'tfjs') {
         return faceDetection.createDetector(STATE.model, {
           runtime,

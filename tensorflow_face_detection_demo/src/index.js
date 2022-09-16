@@ -26,9 +26,7 @@ tfjsWasm.setWasmPaths(
 import * as faceDetection from '@tensorflow-models/face-detection';
 
 import {Camera} from './camera';
-import {setupDatGui} from './option_panel';
 import {STATE, VIDEO_SIZE, createDetector} from './shared/params';
-import {setupStats} from './shared/stats_panel';
 import {setBackendAndEnvFlags} from './shared/util';
 
 let detector, camera, stats;
@@ -69,26 +67,6 @@ async function checkGuiUpdate() {
   }
 }
 
-function beginEstimateFaceStats() {
-  startInferenceTime = (performance || Date).now();
-}
-
-function endEstimateFaceStats() {
-  const endInferenceTime = (performance || Date).now();
-  inferenceTimeSum += endInferenceTime - startInferenceTime;
-  ++numInferences;
-
-  const panelUpdateMilliseconds = 1000;
-  if (endInferenceTime - lastPanelUpdate >= panelUpdateMilliseconds) {
-    const averageInferenceTime = inferenceTimeSum / numInferences;
-    inferenceTimeSum = 0;
-    numInferences = 0;
-    stats.customFpsPanel.update(
-        1000.0 / averageInferenceTime, 120 /* maxValue */);
-    lastPanelUpdate = endInferenceTime;
-  }
-}
-
 async function renderResult() {
   if (camera.video.readyState < 2) {
     await new Promise((resolve) => {
@@ -104,7 +82,6 @@ async function renderResult() {
   // from a URL that does not exist).
   if (detector != null) {
     // FPS only counts the time it takes to finish estimateFaces.
-    beginEstimateFaceStats();
 
     // Detectors can throw errors, for example when using custom URLs that
     // contain a model that doesn't provide the expected output.
@@ -116,8 +93,6 @@ async function renderResult() {
       detector = null;
       alert(error);
     }
-
-    endEstimateFaceStats();
   }
 
   camera.drawCtx();
@@ -127,7 +102,7 @@ async function renderResult() {
   // which shouldn't be rendered.
   if (faces && faces.length > 0 && !STATE.isModelChanged) {
     camera.drawResults(
-        faces, STATE.modelConfig.boundingBox, STATE.modelConfig.keypoints);
+        faces, true, true);
   }
 }
 
@@ -142,20 +117,14 @@ async function renderPrediction() {
 };
 
 async function app() {
-  // Gui content will change depending on which model is in the query string.
 
-  const urlParams = new URLSearchParams(window.location.search);
+  try {
+    detector = await createDetector(STATE.model);
+  } catch (error) {
+    detector = null;
+    alert(error);
+  }
 
-  // if (!urlParams.has('model')) {
-  //   alert('Cannot find model in the query string.');
-  //   return;
-  // }
-
-  await setupDatGui(urlParams);
-
-  stats = setupStats();
-
-  STATE.camera.sizeOption = Object.keys(VIDEO_SIZE)[0] || 'full_screen';
   camera = await Camera.setupCamera(STATE.camera);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);

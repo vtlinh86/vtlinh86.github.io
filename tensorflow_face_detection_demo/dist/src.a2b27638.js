@@ -93428,11 +93428,12 @@ exports.VIDEO_SIZE = VIDEO_SIZE;
 const STATE = {
   camera: {
     targetFPS: 60,
-    sizeOption: '640 X 480'
+    sizeOption: 'full_screen'
   },
-  backend: '',
+  backend: 'mediapipe-',
   flags: {},
-  modelConfig: {}
+  modelConfig: {},
+  model: faceDetection.SupportedModels.MediaPipeFaceDetector
 };
 exports.STATE = STATE;
 const MEDIAPIPE_FACE_CONFIG = {
@@ -93449,12 +93450,14 @@ async function createDetector() {
       const runtime = STATE.backend.split('-')[0];
 
       if (runtime === 'mediapipe') {
-        return faceDetection.createDetector(STATE.model, {
+        let config = {
           runtime,
           modelType: STATE.modelConfig.modelType,
           maxFaces: STATE.modelConfig.maxFaces,
-          solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}`
-        });
+          solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}` // solutionPath: '../face_detection',
+
+        };
+        return faceDetection.createDetector(STATE.model, config);
       } else if (runtime === 'tfjs') {
         return faceDetection.createDetector(STATE.model, {
           runtime,
@@ -93784,381 +93787,7 @@ class Camera {
 }
 
 exports.Camera = Camera;
-},{"./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}],"src/shared/option_panel.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setupModelFolder = setupModelFolder;
-
-var faceDetection = _interopRequireWildcard(require("@tensorflow-models/face-detection"));
-
-var tf = _interopRequireWildcard(require("@tensorflow/tfjs-core"));
-
-var params = _interopRequireWildcard(require("./params"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-/**
- * @license
- * Copyright 2022 Google LLC. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================================
- */
-
-/**
- * Records each flag's default value under the runtime environment and is a
- * constant in runtime.
- */
-let TUNABLE_FLAG_DEFAULT_VALUE_MAP;
-const stringValueMap = {};
-
-async function setupModelFolder(gui, urlParams) {
-  // The model folder contains options for model selection.
-  const modelFolder = gui.addFolder('Model');
-  const model = urlParams.get('model'); // switch (model) {
-  //   case 'mediapipe_face_detector':
-  //     params.STATE.model = faceDetection.SupportedModels.MediaPipeFaceDetector;
-  //     break;
-  //   default:
-  //     alert(`${urlParams.get('model')}`);
-  //     break;
-  // }
-
-  switch (model) {
-    case 'mediapipe_face_detector':
-    default:
-      params.STATE.model = faceDetection.SupportedModels.MediaPipeFaceDetector;
-      break;
-  }
-
-  const modelController = modelFolder.add(params.STATE, 'model', Object.values(faceDetection.SupportedModels));
-  modelController.onChange(_ => {
-    params.STATE.isModelChanged = true;
-    showModelConfigs(modelFolder);
-    showBackendConfigs(backendFolder);
-  });
-  showModelConfigs(modelFolder);
-  modelFolder.open();
-  const backendFolder = gui.addFolder('Backend');
-  showBackendConfigs(backendFolder);
-  backendFolder.open();
-  return gui;
-}
-
-async function showBackendConfigs(folderController) {
-  // Clean up backend configs for the previous model.
-  const fixedSelectionCount = 0;
-
-  while (folderController.__controllers.length > fixedSelectionCount) {
-    folderController.remove(folderController.__controllers[folderController.__controllers.length - 1]);
-  }
-
-  const backends = params.MODEL_BACKEND_MAP[params.STATE.model]; // The first element of the array is the default backend for the model.
-
-  params.STATE.backend = backends[0];
-  const backendController = folderController.add(params.STATE, 'backend', backends);
-  backendController.name('runtime-backend');
-  backendController.onChange(async backend => {
-    params.STATE.isBackendChanged = true;
-    await showFlagSettings(folderController, backend);
-  });
-  await showFlagSettings(folderController, params.STATE.backend);
-}
-
-function showModelConfigs(folderController) {
-  // Clean up model configs for the previous model.
-  // The first constroller under the `folderController` is the model
-  // selection.
-  const fixedSelectionCount = 1;
-
-  while (folderController.__controllers.length > fixedSelectionCount) {
-    folderController.remove(folderController.__controllers[folderController.__controllers.length - 1]);
-  }
-
-  switch (params.STATE.model) {
-    case faceDetection.SupportedModels.MediaPipeFaceDetector:
-      addMediaPipeFaceDetectorControllers(folderController);
-      break;
-
-    default:
-      alert(`Model ${params.STATE.model} is not supported.`);
-  }
-} // The MediaPipeFaceMesh model config folder contains options for
-// MediaPipeFaceMesh config settings.
-
-
-function addMediaPipeFaceDetectorControllers(modelConfigFolder) {
-  params.STATE.modelConfig = { ...params.MEDIAPIPE_FACE_CONFIG
-  };
-  const boundingBoxController = modelConfigFolder.add(params.STATE.modelConfig, 'boundingBox');
-  boundingBoxController.onChange(_ => {
-    params.STATE.isModelChanged = true;
-  });
-  const keypointsController = modelConfigFolder.add(params.STATE.modelConfig, 'keypoints');
-  keypointsController.onChange(_ => {
-    params.STATE.isModelChanged = true;
-  });
-  const modelTypeController = modelConfigFolder.add(params.STATE.modelConfig, 'modelType', ['short', 'full']);
-  modelTypeController.onChange(_ => {
-    params.STATE.isModelChanged = true;
-  });
-  const maxFacesController = modelConfigFolder.add(params.STATE.modelConfig, 'maxFaces', 1, 10).step(1);
-  maxFacesController.onChange(_ => {
-    // Set isModelChanged to true, so that we don't render any result during
-    // changing models.
-    params.STATE.isModelChanged = true;
-  });
-}
-/**
- * Query all tunable flags' default value and populate `STATE.flags` with them.
- */
-
-
-async function initDefaultValueMap() {
-  // Clean up the cache to query tunable flags' default values.
-  TUNABLE_FLAG_DEFAULT_VALUE_MAP = {};
-  params.STATE.flags = {};
-
-  for (const backend in params.BACKEND_FLAGS_MAP) {
-    for (let index = 0; index < params.BACKEND_FLAGS_MAP[backend].length; index++) {
-      const flag = params.BACKEND_FLAGS_MAP[backend][index];
-      TUNABLE_FLAG_DEFAULT_VALUE_MAP[flag] = await tf.env().getAsync(flag);
-    }
-  } // Initialize STATE.flags with tunable flags' default values.
-
-
-  for (const flag in TUNABLE_FLAG_DEFAULT_VALUE_MAP) {
-    if (params.BACKEND_FLAGS_MAP[params.STATE.backend].indexOf(flag) > -1) {
-      params.STATE.flags[flag] = TUNABLE_FLAG_DEFAULT_VALUE_MAP[flag];
-    }
-  }
-}
-/**
- * Heuristically determine flag's value range based on flag's default value.
- *
- * Assume that the flag's default value has already chosen the best option for
- * the runtime environment, so users can only tune the flag value downwards.
- *
- * For example, if the default value of `WEBGL_RENDER_FLOAT32_CAPABLE` is false,
- * the tunable range is [false]; otherwise, the tunable range is [true. false].
- *
- * @param {string} flag
- */
-
-
-function getTunableRange(flag) {
-  const defaultValue = TUNABLE_FLAG_DEFAULT_VALUE_MAP[flag];
-
-  if (flag === 'WEBGL_FORCE_F16_TEXTURES') {
-    return [false, true];
-  } else if (flag === 'WEBGL_VERSION') {
-    const tunableRange = [];
-
-    for (let value = 1; value <= defaultValue; value++) {
-      tunableRange.push(value);
-    }
-
-    return tunableRange;
-  } else if (flag === 'WEBGL_FLUSH_THRESHOLD') {
-    const tunableRange = [-1];
-
-    for (let value = 0; value <= 2; value += 0.25) {
-      tunableRange.push(value);
-    }
-
-    return tunableRange;
-  } else if (typeof defaultValue === 'boolean') {
-    return defaultValue ? [false, true] : [false];
-  } else if (params.TUNABLE_FLAG_VALUE_RANGE_MAP[flag] != null) {
-    return params.TUNABLE_FLAG_VALUE_RANGE_MAP[flag];
-  } else {
-    return [defaultValue];
-  }
-}
-/**
- * Show flag settings for the given backend under the UI element of
- * `folderController`.
- *
- * @param {dat.gui.GUI} folderController
- * @param {string} backendName
- */
-
-
-function showBackendFlagSettings(folderController, backendName) {
-  const tunableFlags = params.BACKEND_FLAGS_MAP[backendName];
-
-  for (let index = 0; index < tunableFlags.length; index++) {
-    const flag = tunableFlags[index];
-    const flagName = params.TUNABLE_FLAG_NAME_MAP[flag] || flag; // When tunable (bool) and range (array) attributes of `flagRegistry` is
-    // implemented, we can apply them to here.
-
-    const flagValueRange = getTunableRange(flag); // Heuristically consider a flag with at least two options as tunable.
-
-    if (flagValueRange.length < 2) {
-      console.warn(`The ${flag} is considered as untunable, ` + `because its value range is [${flagValueRange}].`);
-      continue;
-    }
-
-    let flagController;
-
-    if (typeof flagValueRange[0] === 'boolean') {
-      // Show checkbox for boolean flags.
-      flagController = folderController.add(params.STATE.flags, flag);
-    } else {
-      // Show dropdown for other types of flags.
-      flagController = folderController.add(params.STATE.flags, flag, flagValueRange); // Because dat.gui always casts dropdown option values to string, we need
-      // `stringValueMap` and `onFinishChange()` to recover the value type.
-
-      if (stringValueMap[flag] == null) {
-        stringValueMap[flag] = {};
-
-        for (let index = 0; index < flagValueRange.length; index++) {
-          const realValue = flagValueRange[index];
-          const stringValue = String(flagValueRange[index]);
-          stringValueMap[flag][stringValue] = realValue;
-        }
-      }
-
-      flagController.onFinishChange(stringValue => {
-        params.STATE.flags[flag] = stringValueMap[flag][stringValue];
-      });
-    }
-
-    flagController.name(flagName).onChange(() => {
-      params.STATE.isFlagChanged = true;
-    });
-  }
-}
-/**
- * Set up flag settings under the UI element of `folderController`:
- * - If it is the first call, initialize the flags' default value and show flag
- * settings for both the general and the given backend.
- * - Else, clean up flag settings for the previous backend and show flag
- * settings for the new backend.
- *
- * @param {dat.gui.GUI} folderController
- * @param {string} backendName
- */
-
-
-async function showFlagSettings(folderController, backendName) {
-  await initDefaultValueMap(); // Clean up flag settings for the previous backend.
-  // The first constroller under the `folderController` is the backend
-  // setting.
-
-  const fixedSelectionCount = 1;
-
-  while (folderController.__controllers.length > fixedSelectionCount) {
-    folderController.remove(folderController.__controllers[folderController.__controllers.length - 1]);
-  } // Show flag settings for the new backend.
-
-
-  showBackendFlagSettings(folderController, backendName);
-}
-},{"@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","@tensorflow/tfjs-core":"node_modules/@tensorflow/tfjs-core/dist/index.js","./params":"src/shared/params.js"}],"src/option_panel.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setupDatGui = setupDatGui;
-
-var params = _interopRequireWildcard(require("./shared/params"));
-
-var _option_panel = require("./shared/option_panel");
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-/**
- * @license
- * Copyright 2022 Google LLC. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================================
- */
-async function setupDatGui(urlParams) {
-  const gui = new dat.GUI({
-    width: 300
-  });
-  gui.domElement.id = 'gui'; // The camera folder contains options for video settings.
-
-  const cameraFolder = gui.addFolder('Camera');
-  const fpsController = cameraFolder.add(params.STATE.camera, 'targetFPS');
-  fpsController.onFinishChange(_ => {
-    params.STATE.isTargetFPSChanged = true;
-  });
-  const sizeController = cameraFolder.add(params.STATE.camera, 'sizeOption', Object.keys(params.VIDEO_SIZE));
-  sizeController.onChange(_ => {
-    params.STATE.isSizeOptionChanged = true;
-  });
-  cameraFolder.open();
-  return (0, _option_panel.setupModelFolder)(gui, urlParams);
-}
-},{"./shared/params":"src/shared/params.js","./shared/option_panel":"src/shared/option_panel.js"}],"src/shared/stats_panel.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setupStats = setupStats;
-
-/**
- * @license
- * Copyright 2022 Google LLC. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================================
- */
-function setupStats() {
-  const stats = new Stats();
-  stats.customFpsPanel = stats.addPanel(new Stats.Panel('FPS', '#0ff', '#002'));
-  stats.showPanel(stats.domElement.children.length - 1);
-  const parent = document.getElementById('stats');
-  parent.appendChild(stats.domElement);
-  const statsPanes = parent.querySelectorAll('canvas');
-
-  for (let i = 0; i < statsPanes.length; ++i) {
-    statsPanes[i].style.width = '140px';
-    statsPanes[i].style.height = '80px';
-  }
-
-  return stats;
-}
-},{}],"src/index.js":[function(require,module,exports) {
+},{"./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 require("@tensorflow/tfjs-backend-webgl");
@@ -94169,11 +93798,7 @@ var faceDetection = _interopRequireWildcard(require("@tensorflow-models/face-det
 
 var _camera = require("./camera");
 
-var _option_panel = require("./option_panel");
-
 var _params = require("./shared/params");
-
-var _stats_panel = require("./shared/stats_panel");
 
 var _util = require("./shared/util");
 
@@ -94237,27 +93862,6 @@ async function checkGuiUpdate() {
   }
 }
 
-function beginEstimateFaceStats() {
-  startInferenceTime = (performance || Date).now();
-}
-
-function endEstimateFaceStats() {
-  const endInferenceTime = (performance || Date).now();
-  inferenceTimeSum += endInferenceTime - startInferenceTime;
-  ++numInferences;
-  const panelUpdateMilliseconds = 1000;
-
-  if (endInferenceTime - lastPanelUpdate >= panelUpdateMilliseconds) {
-    const averageInferenceTime = inferenceTimeSum / numInferences;
-    inferenceTimeSum = 0;
-    numInferences = 0;
-    stats.customFpsPanel.update(1000.0 / averageInferenceTime, 120
-    /* maxValue */
-    );
-    lastPanelUpdate = endInferenceTime;
-  }
-}
-
 async function renderResult() {
   if (camera.video.readyState < 2) {
     await new Promise(resolve => {
@@ -94272,9 +93876,8 @@ async function renderResult() {
 
   if (detector != null) {
     // FPS only counts the time it takes to finish estimateFaces.
-    beginEstimateFaceStats(); // Detectors can throw errors, for example when using custom URLs that
+    // Detectors can throw errors, for example when using custom URLs that
     // contain a model that doesn't provide the expected output.
-
     try {
       faces = await detector.estimateFaces(camera.video, {
         flipHorizontal: false
@@ -94284,8 +93887,6 @@ async function renderResult() {
       detector = null;
       alert(error);
     }
-
-    endEstimateFaceStats();
   }
 
   camera.drawCtx(); // The null check makes sure the UI is not in the middle of changing to a
@@ -94293,7 +93894,7 @@ async function renderResult() {
   // which shouldn't be rendered.
 
   if (faces && faces.length > 0 && !_params.STATE.isModelChanged) {
-    camera.drawResults(faces, _params.STATE.modelConfig.boundingBox, _params.STATE.modelConfig.keypoints);
+    camera.drawResults(faces, true, true);
   }
 }
 
@@ -94310,15 +93911,13 @@ async function renderPrediction() {
 ;
 
 async function app() {
-  // Gui content will change depending on which model is in the query string.
-  const urlParams = new URLSearchParams(window.location.search); // if (!urlParams.has('model')) {
-  //   alert('Cannot find model in the query string.');
-  //   return;
-  // }
+  try {
+    detector = await (0, _params.createDetector)(_params.STATE.model);
+  } catch (error) {
+    detector = null;
+    alert(error);
+  }
 
-  await (0, _option_panel.setupDatGui)(urlParams);
-  stats = (0, _stats_panel.setupStats)();
-  _params.STATE.camera.sizeOption = Object.keys(_params.VIDEO_SIZE)?.[0] || 'full_screen';
   camera = await _camera.Camera.setupCamera(_params.STATE.camera);
   await (0, _util.setBackendAndEnvFlags)(_params.STATE.flags, _params.STATE.backend);
   detector = await (0, _params.createDetector)();
@@ -94327,5 +93926,5 @@ async function app() {
 
 ;
 app();
-},{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","@tensorflow/tfjs-backend-wasm":"node_modules/@tensorflow/tfjs-backend-wasm/dist/index.js","@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","./camera":"src/camera.js","./option_panel":"src/option_panel.js","./shared/params":"src/shared/params.js","./shared/stats_panel":"src/shared/stats_panel.js","./shared/util":"src/shared/util.js"}]},{},["src/index.js"], null)
+},{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","@tensorflow/tfjs-backend-wasm":"node_modules/@tensorflow/tfjs-backend-wasm/dist/index.js","@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","./camera":"src/camera.js","./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}]},{},["src/index.js"], null)
 //# sourceMappingURL=/src.a2b27638.js.map
