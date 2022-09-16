@@ -93408,8 +93408,8 @@ const BLUE = '#157AB3';
 exports.BLUE = BLUE;
 const VIDEO_SIZE = {
   'full_screen': {
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: window.innerWidth * 0.2,
+    height: window.innerHeight * 0.2
   },
   '640 X 480': {
     width: 640,
