@@ -141,8 +141,8 @@ async function app() {
   renderPrediction();
 };
 
-console.log('Test v2');
-app();
+console.log('Test v4');
+// app();
 // setTimeout(() => {
 //   app();
 // }, 5000);

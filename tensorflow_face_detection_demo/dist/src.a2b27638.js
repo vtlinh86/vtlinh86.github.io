@@ -93759,8 +93759,14 @@ class Camera {
       camera.video.onloadedmetadata = () => {
         resolve(video);
       };
+    }); // camera.video.play();
+
+    camera.video.addEventListener('click', () => {
+      camera.video.play();
     });
-    camera.video.play();
+    camera.canvas.addEventListener('click', () => {
+      camera.video.play();
+    });
     const videoWidth = camera.video.videoWidth;
     const videoHeight = camera.video.videoHeight; // Must set below two lines, otherwise video element doesn't show.
 
@@ -93933,8 +93939,8 @@ async function app() {
 }
 
 ;
-console.log('Test v2');
-app(); // setTimeout(() => {
+console.log('Test v4'); // app();
+// setTimeout(() => {
 //   app();
 // }, 5000);
 },{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","@tensorflow/tfjs-backend-wasm":"node_modules/@tensorflow/tfjs-backend-wasm/dist/index.js","@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","./camera":"src/camera.js","./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}]},{},["src/index.js"], null)
