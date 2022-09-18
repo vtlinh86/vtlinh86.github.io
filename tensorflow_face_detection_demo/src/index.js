@@ -113,7 +113,10 @@ async function renderPrediction() {
     await renderResult();
   }
 
-  rafId = requestAnimationFrame(renderPrediction);
+  // rafId = requestAnimationFrame(renderPrediction);
+  setTimeout(() => {
+    renderPrediction();
+  }, 1000);
 };
 
 async function app() {
@@ -138,7 +141,7 @@ async function app() {
   renderPrediction();
 };
 
-console.log('Test v1');
+console.log('Test v2');
 app();
 // setTimeout(() => {
 //   app();

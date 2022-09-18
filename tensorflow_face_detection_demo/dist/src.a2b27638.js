@@ -93777,10 +93777,12 @@ class Camera {
   }
 
   drawCtx() {
+    console.log('camera.drawCtx');
     this.ctx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
   }
 
   drawResults(faces, boundingBox, keypoints) {
+    console.log('camera.drawResults', faces, boundingBox, keypoints);
     (0, _util.drawResults)(this.ctx, faces, boundingBox, keypoints);
   }
 
@@ -93903,9 +93905,12 @@ async function renderPrediction() {
 
   if (!_params.STATE.isModelChanged) {
     await renderResult();
-  }
+  } // rafId = requestAnimationFrame(renderPrediction);
 
-  rafId = requestAnimationFrame(renderPrediction);
+
+  setTimeout(() => {
+    renderPrediction();
+  }, 1000);
 }
 
 ;
@@ -93928,7 +93933,7 @@ async function app() {
 }
 
 ;
-console.log('Test v1');
+console.log('Test v2');
 app(); // setTimeout(() => {
 //   app();
 // }, 5000);

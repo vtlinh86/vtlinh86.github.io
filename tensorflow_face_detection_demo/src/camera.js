@@ -87,11 +87,13 @@ export class Camera {
   }
 
   drawCtx() {
+    console.log('camera.drawCtx');
     this.ctx.drawImage(
         this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
   }
 
   drawResults(faces, boundingBox, keypoints) {
+    console.log('camera.drawResults', faces, boundingBox, keypoints);
     drawResults(this.ctx, faces, boundingBox, keypoints);
   }
 }
