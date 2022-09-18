@@ -67,8 +67,10 @@ export class Camera {
     });
 
     // camera.video.play();
-    camera.video.addEventListener('click', () => {camera.video.play()});
-    camera.canvas.addEventListener('click', () => {camera.video.play()});
+    document.getElementById('btnPlayVideo').onclick = () => {
+      console.log('onclick btnPlayVideo');
+      camera.video.play();
+    };
 
     const videoWidth = camera.video.videoWidth;
     const videoHeight = camera.video.videoHeight;
