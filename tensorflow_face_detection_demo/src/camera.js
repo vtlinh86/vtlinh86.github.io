@@ -44,18 +44,22 @@ export class Camera {
         // Only setting the video to a specified size for large screen, on
         // mobile devices accept the default size.
 
-        // width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
-        // height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
-        width: $size.width*0.5,
-        height: $size.height*0.5,
+        width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
+        height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
+
+        // width: $size.width,
+        // height: $size.height,
 
         frameRate: {
-          ideal: targetFPS,
+          // ideal: targetFPS,
+          ideal: 20,
         },
       },
     };
 
     const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+    console.log('stream', stream);
+    console.log('stream', stream.getVideoTracks()[0].getSettings());
 
     const camera = new Camera();
     camera.video.srcObject = stream;
@@ -74,12 +78,24 @@ export class Camera {
 
     const videoWidth = camera.video.videoWidth;
     const videoHeight = camera.video.videoHeight;
+    console.log("videoWidth x videoHeight", videoWidth, videoHeight);
+
     // Must set below two lines, otherwise video element doesn't show.
     camera.video.width = videoWidth;
     camera.video.height = videoHeight;
 
     camera.canvas.width = videoWidth;
+    // camera.canvas.width = Math.floor(videoHeight/window.innerHeight*window.innerWidth);
     camera.canvas.height = videoHeight;
+
+    let cameraStyleH = 100;
+    let cameraStyleW = 100/videoHeight*videoWidth;
+    let cameraStyleL = -0.5*(cameraStyleW - 100/window.innerHeight*window.innerWidth);
+    camera.canvas.style.height = `${cameraStyleH}vh`;
+    camera.canvas.style.width = `${cameraStyleW}vh`;
+    camera.canvas.style.left = `${cameraStyleL}vh`;
+    
+
     const canvasContainer = document.querySelector('.canvas-wrapper');
     canvasContainer.style = `width: ${videoWidth}px; height: ${videoHeight}px`;
 
@@ -91,13 +107,18 @@ export class Camera {
   }
 
   drawCtx() {
-    console.log('camera.drawCtx');
-    this.ctx.drawImage(
-        this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+    // console.log('camera.drawCtx');
+
+    // console.log(this.video.videoWidth, this.video.videoHeight);
+
+    // let offset = 0.5*(this.video.videoWidth - this.video.videoHeight/window.innerHeight*window.innerWidth);
+
+    this.ctx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+    // this.ctx.drawImage(this.video, offset, 0, this.video.videoWidth, this.video.videoHeight);
   }
 
   drawResults(faces, boundingBox, keypoints) {
-    console.log('camera.drawResults', faces, boundingBox, keypoints);
+    // console.log('camera.drawResults', faces, boundingBox, keypoints);
     drawResults(this.ctx, faces, boundingBox, keypoints);
   }
 }

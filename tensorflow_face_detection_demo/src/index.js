@@ -87,7 +87,8 @@ async function renderResult() {
     // contain a model that doesn't provide the expected output.
     try {
       faces =
-          await detector.estimateFaces(camera.video, {flipHorizontal: false});
+          // await detector.estimateFaces(camera.video, {flipHorizontal: false});
+          await detector.estimateFaces(camera.canvas, {flipHorizontal: true});
     } catch (error) {
       detector.dispose();
       detector = null;
@@ -113,10 +114,10 @@ async function renderPrediction() {
     await renderResult();
   }
 
-  // rafId = requestAnimationFrame(renderPrediction);
-  setTimeout(() => {
-    renderPrediction();
-  }, 1000);
+  rafId = requestAnimationFrame(renderPrediction);
+  // setTimeout(() => {
+  //   renderPrediction();
+  // }, 1000);
 };
 
 async function app() {
@@ -141,7 +142,7 @@ async function app() {
   renderPrediction();
 };
 
-console.log('Test v5');
+console.log('Test v6');
 app();
 // setTimeout(() => {
 //   app();
