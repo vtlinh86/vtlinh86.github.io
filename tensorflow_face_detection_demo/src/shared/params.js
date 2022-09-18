@@ -23,8 +23,7 @@ export const RED = '#FF2C35';
 export const BLUE = '#157AB3';
 
 export const VIDEO_SIZE = {
-  // 'full_screen': {width: window.innerWidth*0.2, height: window.innerHeight*0.2},
-  'full_screen': {width: 200, height: 200},
+  'full_screen': {width: Math.floor(window.innerWidth), height: Math.floor(window.innerHeight)},
   '640 X 480': {width: 640, height: 480},
   '640 X 360': {width: 640, height: 360},
   '360 X 270': {width: 360, height: 270}

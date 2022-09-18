@@ -125,6 +125,9 @@ async function app() {
     alert(error);
   }
 
+  console.log('detector', detector);
+  console.log('STATE.camera', STATE.camera);
+  console.log('VIDEO_SIZE', VIDEO_SIZE);
   
   camera = await Camera.setupCamera(STATE.camera);
 
@@ -135,7 +138,8 @@ async function app() {
   renderPrediction();
 };
 
-// app();
-setTimeout(() => {
-  app();
-}, 5000);
+console.log('Test v1');
+app();
+// setTimeout(() => {
+//   app();
+// }, 5000);

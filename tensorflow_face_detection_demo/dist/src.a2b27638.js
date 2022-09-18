@@ -93407,10 +93407,9 @@ exports.RED = RED;
 const BLUE = '#157AB3';
 exports.BLUE = BLUE;
 const VIDEO_SIZE = {
-  // 'full_screen': {width: window.innerWidth*0.2, height: window.innerHeight*0.2},
   'full_screen': {
-    width: 200,
-    height: 200
+    width: Math.floor(window.innerWidth),
+    height: Math.floor(window.innerHeight)
   },
   '640 X 480': {
     width: 640,
@@ -93919,16 +93918,19 @@ async function app() {
     alert(error);
   }
 
+  console.log('detector', detector);
+  console.log('STATE.camera', _params.STATE.camera);
+  console.log('VIDEO_SIZE', _params.VIDEO_SIZE);
   camera = await _camera.Camera.setupCamera(_params.STATE.camera);
   await (0, _util.setBackendAndEnvFlags)(_params.STATE.flags, _params.STATE.backend);
   detector = await (0, _params.createDetector)();
   renderPrediction();
 }
 
-; // app();
-
-setTimeout(() => {
-  app();
-}, 5000);
+;
+console.log('Test v1');
+app(); // setTimeout(() => {
+//   app();
+// }, 5000);
 },{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","@tensorflow/tfjs-backend-wasm":"node_modules/@tensorflow/tfjs-backend-wasm/dist/index.js","@tensorflow-models/face-detection":"node_modules/@tensorflow-models/face-detection/dist/face-detection.esm.js","./camera":"src/camera.js","./shared/params":"src/shared/params.js","./shared/util":"src/shared/util.js"}]},{},["src/index.js"], null)
 //# sourceMappingURL=/src.a2b27638.js.map
