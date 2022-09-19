@@ -17,3 +17,4 @@ function FaceDetetionHelper() {
 }
 
 window.FACE_DETECTION_HELPER = new FaceDetetionHelper();
+console.log('window.FACE_DETECTION_HELPER', window.FACE_DETECTION_HELPER);
