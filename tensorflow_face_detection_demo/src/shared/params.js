@@ -43,27 +43,40 @@ export const MEDIAPIPE_FACE_CONFIG = {
 };
 
 export async function createDetector() {
-  switch (STATE.model) {
-    case faceDetection.SupportedModels.MediaPipeFaceDetector:
-      const runtime = STATE.backend.split('-')[0];
-      if (runtime === 'mediapipe') {
-        let config = {
-          runtime,
-          modelType: STATE.modelConfig.modelType,
-          maxFaces: STATE.modelConfig.maxFaces,
-          solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}`,
-          // solutionPath: '../face_detection',
-        };
-        return faceDetection.createDetector(STATE.model, config);
-      } else if (runtime === 'tfjs') {
-        return faceDetection.createDetector(STATE.model, {
-          runtime,
-          modelType: STATE.modelConfig.modelType,
-          maxFaces: STATE.modelConfig.maxFaces,
-        });
-      }
-  }
+  // switch (STATE.model) {
+  //   case faceDetection.SupportedModels.MediaPipeFaceDetector:
+  //     const runtime = STATE.backend.split('-')[0];
+  //     if (runtime === 'mediapipe') {
+  //       let config = {
+  //         runtime,
+  //         modelType: STATE.modelConfig.modelType,
+  //         maxFaces: STATE.modelConfig.maxFaces,
+  //         solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}`,
+  //         // solutionPath: '../face_detection',
+  //       };
+  //       console.log('config', config);
+  //       return faceDetection.createDetector(STATE.model, config);
+  //     } else if (runtime === 'tfjs') {
+  //       return faceDetection.createDetector(STATE.model, {
+  //         runtime,
+  //         modelType: STATE.modelConfig.modelType,
+  //         maxFaces: STATE.modelConfig.maxFaces,
+  //       });
+  //     }
+  // }
+
+  let config = {
+    runtime: 'mediapipe',
+    modelType: 'short',
+    maxFaces: 1,
+    solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@${mpFaceDetection.VERSION}`,
+  };
+  console.log('config', config);
+  return faceDetection.createDetector(STATE.model, config);
+  
 }
+
+
 /**
  * This map descripes tunable flags and theior corresponding types.
  *
