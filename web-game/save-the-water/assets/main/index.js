@@ -955,7 +955,9 @@ System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.
         var _proto = home.prototype;
 
         _proto.start = function start() {
-          console.log('ver 0.0.1');
+          console.log('ver 0.0.2');
+          director.preloadScene('mazeGame');
+          director.preloadScene('quizGame');
         };
 
         _proto.update = function update(deltaTime) {} //PUBLIC
