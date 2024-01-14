@@ -1,10 +1,515 @@
 System.register([], function(_export, _context) { return { execute: function () {
-System.register("chunks:///_virtual/Character2.ts",["./rollupPluginModLoBabelHelpers.js","cc"],(function(t){var i,e,r,a,n,o,l,s,p,h,u,c,g,b;return{setters:[function(t){i=t.applyDecoratedDescriptor,e=t.inheritsLoose,r=t.initializerDefineProperty,a=t.assertThisInitialized},function(t){n=t._decorator,o=t.Sprite,l=t.Label,s=t.Vec3,p=t.tween,h=t.Color,u=t.resources,c=t.SpriteFrame,g=t.UITransform,b=t.Component}],execute:function(){var d,f,m,y,k,C,H,w,S,v,D,z,A,P,I,L=n.ccclass,M=n.property;t("Character",(d=L("Character"),f=M(o),m=M(l),y=M(l),k=M(l),C=M(o),H=M(l),d((v=i((S=function(t){function i(){for(var i,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return i=t.call.apply(t,[this].concat(n))||this,r(i,"spriteChar",v,a(i)),r(i,"labelCharName",D,a(i)),i.originalHp=0,i.hp=0,r(i,"labelHp",z,a(i)),i.originalAtk=0,i.atk=0,r(i,"labelAtk",A,a(i)),r(i,"spriteHit",P,a(i)),r(i,"labelHitDmg",I,a(i)),i.dirMultiplier=-1,i}e(i,t);var n=i.prototype;return n.start=function(){},n.update=function(t){},n.updateDisplay=function(){this.labelHp.string=this.hp.toString(),this.labelAtk.string=this.atk.toString()},n.animateAttack=function(t,i,e){var r=this;this.node.setSiblingIndex(1);var a=this.node.getPosition(),n=this.node.getPosition().add(new s(300*this.dirMultiplier,0,0));p(this.node).to(.6,{position:n},{easing:"backIn"}).call((function(){t.takeDamage(r.atk)})).to(.8,{position:a}).delay(1.6).call((function(){e.apply(i)})).start()},n.takeDamage=function(t){this.hp-=t,this.updateDisplay(),this.spriteHit.node.position=this.node.getPosition(),this.labelHitDmg.string="-"+t.toString();var i=this.node.getPosition(),e=this.node.getPosition().add(new s(20*-this.dirMultiplier,0,0));p(this.node).to(.2,{position:e},{easing:"backOut"}).to(.2,{position:i}).start();var r=this.spriteHit,a=new h(255,255,255,255);r.color=a,p(a).delay(.5).to(1,{r:255,g:255,b:255,a:0},{onUpdate:function(t){r.color=t}}).start()},n.resetStats=function(){this.hp=this.originalHp,this.atk=this.originalAtk,this.updateDisplay()},n.setCharSprite=function(t){var i=this,e="enemySprites/Boss_Lv"+t.toString()+"/spriteFrame";u.load(e,c,(function(t,e){i.spriteChar.getComponent(g).setContentSize(e.width/4,e.height/4),i.spriteChar.spriteFrame=e}))},n.setUpChar=function(t,i,e){this.labelCharName.string=t,this.originalHp=i,this.originalAtk=e},i}(b)).prototype,"spriteChar",[f],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),D=i(S.prototype,"labelCharName",[m],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),z=i(S.prototype,"labelHp",[y],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),A=i(S.prototype,"labelAtk",[k],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),P=i(S.prototype,"spriteHit",[C],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),I=i(S.prototype,"labelHitDmg",[H],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),w=S))||w))}}}));
+System.register("chunks:///_virtual/Character2.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _decorator, Sprite, Label, Vec3, tween, Color, resources, SpriteFrame, UITransform, Component;
 
-System.register("chunks:///_virtual/MainCharacter2.ts",["./rollupPluginModLoBabelHelpers.js","cc","./Character2.ts"],(function(e){var t,i,r,a,o,n,l;return{setters:[function(e){t=e.applyDecoratedDescriptor,i=e.inheritsLoose,r=e.initializerDefineProperty,a=e.assertThisInitialized},function(e){o=e._decorator,n=e.Node},function(e){l=e.Character}],execute:function(){var s,c,h,u,d,p=o.ccclass,f=o.property;e("MainCharacter",(s=p("MainCharacter"),c=f(n),s((d=t((u=function(e){function t(){for(var t,i=arguments.length,o=new Array(i),n=0;n<i;n++)o[n]=arguments[n];return(t=e.call.apply(e,[this].concat(o))||this).dirMultiplier=1,r(t,"shieldNode",d,a(t)),t.hasShield=void 0,t}i(t,e);var o=t.prototype;return o.toggleShield=function(e){this.hasShield=e,this.shieldNode.active=e},o.takeDamage=function(t){this.hasShield?this.toggleShield(!1):e.prototype.takeDamage.call(this,t)},o.resetStats=function(){e.prototype.resetStats.call(this),this.toggleShield(!1)},t}(l)).prototype,"shieldNode",[c],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),h=u))||h))}}}));
+  return {
+    setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
+      _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
+    }, function (module) {
+      _decorator = module._decorator;
+      Sprite = module.Sprite;
+      Label = module.Label;
+      Vec3 = module.Vec3;
+      tween = module.tween;
+      Color = module.Color;
+      resources = module.resources;
+      SpriteFrame = module.SpriteFrame;
+      UITransform = module.UITransform;
+      Component = module.Component;
+    }],
+    execute: function () {
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
 
-System.register("chunks:///_virtual/Popup2.ts",["./rollupPluginModLoBabelHelpers.js","cc"],(function(t){var n,e,i,o,r,l,a,u,s;return{setters:[function(t){n=t.applyDecoratedDescriptor,e=t.inheritsLoose,i=t.initializerDefineProperty,o=t.assertThisInitialized},function(t){r=t._decorator,l=t.Label,a=t.Node,u=t.Button,s=t.Component}],execute:function(){var h,p,b,c,f,C,g,d,v,y,L,m,z,P=r.ccclass,B=r.property;t("Popup",(h=P("Popup"),p=B(l),b=B(a),c=B(a),f=B(u),C=B(u),h((v=n((d=function(t){function n(){for(var n,e=arguments.length,r=new Array(e),l=0;l<e;l++)r[l]=arguments[l];return n=t.call.apply(t,[this].concat(r))||this,i(n,"labelContent",v,o(n)),i(n,"backContainer",y,o(n)),i(n,"loseContainer",L,o(n)),i(n,"buttonLeft",m,o(n)),i(n,"buttonRight",z,o(n)),n.leftCb=void 0,n.rightCb=void 0,n.quizManager=void 0,n}e(n,t);var r=n.prototype;return r.start=function(){},r.onEnable=function(){var t,n;null==(t=this.buttonLeft)||t.node.on(u.EventType.CLICK,this.onButtonLeft,this),null==(n=this.buttonRight)||n.node.on(u.EventType.CLICK,this.onButtonRight,this)},r.onDisable=function(){var t,n;null==(t=this.buttonLeft)||t.node.off(u.EventType.CLICK,this.onButtonLeft,this),null==(n=this.buttonRight)||n.node.off(u.EventType.CLICK,this.onButtonRight,this)},r.update=function(t){},r.showPopupBack=function(t,n,e,i,o){this.labelContent.string=t,this.buttonLeft.getComponentInChildren(l).string=n,this.buttonRight.getComponentInChildren(l).string=e,this.leftCb=i,this.rightCb=o,this.node.active=!0,this.backContainer.active=!0,this.loseContainer.active=!1},r.showPopupLose=function(t,n,e,i){this.buttonLeft.getComponentInChildren(l).string=t,this.buttonRight.getComponentInChildren(l).string=n,this.leftCb=e,this.rightCb=i,this.node.active=!0,this.backContainer.active=!1,this.loseContainer.active=!0},r.hidePopup=function(){this.node.active=!1},r.onButtonLeft=function(){var t;null==(t=this.leftCb)||t.apply(this.quizManager),this.hidePopup()},r.onButtonRight=function(){var t;null==(t=this.rightCb)||t.apply(this.quizManager),this.hidePopup()},n}(s)).prototype,"labelContent",[p],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),y=n(d.prototype,"backContainer",[b],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),L=n(d.prototype,"loseContainer",[c],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),m=n(d.prototype,"buttonLeft",[f],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),z=n(d.prototype,"buttonRight",[C],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),g=d))||g))}}}));
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var Character = exports('Character', (_dec = ccclass('Character'), _dec2 = property(Sprite), _dec3 = property(Label), _dec4 = property(Label), _dec5 = property(Label), _dec6 = property(Sprite), _dec7 = property(Label), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+        _inheritsLoose(Character, _Component);
 
-System.register("chunks:///_virtual/rollupPluginModLoBabelHelpers.js",[],(function(e){return{execute:function(){function r(e,r){for(var t=0;t<r.length;t++){var i=r[t];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,n(i.key),i)}}function t(r,i){return(t=e("setPrototypeOf",Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,r){return e.__proto__=r,e}))(r,i)}function i(e,r){if("object"!=typeof e||null===e)return e;var t=e[Symbol.toPrimitive];if(void 0!==t){var i=t.call(e,r||"default");if("object"!=typeof i)return i;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===r?String:Number)(e)}function n(e){var r=i(e,"string");return"symbol"==typeof r?r:String(r)}e({applyDecoratedDescriptor:function(e,r,t,i,n){var o={};Object.keys(i).forEach((function(e){o[e]=i[e]})),o.enumerable=!!o.enumerable,o.configurable=!!o.configurable,("value"in o||o.initializer)&&(o.writable=!0);o=t.slice().reverse().reduce((function(t,i){return i(e,r,t)||t}),o),n&&void 0!==o.initializer&&(o.value=o.initializer?o.initializer.call(n):void 0,o.initializer=void 0);void 0===o.initializer&&(Object.defineProperty(e,r,o),o=null);return o},assertThisInitialized:function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e},createClass:function(e,t,i){t&&r(e.prototype,t);i&&r(e,i);return Object.defineProperty(e,"prototype",{writable:!1}),e},inheritsLoose:function(e,r){e.prototype=Object.create(r.prototype),e.prototype.constructor=e,t(e,r)},initializerDefineProperty:function(e,r,t,i){if(!t)return;Object.defineProperty(e,r,{enumerable:t.enumerable,configurable:t.configurable,writable:t.writable,value:t.initializer?t.initializer.call(i):void 0})},setPrototypeOf:t,toPrimitive:i,toPropertyKey:n})}}}));
+        function Character() {
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "spriteChar", _descriptor, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "labelCharName", _descriptor2, _assertThisInitialized(_this));
+
+          _this.originalHp = 0;
+          _this.hp = 0;
+
+          _initializerDefineProperty(_this, "labelHp", _descriptor3, _assertThisInitialized(_this));
+
+          _this.originalAtk = 0;
+          _this.atk = 0;
+
+          _initializerDefineProperty(_this, "labelAtk", _descriptor4, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "spriteHit", _descriptor5, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "labelHitDmg", _descriptor6, _assertThisInitialized(_this));
+
+          _this.dirMultiplier = -1;
+          return _this;
+        }
+
+        var _proto = Character.prototype; //#region Default
+
+        _proto.start = function start() {};
+
+        _proto.update = function update(deltaTime) {} //#endregion
+        //#region Utils
+        ;
+
+        _proto.updateDisplay = function updateDisplay() {
+          this.labelHp.string = this.hp.toString();
+          this.labelAtk.string = this.atk.toString();
+        };
+
+        _proto.animateAttack = function animateAttack(target, quizManager, cb) {
+          var _this2 = this;
+
+          this.node.setSiblingIndex(1);
+          var oldPos = this.node.getPosition();
+          var newPos = this.node.getPosition().add(new Vec3(this.dirMultiplier * 300, 0, 0));
+          tween(this.node).to(0.6, {
+            position: newPos
+          }, {
+            easing: "backIn"
+          }).call(function () {
+            target.takeDamage(_this2.atk);
+          }).to(0.8, {
+            position: oldPos
+          }).delay(1.6).call(function () {
+            cb.apply(quizManager);
+          }).start();
+        };
+
+        _proto.takeDamage = function takeDamage(dmg) {
+          this.hp -= dmg;
+          this.updateDisplay();
+          this.spriteHit.node.position = this.node.getPosition();
+          this.labelHitDmg.string = '-' + dmg.toString();
+          var oldPos = this.node.getPosition();
+          var newPos = this.node.getPosition().add(new Vec3(-this.dirMultiplier * 20, 0, 0));
+          tween(this.node).to(0.2, {
+            position: newPos
+          }, {
+            easing: "backOut"
+          }).to(0.2, {
+            position: oldPos
+          }).start();
+          var sprite = this.spriteHit;
+          var col = new Color(255, 255, 255, 255);
+          sprite.color = col;
+          tween(col).delay(0.5).to(1, {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 0
+          }, {
+            onUpdate: function onUpdate(tar) {
+              sprite.color = tar;
+            }
+          }).start();
+        };
+
+        _proto.resetStats = function resetStats() {
+          this.hp = this.originalHp;
+          this.atk = this.originalAtk;
+          this.updateDisplay();
+        };
+
+        _proto.setCharSprite = function setCharSprite(lvl) {
+          var _this3 = this;
+
+          var path = "sprites/Boss_Lv" + lvl.toString() + "/spriteFrame";
+          resources.load(path, SpriteFrame, function (err, spriteFrame) {
+            _this3.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
+
+            _this3.spriteChar.spriteFrame = spriteFrame;
+          });
+        };
+
+        _proto.setUpChar = function setUpChar(name, hp, atk) {
+          this.labelCharName.string = name;
+          this.originalHp = hp;
+          this.originalAtk = atk;
+        } //#endregion
+        ;
+
+        return Character;
+      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "spriteChar", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "labelCharName", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "labelHp", [_dec4], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "labelAtk", [_dec5], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "spriteHit", [_dec6], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "labelHitDmg", [_dec7], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      })), _class2)) || _class));
+    }
+  };
+});
+
+System.register("chunks:///_virtual/MainCharacter2.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character2.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _decorator, Node, Character;
+
+  return {
+    setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
+      _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
+    }, function (module) {
+      _decorator = module._decorator;
+      Node = module.Node;
+    }, function (module) {
+      Character = module.Character;
+    }],
+    execute: function () {
+      var _dec, _dec2, _class, _class2, _descriptor;
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var MainCharacter = exports('MainCharacter', (_dec = ccclass('MainCharacter'), _dec2 = property(Node), _dec(_class = (_class2 = /*#__PURE__*/function (_Character) {
+        _inheritsLoose(MainCharacter, _Character);
+
+        function MainCharacter() {
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Character.call.apply(_Character, [this].concat(args)) || this;
+          _this.dirMultiplier = 1;
+
+          _initializerDefineProperty(_this, "shieldNode", _descriptor, _assertThisInitialized(_this));
+
+          _this.hasShield = void 0;
+          return _this;
+        }
+
+        var _proto = MainCharacter.prototype; //#region Utils
+
+        _proto.toggleShield = function toggleShield(isOn) {
+          this.hasShield = isOn;
+          this.shieldNode.active = isOn;
+        };
+
+        _proto.takeDamage = function takeDamage(dmg) {
+          if (this.hasShield) {
+            this.toggleShield(false);
+            return;
+          }
+
+          _Character.prototype.takeDamage.call(this, dmg);
+        };
+
+        _proto.resetStats = function resetStats() {
+          _Character.prototype.resetStats.call(this);
+
+          this.toggleShield(false);
+        } //#endregion
+        ;
+
+        return MainCharacter;
+      }(Character), _descriptor = _applyDecoratedDescriptor(_class2.prototype, "shieldNode", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _class2)) || _class));
+    }
+  };
+});
+
+System.register("chunks:///_virtual/Popup2.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _decorator, Label, Node, Button, Component;
+
+  return {
+    setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
+      _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
+    }, function (module) {
+      _decorator = module._decorator;
+      Label = module.Label;
+      Node = module.Node;
+      Button = module.Button;
+      Component = module.Component;
+    }],
+    execute: function () {
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var Popup = exports('Popup', (_dec = ccclass('Popup'), _dec2 = property(Label), _dec3 = property(Node), _dec4 = property(Node), _dec5 = property(Button), _dec6 = property(Button), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+        _inheritsLoose(Popup, _Component);
+
+        function Popup() {
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "labelContent", _descriptor, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "backContainer", _descriptor2, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "loseContainer", _descriptor3, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "buttonLeft", _descriptor4, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "buttonRight", _descriptor5, _assertThisInitialized(_this));
+
+          _this.leftCb = void 0;
+          _this.rightCb = void 0;
+          _this.quizManager = void 0;
+          return _this;
+        }
+
+        var _proto = Popup.prototype; //#region Default
+
+        _proto.start = function start() {};
+
+        _proto.onEnable = function onEnable() {
+          var _this$buttonLeft, _this$buttonRight;
+
+          (_this$buttonLeft = this.buttonLeft) == null ? void 0 : _this$buttonLeft.node.on(Button.EventType.CLICK, this.onButtonLeft, this);
+          (_this$buttonRight = this.buttonRight) == null ? void 0 : _this$buttonRight.node.on(Button.EventType.CLICK, this.onButtonRight, this);
+        };
+
+        _proto.onDisable = function onDisable() {
+          var _this$buttonLeft2, _this$buttonRight2;
+
+          (_this$buttonLeft2 = this.buttonLeft) == null ? void 0 : _this$buttonLeft2.node.off(Button.EventType.CLICK, this.onButtonLeft, this);
+          (_this$buttonRight2 = this.buttonRight) == null ? void 0 : _this$buttonRight2.node.off(Button.EventType.CLICK, this.onButtonRight, this);
+        };
+
+        _proto.update = function update(deltaTime) {} //#endregion
+        //#region Utils
+        ;
+
+        _proto.showPopupBack = function showPopupBack(txtContent, txtLeft, txtRight, lCb, rCb) {
+          this.labelContent.string = txtContent;
+          this.buttonLeft.getComponentInChildren(Label).string = txtLeft;
+          this.buttonRight.getComponentInChildren(Label).string = txtRight;
+          this.leftCb = lCb;
+          this.rightCb = rCb;
+          this.node.active = true;
+          this.backContainer.active = true;
+          this.loseContainer.active = false;
+        };
+
+        _proto.showPopupLose = function showPopupLose(txtLeft, txtRight, lCb, rCb) {
+          this.buttonLeft.getComponentInChildren(Label).string = txtLeft;
+          this.buttonRight.getComponentInChildren(Label).string = txtRight;
+          this.leftCb = lCb;
+          this.rightCb = rCb;
+          this.node.active = true;
+          this.backContainer.active = false;
+          this.loseContainer.active = true;
+        };
+
+        _proto.hidePopup = function hidePopup() {
+          this.node.active = false;
+        };
+
+        _proto.onButtonLeft = function onButtonLeft() {
+          var _this$leftCb;
+
+          (_this$leftCb = this.leftCb) == null ? void 0 : _this$leftCb.apply(this.quizManager);
+          this.hidePopup();
+        };
+
+        _proto.onButtonRight = function onButtonRight() {
+          var _this$rightCb;
+
+          (_this$rightCb = this.rightCb) == null ? void 0 : _this$rightCb.apply(this.quizManager);
+          this.hidePopup();
+        } //#endregion
+        ;
+
+        return Popup;
+      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "labelContent", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "backContainer", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "loseContainer", [_dec4], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "buttonLeft", [_dec5], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "buttonRight", [_dec6], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      })), _class2)) || _class));
+    }
+  };
+});
+
+System.register("chunks:///_virtual/rollupPluginModLoBabelHelpers.js", [], function (exports) {
+  return {
+    execute: function () {
+      exports({
+        applyDecoratedDescriptor: _applyDecoratedDescriptor,
+        assertThisInitialized: _assertThisInitialized,
+        createClass: _createClass,
+        inheritsLoose: _inheritsLoose,
+        initializerDefineProperty: _initializerDefineProperty,
+        setPrototypeOf: _setPrototypeOf,
+        toPrimitive: _toPrimitive,
+        toPropertyKey: _toPropertyKey
+      });
+
+      function _defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+          var descriptor = props[i];
+          descriptor.enumerable = descriptor.enumerable || false;
+          descriptor.configurable = true;
+          if ("value" in descriptor) descriptor.writable = true;
+          Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+        }
+      }
+
+      function _createClass(Constructor, protoProps, staticProps) {
+        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) _defineProperties(Constructor, staticProps);
+        Object.defineProperty(Constructor, "prototype", {
+          writable: false
+        });
+        return Constructor;
+      }
+
+      function _inheritsLoose(subClass, superClass) {
+        subClass.prototype = Object.create(superClass.prototype);
+        subClass.prototype.constructor = subClass;
+
+        _setPrototypeOf(subClass, superClass);
+      }
+
+      function _setPrototypeOf(o, p) {
+        _setPrototypeOf = exports('setPrototypeOf', Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+          o.__proto__ = p;
+          return o;
+        });
+        return _setPrototypeOf(o, p);
+      }
+
+      function _assertThisInitialized(self) {
+        if (self === void 0) {
+          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+
+        return self;
+      }
+
+      function _toPrimitive(input, hint) {
+        if (typeof input !== "object" || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+
+        if (prim !== undefined) {
+          var res = prim.call(input, hint || "default");
+          if (typeof res !== "object") return res;
+          throw new TypeError("@@toPrimitive must return a primitive value.");
+        }
+
+        return (hint === "string" ? String : Number)(input);
+      }
+
+      function _toPropertyKey(arg) {
+        var key = _toPrimitive(arg, "string");
+
+        return typeof key === "symbol" ? key : String(key);
+      }
+
+      function _initializerDefineProperty(target, property, descriptor, context) {
+        if (!descriptor) return;
+        Object.defineProperty(target, property, {
+          enumerable: descriptor.enumerable,
+          configurable: descriptor.configurable,
+          writable: descriptor.writable,
+          value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+        });
+      }
+
+      function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+        var desc = {};
+        Object.keys(descriptor).forEach(function (key) {
+          desc[key] = descriptor[key];
+        });
+        desc.enumerable = !!desc.enumerable;
+        desc.configurable = !!desc.configurable;
+
+        if ('value' in desc || desc.initializer) {
+          desc.writable = true;
+        }
+
+        desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+          return decorator(target, property, desc) || desc;
+        }, desc);
+
+        if (context && desc.initializer !== void 0) {
+          desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+          desc.initializer = undefined;
+        }
+
+        if (desc.initializer === void 0) {
+          Object.defineProperty(target, property, desc);
+          desc = null;
+        }
+
+        return desc;
+      }
+    }
+  };
+});
 
 } }; });
