@@ -175,7 +175,7 @@ System.register("chunks:///_virtual/ButtonAnswer.ts", ['./rollupPluginModLoBabel
   };
 });
 
-System.register("chunks:///_virtual/character.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
+System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
   var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Sprite, Label, Vec3, tween, Color, resources, SpriteFrame, UITransform, Component;
 
   return {
@@ -200,7 +200,7 @@ System.register("chunks:///_virtual/character.ts", ['./rollupPluginModLoBabelHel
     execute: function () {
       var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
 
-      cclegacy._RF.push({}, "7c65acHiYpDl5H/LKp+9FQI", "character", undefined);
+      cclegacy._RF.push({}, "dd843+Qd8NPoZA1+k/zXAZ2", "Character", undefined);
 
       var ccclass = _decorator.ccclass,
           property = _decorator.property;
@@ -310,7 +310,23 @@ System.register("chunks:///_virtual/character.ts", ['./rollupPluginModLoBabelHel
 
           var path = "sprites/Boss_Lv" + lvl.toString() + "/spriteFrame";
           resources.load(path, SpriteFrame, function (err, spriteFrame) {
-            _this3.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
+            switch (lvl) {
+              case 0:
+                _this3.spriteChar.getComponent(UITransform).setContentSize(205, 262);
+
+                break;
+
+              case 1:
+                _this3.spriteChar.getComponent(UITransform).setContentSize(567, 250);
+
+                break;
+
+              case 2:
+                _this3.spriteChar.getComponent(UITransform).setContentSize(250, 248);
+
+                break;
+            } // this.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
+
 
             _this3.spriteChar.spriteFrame = spriteFrame;
           });
@@ -709,8 +725,6 @@ System.register("chunks:///_virtual/Define.ts", ['cc'], function (exports) {
       }({}));
       var PlayerSpeed = exports('PlayerSpeed', 5); //cell/s
 
-      var EnemySpeed = exports('EnemySpeed', 6); //cell/s
-
       var MapSize = exports('MapSize', {
         width: 29,
         height: 21
@@ -721,8 +735,8 @@ System.register("chunks:///_virtual/Define.ts", ['cc'], function (exports) {
   };
 });
 
-System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './BaseObject.ts', './LevelDefine.ts', './Define.ts'], function (exports) {
-  var _inheritsLoose, cclegacy, _decorator, Tween, Vec2, tween, BaseObject, ObjectType, EnemySpeed;
+System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './BaseObject.ts', './LevelDefine.ts'], function (exports) {
+  var _inheritsLoose, cclegacy, _decorator, Tween, Vec2, tween, BaseObject, ObjectType;
 
   return {
     setters: [function (module) {
@@ -737,8 +751,6 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
       BaseObject = module.BaseObject;
     }, function (module) {
       ObjectType = module.ObjectType;
-    }, function (module) {
-      EnemySpeed = module.EnemySpeed;
     }],
     execute: function () {
       var _dec, _class;
@@ -770,6 +782,7 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
           _this = _BaseObject.call.apply(_BaseObject, [this].concat(args)) || this;
           _this.objectType = ObjectType.enemy;
           _this.path = [];
+          _this.speed = 1;
           _this.pathIndex = 0;
           _this.state = State.Inactive;
           _this.resumeState = State.Inactive;
@@ -811,7 +824,7 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
               }
 
               var length = Vec2.distance(this.mapPosition, target);
-              var duration = length / EnemySpeed;
+              var duration = length / this.speed;
               tween(this.mapPosition).to(duration, target, {
                 onUpdate: function onUpdate(target) {
                   switch (_this2.state) {
@@ -874,7 +887,8 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
         } //PUBLIC 
         ;
 
-        _proto.setPath = function setPath(path) {
+        _proto.setupInfo = function setupInfo(speed, path) {
+          this.speed = speed != null ? speed : 1;
           this.path = path;
           this.pathIndex = 0;
 
@@ -1188,14 +1202,15 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
           var enemiesDefine = arrLevelEnemy[userProfile.currentLevel];
           enemiesDefine.forEach(function (info) {
             var objectType = info.objectType,
-                path = info.path;
+                path = info.path,
+                speed = info.speed;
 
             var obj = _this3.getObject(objectType, _this3.enemyPrefab, _this3.objects, _this3.world);
 
             var enemy = obj.getComponent(Enemy);
 
             if (enemy) {
-              enemy.setPath(path);
+              enemy.setupInfo(speed, path);
               enemy.setStateStart();
             }
           });
@@ -1318,35 +1333,45 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
       var level3 = exports('level3', [[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0], [0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0], [1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 2, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 1], [0, 2, 1, 2, 1, 2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 1, 2, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 2, 0, 0, 1, 0, 0, 0, 0, 2, 1, 2, 1, 1, 3, 1, 1, 2, 0], [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 1, 1, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 2, 1, 3, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 1, 1, 1, 0, 0, 0, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0], [0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 9, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 2, 1, 2, 1, 2, 1, 1, 3, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1, 2, 1, 2, 1, 2, 0], [1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1], [0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0], [0, 1, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]]);
       var levelEnemy1 = exports('levelEnemy1', [{
         objectType: ObjectType.enemy,
+        speed: 2,
         path: [new Vec2(7, 5), new Vec2(1, 5), new Vec2(1, 2), new Vec2(9, 2), new Vec2(9, 6), new Vec2(10, 6), new Vec2(10, 10), new Vec2(7, 10)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 2,
         path: [new Vec2(14, 17), new Vec2(14, 14), new Vec2(22, 14), new Vec2(22, 19), new Vec2(4, 19), new Vec2(4, 17)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 2,
         path: [new Vec2(19, 6), new Vec2(19, 4), new Vec2(17, 4), new Vec2(17, 8), new Vec2(14, 8), new Vec2(14, 19), new Vec2(22, 19), new Vec2(22, 17), new Vec2(27, 17), new Vec2(27, 1), new Vec2(23, 1), new Vec2(23, 8), new Vec2(19, 8)]
       }]);
       var levelEnemy2 = exports('levelEnemy2', [{
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(12, 4), new Vec2(1, 4), new Vec2(1, 1), new Vec2(23, 1), new Vec2(23, 5), new Vec2(20, 5), new Vec2(20, 3), new Vec2(18, 3), new Vec2(18, 8), new Vec2(27, 8), new Vec2(27, 11), new Vec2(14, 11), new Vec2(14, 7), new Vec2(12, 7)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(12, 16), new Vec2(1, 16), new Vec2(1, 19), new Vec2(27, 19), new Vec2(27, 17), new Vec2(16, 17), new Vec2(16, 15), new Vec2(12, 15)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(23, 1), new Vec2(16, 1), new Vec2(16, 7), new Vec2(12, 7), new Vec2(12, 11), new Vec2(7, 11), new Vec2(7, 13), new Vec2(12, 13), new Vec2(12, 15), new Vec2(16, 15), new Vec2(16, 13), new Vec2(19, 13), new Vec2(19, 15), new Vec2(21, 15), new Vec2(21, 11), new Vec2(27, 11), new Vec2(27, 1)]
       }]);
       var levelEnemy3 = exports('levelEnemy3', [{
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(7, 4), new Vec2(7, 8), new Vec2(9, 8), new Vec2(9, 3), new Vec2(12, 3), new Vec2(12, 1), new Vec2(1, 1), new Vec2(1, 4)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(16, 17), new Vec2(16, 16), new Vec2(1, 16), new Vec2(1, 19), new Vec2(16, 19)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(27, 11), new Vec2(27, 3), new Vec2(21, 3), new Vec2(21, 5), new Vec2(19, 5), new Vec2(19, 12), new Vec2(21, 12), new Vec2(21, 15), new Vec2(22, 15), new Vec2(22, 16), new Vec2(24, 16), new Vec2(24, 19), new Vec2(16, 19), new Vec2(16, 16), new Vec2(16, 19), new Vec2(24, 19), new Vec2(24, 16), new Vec2(22, 16), new Vec2(22, 15), new Vec2(21, 15), new Vec2(21, 12), new Vec2(19, 12), new Vec2(19, 5), new Vec2(21, 5), new Vec2(21, 3), new Vec2(27, 3)]
       }, {
         objectType: ObjectType.enemy,
+        speed: 3,
         path: [new Vec2(14, 5), new Vec2(14, 11), new Vec2(11, 11), new Vec2(11, 13), new Vec2(8, 13), new Vec2(8, 8), new Vec2(9, 8), new Vec2(9, 3), new Vec2(12, 3), new Vec2(12, 1), new Vec2(17, 1), new Vec2(17, 5)]
       }]);
       var levelInfo1 = exports('levelInfo1', {
@@ -1364,14 +1389,14 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
   };
 });
 
-System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './EventManager.ts', './UserProfile.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './PopupWin.ts', './QuizDefine.ts', './QuizManager.ts', './character.ts', './mainCharacter.ts', './popup.ts'], function () {
+System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './EventManager.ts', './UserProfile.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './Character.ts', './PopupWin.ts', './QuizDefine.ts', './QuizManager.ts', './mainCharacter.ts', './popup.ts'], function () {
   return {
     setters: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     execute: function () {}
   };
 });
 
-System.register("chunks:///_virtual/mainCharacter.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character2.ts'], function (exports) {
+System.register("chunks:///_virtual/mainCharacter.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts'], function (exports) {
   var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Character;
 
   return {
@@ -3149,8 +3174,8 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
   };
 });
 
-System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character2.ts', './MainCharacter2.ts', './Popup2.ts', './QuizDefine.ts', './ButtonAnswer.ts', './PopupWin.ts', './UserProfile.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCInteger, Sprite, Label, Button, Node, input, Input, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, PopupWin, userProfile;
+System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './MainCharacter2.ts', './Popup2.ts', './QuizDefine.ts', './ButtonAnswer.ts', './PopupWin.ts', './UserProfile.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCString, CCInteger, Sprite, Label, Button, Node, input, Input, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, PopupWin, userProfile;
 
   return {
     setters: [function (module) {
@@ -3162,6 +3187,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
       cclegacy = module.cclegacy;
       js = module.js;
       _decorator = module._decorator;
+      CCString = module.CCString;
       CCInteger = module.CCInteger;
       Sprite = module.Sprite;
       Label = module.Label;
@@ -3200,7 +3226,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
       userProfile = module.userProfile;
     }],
     execute: function () {
-      var _dec, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _class4, _class5, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
+      var _dec, _dec2, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class4, _class5, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
 
       cclegacy._RF.push({}, "805e23xK/5Fe5IFkpKG8r32", "QuizManager", undefined);
 
@@ -3216,7 +3242,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         return GameState;
       }(GameState || {});
 
-      var QuizItem = exports('QuizItem', (_dec = ccclass('QuizItem'), _dec(_class = (_class2 = function QuizItem(lastAnsIdx, question, answers) {
+      var QuizItem = exports('QuizItem', (_dec = ccclass('QuizItem'), _dec2 = property([CCString]), _dec(_class = (_class2 = function QuizItem(lastAnsIdx, question, answers) {
         if (lastAnsIdx === void 0) {
           lastAnsIdx = -1;
         }
@@ -3259,7 +3285,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "answers", [property], {
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "answers", [_dec2], {
         configurable: true,
         enumerable: true,
         writable: true,
@@ -3267,7 +3293,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           return [];
         }
       })), _class2)) || _class));
-      var QuizManager = exports('QuizManager', (_dec2 = ccclass('QuizManager'), _dec3 = property(CCInteger), _dec4 = property(MainCharacter), _dec5 = property(Character), _dec6 = property(Sprite), _dec7 = property(Label), _dec8 = property(Button), _dec9 = property(Button), _dec10 = property(Button), _dec11 = property(Button), _dec12 = property(Label), _dec13 = property(Label), _dec14 = property([Node]), _dec15 = property([QuizItem]), _dec16 = property(Popup), _dec17 = property(PopupWin), _dec18 = property(Node), _dec2(_class4 = (_class5 = /*#__PURE__*/function (_Component) {
+      var QuizManager = exports('QuizManager', (_dec3 = ccclass('QuizManager'), _dec4 = property(CCInteger), _dec5 = property(MainCharacter), _dec6 = property(Character), _dec7 = property(Sprite), _dec8 = property(Label), _dec9 = property(Button), _dec10 = property(Button), _dec11 = property(Button), _dec12 = property(Button), _dec13 = property(Label), _dec14 = property(Label), _dec15 = property([Node]), _dec16 = property([QuizItem]), _dec17 = property(Popup), _dec18 = property(PopupWin), _dec19 = property(Node), _dec3(_class4 = (_class5 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(QuizManager, _Component);
 
         function QuizManager() {
@@ -3450,9 +3476,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           quizItem.used = true;
           this.usedCount++;
           this.labelQuestion.string = quizItem.question;
-          this.shuffledIndexes.sort(function () {
-            return Math.random() - 0.5;
-          });
+          this.randomizeAnsOrder(quizItem.lastAnsIdx);
           var i = 0;
           this.buttonNodes.forEach(function (n) {
             var idx = _this3.shuffledIndexes[i];
@@ -3467,6 +3491,21 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           this.buttonShield.interactable = this.currentDrops > shieldCost && this.shieldUsed < shieldUses;
           this.overlay.active = false;
           this.startCountdown();
+        };
+
+        _proto.randomizeAnsOrder = function randomizeAnsOrder(lastAnsIdx) {
+          this.shuffledIndexes.sort(function () {
+            return Math.random() - 0.5;
+          });
+          if (lastAnsIdx == -1) return;
+
+          for (var i = 0; i < this.shuffledIndexes.length; i++) {
+            if (this.shuffledIndexes[i] == lastAnsIdx) {
+              this.shuffledIndexes.splice(i, 1);
+              this.shuffledIndexes.push(lastAnsIdx);
+              return;
+            }
+          }
         };
 
         _proto.getRandomQuestion = function getRandomQuestion() {
@@ -3509,7 +3548,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.restartGame = function restartGame() {
-          this.setCurState(GameState.INIT);
+          this.setCurState(GameState.RESET);
         };
 
         _proto.endGameWin = function endGameWin() {
@@ -3634,88 +3673,88 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         ;
 
         return QuizManager;
-      }(Component), (_descriptor5 = _applyDecoratedDescriptor(_class5.prototype, "level", [_dec3], {
+      }(Component), (_descriptor5 = _applyDecoratedDescriptor(_class5.prototype, "level", [_dec4], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: function initializer() {
           return 0;
         }
-      }), _descriptor6 = _applyDecoratedDescriptor(_class5.prototype, "mainChar", [_dec4], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class5.prototype, "mainChar", [_dec5], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor7 = _applyDecoratedDescriptor(_class5.prototype, "enemy", [_dec5], {
+      }), _descriptor7 = _applyDecoratedDescriptor(_class5.prototype, "enemy", [_dec6], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor8 = _applyDecoratedDescriptor(_class5.prototype, "spriteBG", [_dec6], {
+      }), _descriptor8 = _applyDecoratedDescriptor(_class5.prototype, "spriteBG", [_dec7], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor9 = _applyDecoratedDescriptor(_class5.prototype, "labelDrops", [_dec7], {
+      }), _descriptor9 = _applyDecoratedDescriptor(_class5.prototype, "labelDrops", [_dec8], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor10 = _applyDecoratedDescriptor(_class5.prototype, "buttonBack", [_dec8], {
+      }), _descriptor10 = _applyDecoratedDescriptor(_class5.prototype, "buttonBack", [_dec9], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor11 = _applyDecoratedDescriptor(_class5.prototype, "buttonSkip", [_dec9], {
+      }), _descriptor11 = _applyDecoratedDescriptor(_class5.prototype, "buttonSkip", [_dec10], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor12 = _applyDecoratedDescriptor(_class5.prototype, "buttonSkimAns", [_dec10], {
+      }), _descriptor12 = _applyDecoratedDescriptor(_class5.prototype, "buttonSkimAns", [_dec11], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor13 = _applyDecoratedDescriptor(_class5.prototype, "buttonShield", [_dec11], {
+      }), _descriptor13 = _applyDecoratedDescriptor(_class5.prototype, "buttonShield", [_dec12], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor14 = _applyDecoratedDescriptor(_class5.prototype, "labelTime", [_dec12], {
+      }), _descriptor14 = _applyDecoratedDescriptor(_class5.prototype, "labelTime", [_dec13], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor15 = _applyDecoratedDescriptor(_class5.prototype, "labelQuestion", [_dec13], {
+      }), _descriptor15 = _applyDecoratedDescriptor(_class5.prototype, "labelQuestion", [_dec14], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor16 = _applyDecoratedDescriptor(_class5.prototype, "buttonNodes", [_dec14], {
+      }), _descriptor16 = _applyDecoratedDescriptor(_class5.prototype, "buttonNodes", [_dec15], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: function initializer() {
           return [];
         }
-      }), _descriptor17 = _applyDecoratedDescriptor(_class5.prototype, "questions", [_dec15], {
+      }), _descriptor17 = _applyDecoratedDescriptor(_class5.prototype, "questions", [_dec16], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: function initializer() {
           return [];
         }
-      }), _descriptor18 = _applyDecoratedDescriptor(_class5.prototype, "popup", [_dec16], {
+      }), _descriptor18 = _applyDecoratedDescriptor(_class5.prototype, "popup", [_dec17], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor19 = _applyDecoratedDescriptor(_class5.prototype, "popupWin", [_dec17], {
+      }), _descriptor19 = _applyDecoratedDescriptor(_class5.prototype, "popupWin", [_dec18], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor20 = _applyDecoratedDescriptor(_class5.prototype, "overlay", [_dec18], {
+      }), _descriptor20 = _applyDecoratedDescriptor(_class5.prototype, "overlay", [_dec19], {
         configurable: true,
         enumerable: true,
         writable: true,

@@ -52,6 +52,10 @@
         "f90c090f-7bc7-4305-ac61-63c29090e38e@f9941"
     ],
     "paths": {
+        "3941a83e-c67a-45ab-8860-af015400971e": [
+            "JSON/questions",
+            "cc.JsonAsset"
+        ],
         "03679dd8-2a80-4d2c-845e-2c0af25a4593": [
             "sprites/Background_0",
             "cc.ImageAsset"
@@ -220,10 +224,6 @@
         "bdfc2ae9-4e4e-4936-9a1c-7244df5f61a5": [
             "sprites/spriteAtlas",
             "cc.SpriteAtlas"
-        ],
-        "3941a83e-c67a-45ab-8860-af015400971e": [
-            "JSON/questions",
-            "cc.JsonAsset"
         ]
     },
     "scenes": {},
