@@ -72,7 +72,7 @@
         ]
     },
     "launch": {
-        "launchScene": "db://assets/scene/home.scene"
+        "launchScene": "db://assets/scene/start.scene"
     },
     "screen": {
         "exactFitScreen": true,

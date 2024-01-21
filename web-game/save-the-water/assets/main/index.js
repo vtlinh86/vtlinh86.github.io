@@ -3506,7 +3506,7 @@ System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers
         var _proto = start.prototype;
 
         _proto.start = function start() {
-          console.log('ver 0.0.4');
+          console.log('ver 0.0.5');
           director.preloadScene('home');
           director.preloadScene('mazeGame');
           director.preloadScene('quizGame');
