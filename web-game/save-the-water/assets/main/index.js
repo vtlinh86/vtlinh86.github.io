@@ -312,17 +312,17 @@ System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHel
           resources.load(path, SpriteFrame, function (err, spriteFrame) {
             switch (lvl) {
               case 0:
-                _this3.spriteChar.getComponent(UITransform).setContentSize(205, 262);
+                _this3.spriteChar.getComponent(UITransform).setContentSize(205 * 0.85, 262 * 0.85);
 
                 break;
 
               case 1:
-                _this3.spriteChar.getComponent(UITransform).setContentSize(567, 250);
+                _this3.spriteChar.getComponent(UITransform).setContentSize(567 * 0.85, 250 * 0.85);
 
                 break;
 
               case 2:
-                _this3.spriteChar.getComponent(UITransform).setContentSize(250, 248);
+                _this3.spriteChar.getComponent(UITransform).setContentSize(250 * 0.85, 248 * 0.85);
 
                 break;
             } // this.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
@@ -736,24 +736,30 @@ System.register("chunks:///_virtual/Define.ts", ['cc'], function (exports) {
 });
 
 System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './BaseObject.ts', './LevelDefine.ts'], function (exports) {
-  var _inheritsLoose, cclegacy, _decorator, Tween, Vec2, tween, BaseObject, ObjectType;
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, SpriteFrame, Sprite, Tween, Vec2, tween, clamp, BaseObject, ObjectType;
 
   return {
     setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
       _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
+      SpriteFrame = module.SpriteFrame;
+      Sprite = module.Sprite;
       Tween = module.Tween;
       Vec2 = module.Vec2;
       tween = module.tween;
+      clamp = module.clamp;
     }, function (module) {
       BaseObject = module.BaseObject;
     }, function (module) {
       ObjectType = module.ObjectType;
     }],
     execute: function () {
-      var _dec, _class;
+      var _dec, _dec2, _dec3, _class, _class2, _descriptor, _descriptor2;
 
       cclegacy._RF.push({}, "83d59kCmXpPdbXAUvz2ttBo", "Enemy", undefined);
 
@@ -769,7 +775,9 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
         return State;
       }(State || {});
 
-      var Enemy = exports('Enemy', (_dec = ccclass('Enemy'), _dec(_class = /*#__PURE__*/function (_BaseObject) {
+      var Enemy = exports('Enemy', (_dec = ccclass('Enemy'), _dec2 = property({
+        type: [SpriteFrame]
+      }), _dec3 = property(Sprite), _dec(_class = (_class2 = /*#__PURE__*/function (_BaseObject) {
         _inheritsLoose(Enemy, _BaseObject);
 
         function Enemy() {
@@ -780,6 +788,11 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
           }
 
           _this = _BaseObject.call.apply(_BaseObject, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "spriteFrames", _descriptor, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "sprite", _descriptor2, _assertThisInitialized(_this));
+
           _this.objectType = ObjectType.enemy;
           _this.path = [];
           _this.speed = 1;
@@ -887,7 +900,8 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
         } //PUBLIC 
         ;
 
-        _proto.setupInfo = function setupInfo(speed, path) {
+        _proto.setupInfo = function setupInfo(index, speed, path) {
+          this.sprite.spriteFrame = this.spriteFrames[clamp(index, 0, this.spriteFrames.length - 1)];
           this.speed = speed != null ? speed : 1;
           this.path = path;
           this.pathIndex = 0;
@@ -903,7 +917,21 @@ System.register("chunks:///_virtual/Enemy.ts", ['./rollupPluginModLoBabelHelpers
         ;
 
         return Enemy;
-      }(BaseObject)) || _class));
+      }(BaseObject), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "spriteFrames", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return [];
+        }
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "sprite", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return null;
+        }
+      })), _class2)) || _class));
 
       cclegacy._RF.pop();
     }
@@ -937,55 +965,58 @@ System.register("chunks:///_virtual/EventManager.ts", ['cc'], function (exports)
   };
 });
 
-System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts'], function (exports) {
-  var _inheritsLoose, cclegacy, _decorator, director, clamp, Component, userProfile;
+System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './Story.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, clamp, director, Component, userProfile, Story;
 
   return {
     setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
       _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
-      director = module.director;
       clamp = module.clamp;
+      director = module.director;
       Component = module.Component;
     }, function (module) {
       userProfile = module.userProfile;
+    }, function (module) {
+      Story = module.Story;
     }],
     execute: function () {
-      var _dec, _class;
+      var _dec, _dec2, _class, _class2, _descriptor;
 
       cclegacy._RF.push({}, "1c7c2Up1MFIiYxpW0poHpCv", "home", undefined);
 
       var ccclass = _decorator.ccclass,
           property = _decorator.property;
-      var home = exports('home', (_dec = ccclass('home'), _dec(_class = /*#__PURE__*/function (_Component) {
+      var home = exports('home', (_dec = ccclass('home'), _dec2 = property(Story), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(home, _Component);
 
         function home() {
-          return _Component.apply(this, arguments) || this;
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "story", _descriptor, _assertThisInitialized(_this));
+
+          return _this;
         }
 
         var _proto = home.prototype;
 
         _proto.start = function start() {
-          console.log('ver 0.0.4');
-          director.preloadScene('mazeGame');
-          director.preloadScene('quizGame');
+          this.checkToShowStory();
         };
 
         _proto.update = function update(deltaTime) {} //PUBLIC
         ;
-
-        _proto.onPlayMazeGame = function onPlayMazeGame() {
-          console.log('onPlayMazeGame');
-          director.loadScene('mazeGame');
-        };
-
-        _proto.onPlayQuizGame = function onPlayQuizGame() {
-          console.log('onPlayQuizGame');
-          director.loadScene('quizGame');
-        };
 
         _proto.onPlayLevel = function onPlayLevel(e, param) {
           // console.log('onPlayLevel', e, param);
@@ -999,10 +1030,26 @@ System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.
             userProfile.currentLevel = level;
             director.loadScene('quizGame');
           }
+        } //PRIVATE
+        ;
+
+        _proto.checkToShowStory = function checkToShowStory() {
+          if (!userProfile.storyCompleteStatus.scene1 && userProfile.maxLevel === 0) {
+            this.story.startScene1();
+          } else if (!userProfile.storyCompleteStatus.scene3 && userProfile.maxLevel === 1) {
+            this.story.startScene3();
+          } else {
+            this.story.setStateInactive();
+          }
         };
 
         return home;
-      }(Component)) || _class));
+      }(Component), _descriptor = _applyDecoratedDescriptor(_class2.prototype, "story", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _class2)) || _class));
 
       cclegacy._RF.pop();
     }
@@ -1142,7 +1189,12 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
           return _this;
         }
 
-        var _proto = LevelControl.prototype; //PUBLIC
+        var _proto = LevelControl.prototype;
+
+        _proto.update = function update(dt) {
+          this.sortObject();
+        } //PUBLIC
+        ;
 
         _proto.inactiveAllObjects = function inactiveAllObjects() {
           this.objects.forEach(function (platform) {
@@ -1203,14 +1255,15 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
           enemiesDefine.forEach(function (info) {
             var objectType = info.objectType,
                 path = info.path,
-                speed = info.speed;
+                speed = info.speed,
+                index = info.index;
 
             var obj = _this3.getObject(objectType, _this3.enemyPrefab, _this3.objects, _this3.world);
 
             var enemy = obj.getComponent(Enemy);
 
             if (enemy) {
-              enemy.setupInfo(speed, path);
+              enemy.setupInfo(index, speed, path);
               enemy.setStateStart();
             }
           });
@@ -1250,6 +1303,18 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
 
           if ((_object = object) != null && _object.node) object.node.active = true;
           return object;
+        };
+
+        _proto.sortObject = function sortObject() {
+          this.world.children.sort(function (a, b) {
+            var _a$position = a.position,
+                ax = _a$position.x,
+                ay = _a$position.y;
+            var _b$position = b.position,
+                bx = _b$position.x,
+                by = _b$position.y;
+            return ay === by ? ax - bx : by - ay;
+          });
         };
 
         return LevelControl;
@@ -1334,44 +1399,54 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
       var levelEnemy1 = exports('levelEnemy1', [{
         objectType: ObjectType.enemy,
         speed: 2,
+        index: 0,
         path: [new Vec2(7, 5), new Vec2(1, 5), new Vec2(1, 2), new Vec2(9, 2), new Vec2(9, 6), new Vec2(10, 6), new Vec2(10, 10), new Vec2(7, 10)]
       }, {
         objectType: ObjectType.enemy,
         speed: 2,
+        index: 1,
         path: [new Vec2(14, 17), new Vec2(14, 14), new Vec2(22, 14), new Vec2(22, 19), new Vec2(4, 19), new Vec2(4, 17)]
       }, {
         objectType: ObjectType.enemy,
         speed: 2,
+        index: 2,
         path: [new Vec2(19, 6), new Vec2(19, 4), new Vec2(17, 4), new Vec2(17, 8), new Vec2(14, 8), new Vec2(14, 19), new Vec2(22, 19), new Vec2(22, 17), new Vec2(27, 17), new Vec2(27, 1), new Vec2(23, 1), new Vec2(23, 8), new Vec2(19, 8)]
       }]);
       var levelEnemy2 = exports('levelEnemy2', [{
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 0,
         path: [new Vec2(12, 4), new Vec2(1, 4), new Vec2(1, 1), new Vec2(23, 1), new Vec2(23, 5), new Vec2(20, 5), new Vec2(20, 3), new Vec2(18, 3), new Vec2(18, 8), new Vec2(27, 8), new Vec2(27, 11), new Vec2(14, 11), new Vec2(14, 7), new Vec2(12, 7)]
       }, {
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 1,
         path: [new Vec2(12, 16), new Vec2(1, 16), new Vec2(1, 19), new Vec2(27, 19), new Vec2(27, 17), new Vec2(16, 17), new Vec2(16, 15), new Vec2(12, 15)]
       }, {
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 2,
         path: [new Vec2(23, 1), new Vec2(16, 1), new Vec2(16, 7), new Vec2(12, 7), new Vec2(12, 11), new Vec2(7, 11), new Vec2(7, 13), new Vec2(12, 13), new Vec2(12, 15), new Vec2(16, 15), new Vec2(16, 13), new Vec2(19, 13), new Vec2(19, 15), new Vec2(21, 15), new Vec2(21, 11), new Vec2(27, 11), new Vec2(27, 1)]
       }]);
       var levelEnemy3 = exports('levelEnemy3', [{
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 0,
         path: [new Vec2(7, 4), new Vec2(7, 8), new Vec2(9, 8), new Vec2(9, 3), new Vec2(12, 3), new Vec2(12, 1), new Vec2(1, 1), new Vec2(1, 4)]
       }, {
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 1,
         path: [new Vec2(16, 17), new Vec2(16, 16), new Vec2(1, 16), new Vec2(1, 19), new Vec2(16, 19)]
       }, {
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 2,
         path: [new Vec2(27, 11), new Vec2(27, 3), new Vec2(21, 3), new Vec2(21, 5), new Vec2(19, 5), new Vec2(19, 12), new Vec2(21, 12), new Vec2(21, 15), new Vec2(22, 15), new Vec2(22, 16), new Vec2(24, 16), new Vec2(24, 19), new Vec2(16, 19), new Vec2(16, 16), new Vec2(16, 19), new Vec2(24, 19), new Vec2(24, 16), new Vec2(22, 16), new Vec2(22, 15), new Vec2(21, 15), new Vec2(21, 12), new Vec2(19, 12), new Vec2(19, 5), new Vec2(21, 5), new Vec2(21, 3), new Vec2(27, 3)]
       }, {
         objectType: ObjectType.enemy,
         speed: 3,
+        index: 3,
         path: [new Vec2(14, 5), new Vec2(14, 11), new Vec2(11, 11), new Vec2(11, 13), new Vec2(8, 13), new Vec2(8, 8), new Vec2(9, 8), new Vec2(9, 3), new Vec2(12, 3), new Vec2(12, 1), new Vec2(17, 1), new Vec2(17, 5)]
       }]);
       var levelInfo1 = exports('levelInfo1', {
@@ -1389,9 +1464,9 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
   };
 });
 
-System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './EventManager.ts', './UserProfile.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './Character.ts', './MainCharacter.ts', './Popup.ts', './PopupWin.ts', './QuizDefine.ts', './QuizManager.ts'], function () {
+System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './EventManager.ts', './UserProfile.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './Character.ts', './MainCharacter.ts', './Popup.ts', './PopupWin.ts', './QuizDefine.ts', './QuizManager.ts', './start.ts', './QuizStory.ts', './Story.ts'], function () {
   return {
-    setters: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    setters: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     execute: function () {}
   };
 });
@@ -1474,8 +1549,8 @@ System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabe
   };
 });
 
-System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelControl.ts', './Player.ts', './UserProfile.ts', './EventManager.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, director, PhysicsSystem2D, EPhysics2DDrawFlags, Component, LevelControl, Player, userProfile, eventManager, EventName;
+System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelControl.ts', './Player.ts', './UserProfile.ts', './EventManager.ts', './Story.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, director, PhysicsSystem2D, EPhysics2DDrawFlags, Component, LevelControl, Player, userProfile, eventManager, EventName, Story;
 
   return {
     setters: [function (module) {
@@ -1500,9 +1575,11 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
     }, function (module) {
       eventManager = module.eventManager;
       EventName = module.EventName;
+    }, function (module) {
+      Story = module.Story;
     }],
     execute: function () {
-      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
 
       cclegacy._RF.push({}, "69024ABHwpF159GAbOeWB9v", "mazeGame", undefined);
 
@@ -1512,16 +1589,17 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
       var State = /*#__PURE__*/function (State) {
         State[State["Null"] = 0] = "Null";
         State[State["Start"] = 1] = "Start";
-        State[State["Playing"] = 2] = "Playing";
-        State[State["Win"] = 3] = "Win";
-        State[State["Lose"] = 4] = "Lose";
-        State[State["Pausing"] = 5] = "Pausing";
+        State[State["StoryScene2"] = 2] = "StoryScene2";
+        State[State["Playing"] = 3] = "Playing";
+        State[State["Win"] = 4] = "Win";
+        State[State["Lose"] = 5] = "Lose";
+        State[State["Pausing"] = 6] = "Pausing";
         return State;
       }(State || {});
 
       var mazeGame = exports('mazeGame', (_dec = ccclass('mazeGame'), _dec2 = property({
         type: LevelControl
-      }), _dec3 = property(Player), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Node), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+      }), _dec3 = property(Player), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Node), _dec7 = property(Story), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(mazeGame, _Component);
 
         function mazeGame() {
@@ -1543,6 +1621,8 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
 
           _initializerDefineProperty(_this, "losePopup", _descriptor5, _assertThisInitialized(_this));
 
+          _initializerDefineProperty(_this, "story", _descriptor6, _assertThisInitialized(_this));
+
           _this.state = State.Null;
           _this.resumeState = State.Null;
           return _this;
@@ -1562,6 +1642,8 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
 
         _proto.start = function start() {
           // this.showColliderDebug();
+          this.story.setStateInactive(); //
+
           this.setState(State.Start);
         };
 
@@ -1591,11 +1673,16 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
               this.player.setStateStart();
               break;
 
+            case State.StoryScene2:
+              this.story.startScene2();
+              break;
+
             case State.Playing:
               this.player.setStatePlaying();
               break;
 
             case State.Win:
+              userProfile.maxLevel = Math.max(userProfile.currentLevel + 1, userProfile.maxLevel);
               this.winPopup.active = true;
               this.levelControl.pause();
               this.player.pause();
@@ -1613,8 +1700,19 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
           switch (this.state) {
             case State.Start:
               {
+                if (!userProfile.storyCompleteStatus.scene2 && userProfile.currentLevel === 0) {
+                  this.setState(State.StoryScene2);
+                } else {
+                  this.setState(State.Playing);
+                }
+              }
+              break;
+
+            case State.StoryScene2:
+              if (userProfile.storyCompleteStatus.scene2) {
                 this.setState(State.Playing);
               }
+
               break;
           }
         } //PUBLIC
@@ -1729,6 +1827,11 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         initializer: function initializer() {
           return null;
         }
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "story", [_dec7], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
       })), _class2)) || _class));
 
       cclegacy._RF.pop();
@@ -2478,24 +2581,24 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
 
 
       var quizLvl = exports('quizLvl', [{
-        mcName: "Water Drop",
+        mcName: "Hiệp Sĩ Nước",
         hp: 10,
         atk: 2,
-        enemyName: "First Monster",
+        enemyName: "CaKi",
         enemyHp: 20,
         enemyAtk: 2
       }, {
-        mcName: "Water Drop",
+        mcName: "Hiệp Sĩ Nước",
         hp: 12,
         atk: 3,
-        enemyName: "Second Monster",
+        enemyName: "Oni",
         enemyHp: 30,
         enemyAtk: 4
       }, {
-        mcName: "Water Drop",
+        mcName: "Hiệp Sĩ Nước",
         hp: 16,
         atk: 3,
-        enemyName: "Third Monster",
+        enemyName: "Goba",
         enemyHp: 30,
         enemyAtk: 6
       }]); //Quiz
@@ -2517,8 +2620,8 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
   };
 });
 
-System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './ButtonAnswer.ts', './PopupWin.ts', './UserProfile.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCString, CCInteger, Sprite, Label, Button, Node, input, Input, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, PopupWin, userProfile;
+System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './ButtonAnswer.ts', './PopupWin.ts', './UserProfile.ts', './Story.ts', './QuizStory.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCString, CCInteger, Sprite, Label, Button, Node, input, Input, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, PopupWin, userProfile, State, QuizStory;
 
   return {
     setters: [function (module) {
@@ -2567,24 +2670,26 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
       PopupWin = module.PopupWin;
     }, function (module) {
       userProfile = module.userProfile;
+    }, function (module) {
+      State = module.State;
+    }, function (module) {
+      QuizStory = module.QuizStory;
     }],
     execute: function () {
-      var _dec, _dec2, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class4, _class5, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
+      var _dec, _dec2, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _class4, _class5, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21;
 
       cclegacy._RF.push({}, "805e23xK/5Fe5IFkpKG8r32", "QuizManager", undefined);
 
       var array = js.array;
       var ccclass = _decorator.ccclass,
           property = _decorator.property;
-
-      var GameState = /*#__PURE__*/function (GameState) {
+      var GameState = exports('GameState', /*#__PURE__*/function (GameState) {
         GameState[GameState["INIT"] = 0] = "INIT";
         GameState[GameState["RESET"] = 1] = "RESET";
         GameState[GameState["PLAYING"] = 2] = "PLAYING";
         GameState[GameState["END"] = 3] = "END";
         return GameState;
-      }(GameState || {});
-
+      }({}));
       var QuizItem = exports('QuizItem', (_dec = ccclass('QuizItem'), _dec2 = property([CCString]), _dec(_class = (_class2 = function QuizItem(lastAnsIdx, question, answers) {
         if (lastAnsIdx === void 0) {
           lastAnsIdx = -1;
@@ -2636,7 +2741,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           return [];
         }
       })), _class2)) || _class));
-      var QuizManager = exports('QuizManager', (_dec3 = ccclass('QuizManager'), _dec4 = property(CCInteger), _dec5 = property(MainCharacter), _dec6 = property(Character), _dec7 = property(Sprite), _dec8 = property(Label), _dec9 = property(Button), _dec10 = property(Button), _dec11 = property(Button), _dec12 = property(Button), _dec13 = property(Label), _dec14 = property(Label), _dec15 = property([Node]), _dec16 = property([QuizItem]), _dec17 = property(Popup), _dec18 = property(PopupWin), _dec19 = property(Node), _dec3(_class4 = (_class5 = /*#__PURE__*/function (_Component) {
+      var QuizManager = exports('QuizManager', (_dec3 = ccclass('QuizManager'), _dec4 = property(CCInteger), _dec5 = property(MainCharacter), _dec6 = property(Character), _dec7 = property(Sprite), _dec8 = property(Label), _dec9 = property(Button), _dec10 = property(Button), _dec11 = property(Button), _dec12 = property(Button), _dec13 = property(Label), _dec14 = property(Label), _dec15 = property([Node]), _dec16 = property([QuizItem]), _dec17 = property(QuizStory), _dec18 = property(Popup), _dec19 = property(PopupWin), _dec20 = property(Node), _dec3(_class4 = (_class5 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(QuizManager, _Component);
 
         function QuizManager() {
@@ -2674,14 +2779,22 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
 
           _initializerDefineProperty(_this, "questions", _descriptor17, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "popup", _descriptor18, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "story", _descriptor18, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "popupWin", _descriptor19, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "popup", _descriptor19, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "overlay", _descriptor20, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "popupWin", _descriptor20, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "overlay", _descriptor21, _assertThisInitialized(_this));
 
           _this.shuffledIndexes = void 0;
           _this.btnAnsCorrect = void 0;
+          _this.dict = {
+            0: "A. ",
+            1: "B. ",
+            2: "C. ",
+            3: "D. "
+          };
           _this.usedCount = 0;
           _this.timeLeft = 0;
           _this.currentDrops = 0;
@@ -2729,7 +2842,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
               this.resetGame();
 
             case GameState.PLAYING:
-              this.showNextQuiz();
+              this.showNextQuestion();
               break;
 
             case GameState.END:
@@ -2742,6 +2855,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
 
         _proto.init = function init() {
           this.popup.quizManager = this;
+          this.story.quizManager = this;
           this.shuffledIndexes = Array.from(Array(this.buttonNodes.length).keys());
           this.buttonShield.getComponentInChildren(Label).string = shieldCost.toString();
           this.buttonSkimAns.getComponentInChildren(Label).string = skimCost.toString();
@@ -2778,6 +2892,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           this.mainChar.setUpChar(mcName, hp, atk);
           this.enemy.setUpChar(enemyName, enemyHp, enemyAtk);
           this.enemy.setCharSprite(this.level);
+          this.story.setStoryChars(mcName, enemyName, this.level);
           this.loadBG();
           resources.load("JSON/questions", JsonAsset, function (err, jsonAsset) {
             for (var i = 0; i < jsonAsset.json.length; i++) {
@@ -2809,10 +2924,10 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           this.skipsUsed = 0;
           this.skimsUsed = 0;
           this.shieldUsed = 0;
-          this.setCurState(GameState.PLAYING);
+          this.showStory(); // this.setCurState(GameState.PLAYING);
         };
 
-        _proto.showNextQuiz = function showNextQuiz() {
+        _proto.showNextQuestion = function showNextQuestion() {
           var _this3 = this;
 
           var quizItem = this.getRandomQuestion();
@@ -2823,10 +2938,15 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           var i = 0;
           this.buttonNodes.forEach(function (n) {
             var idx = _this3.shuffledIndexes[i];
-            if (idx == 0) _this3.btnAnsCorrect = n.getComponent(ButtonAnswer);
-            n.getComponent(ButtonAnswer).resetButton(quizItem.answers[idx]);
+
+            if (idx == 0) {
+              _this3.btnAnsCorrect = n.getComponent(ButtonAnswer);
+              _this3.story.ansButton.getComponentInChildren(Label).string = _this3.dict[i] + quizItem.answers[idx];
+            }
+
+            n.getComponent(ButtonAnswer).resetButton(_this3.dict[i] + quizItem.answers[idx]);
             n.on(Button.EventType.CLICK, function () {
-              _this3.onAnswerSelected(n.getComponent(ButtonAnswer), idx);
+              _this3.onAnswerSelected(idx, n.getComponent(ButtonAnswer));
             }, _this3);
             i++;
           });
@@ -2852,6 +2972,10 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.getRandomQuestion = function getRandomQuestion() {
+          if (this.level == 0 && this.usedCount == 0) {
+            return this.questions[0];
+          }
+
           var idx = -1;
 
           do {
@@ -2861,9 +2985,13 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           return this.questions[idx];
         };
 
-        _proto.onAnswerSelected = function onAnswerSelected(btn, idx) {
+        _proto.onAnswerSelected = function onAnswerSelected(idx, btn) {
+          if (btn === void 0) {
+            btn = this.btnAnsCorrect;
+          }
+
           if (this.timeLeft <= 0) {
-            // console.log("xdd blocked");
+            console.log("xdd blocked");
             return;
           }
 
@@ -2881,13 +3009,15 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.checkEndGame = function checkEndGame() {
+          if (this.level == 0 && this.usedCount == 1) return;
+
           if (this.mainChar.hp <= 0 || this.enemy.hp <= 0) {
             this.setCurState(GameState.END);
             this.unscheduleAllCallbacks();
             return;
           }
 
-          this.scheduleOnce(this.showNextQuiz, 1);
+          this.scheduleOnce(this.showNextQuestion, 1);
         };
 
         _proto.restartGame = function restartGame() {
@@ -2947,7 +3077,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           this.skipsUsed++;
           this.currentDrops -= skipCost;
           this.updateDropsDisplay();
-          this.showNextQuiz();
+          this.showNextQuestion();
         } //#endregion
         //#region Countdown
         ;
@@ -2955,6 +3085,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         _proto.startCountdown = function startCountdown() {
           this.timeLeft = questionTime;
           this.labelTime.string = this.timeLeft.toString();
+          if (this.level == 0 && this.usedCount == 1) return;
           this.schedule(this.reduceTime, 1, questionTime - 1);
         };
 
@@ -3012,6 +3143,30 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         _proto.cheatDrops = function cheatDrops(val) {
           this.currentDrops = val;
           this.updateDropsDisplay();
+        } //#endregion
+        //#region Story
+        ;
+
+        _proto.showStory = function showStory() {
+          this.story.node.active = true;
+
+          switch (this.level) {
+            case 0:
+              this.story.showQuizStory(State.Scene_3_13);
+              break;
+
+            case 1:
+              this.story.showQuizStory(State.Scene_1_8_5);
+              break;
+
+            case 2:
+              this.story.showQuizStory(State.Scene_1_8_5);
+              break;
+          }
+        };
+
+        _proto.getCorrectBtnNode = function getCorrectBtnNode() {
+          return this.btnAnsCorrect.node;
         } //#endregion
         ;
 
@@ -3087,22 +3242,285 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         initializer: function initializer() {
           return [];
         }
-      }), _descriptor18 = _applyDecoratedDescriptor(_class5.prototype, "popup", [_dec17], {
+      }), _descriptor18 = _applyDecoratedDescriptor(_class5.prototype, "story", [_dec17], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor19 = _applyDecoratedDescriptor(_class5.prototype, "popupWin", [_dec18], {
+      }), _descriptor19 = _applyDecoratedDescriptor(_class5.prototype, "popup", [_dec18], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor20 = _applyDecoratedDescriptor(_class5.prototype, "overlay", [_dec19], {
+      }), _descriptor20 = _applyDecoratedDescriptor(_class5.prototype, "popupWin", [_dec19], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor21 = _applyDecoratedDescriptor(_class5.prototype, "overlay", [_dec20], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
       })), _class5)) || _class4));
+
+      cclegacy._RF.pop();
+    }
+  };
+});
+
+System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Story.ts', './QuizManager.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Vec3, Button, resources, SpriteFrame, UITransform, State, Story, GameState;
+
+  return {
+    setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
+      _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
+    }, function (module) {
+      cclegacy = module.cclegacy;
+      _decorator = module._decorator;
+      Node = module.Node;
+      Vec3 = module.Vec3;
+      Button = module.Button;
+      resources = module.resources;
+      SpriteFrame = module.SpriteFrame;
+      UITransform = module.UITransform;
+    }, function (module) {
+      State = module.State;
+      Story = module.Story;
+    }, function (module) {
+      GameState = module.GameState;
+    }],
+    execute: function () {
+      var _dec, _dec2, _dec3, _dec4, _class, _class2, _descriptor, _descriptor2, _descriptor3;
+
+      cclegacy._RF.push({}, "b6d69ZQ/4xP+odHBdyVSgp2", "QuizStory", undefined);
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var storyContent = [{
+        content_3_13: "Ngươi là tên nào? Sao lại có thể đến được khu vực này?",
+        content_3_14: "Ta đến đây để đánh bại ngươi và giải cứu trái đất!",
+        content_3_16: "Để đánh bại CaKi, bạn cần trả lời đúng các câu hỏi mà hắn đưa ra.",
+        content_3_17: "Phía dưới là các câu trả lời khả dụng, hãy thử nào.",
+        content_3_18: "Với mỗi câu trả lời đúng, bạn sẽ có cơ hội tấn công kẻ địch.",
+        content_3_22: "Sau khi hạ gục CaKi, bạn có thể thấy tình trạng cạn kiệt nước của trái đất đã được cải thiện rất nhiều. Tuy vậy, mục tiêu của chúng ta cần phải đánh đuổi GoBa và bè lũ tay sai quái ác. \nHãy tiếp tục hành trình thu thập kiến thức để tiêu diệt quái vật và giải cứu trái đất nha!"
+      }, {
+        content_4_23: "Ngươi biết ta là ai không mà dám xâm nhập vào đây. Ta là ONI - quái vật của sự ô nhiễm nước, cánh tay phải của ngài GOBA và sẽ là kẻ đánh bại ngươi",
+        content_4_24B: "Sau khi hạ gục ONi, bạn có thể thấy tình trạng ô nhiễm của trái đất đã được cải thiện rất nhiều. Khi này, GoBa đã mất cả hai tay sai đắc lực của mình, hắn quyết định tự ra mặt. Hãy tiếp tục hành trình thu thập kiến thức và sức mạnh vì GoBa là kẻ nguy hiếm nhất. "
+      }, {
+        content_6_25C: "Ngươi là tên nào? Sao lại có thể đến được khu vực này?",
+        content_6_26: "Ta đến đây là để tiêu diệt ngươi GOBA!",
+        content_6_27: "Bạn đã đánh bại GOBA cùng các thuộc hạ của hắn, trái đất đã trong xanh trở lại"
+      }];
+      var QuizStory = exports('QuizStory', (_dec = ccclass('QuizStory'), _dec2 = property(Node), _dec3 = property(Node), _dec4 = property(Node), _dec(_class = (_class2 = /*#__PURE__*/function (_Story) {
+        _inheritsLoose(QuizStory, _Story);
+
+        function QuizStory() {
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Story.call.apply(_Story, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "uiContainer", _descriptor, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "ansButton", _descriptor2, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "overlay", _descriptor3, _assertThisInitialized(_this));
+
+          _this.quizManager = void 0;
+          _this.mcName = void 0;
+          _this.enemyName = void 0;
+          _this.npcName = "Lan";
+          return _this;
+        }
+
+        var _proto = QuizStory.prototype; //#region default
+
+        _proto.start = function start() {
+          this.earth.active = false;
+        };
+
+        _proto.update = function update(deltaTime) {} //#endregion
+        //#region  Utils
+        ;
+
+        _proto.setState = function setState(value) {
+          var _this2 = this;
+
+          this.state = value;
+
+          switch (value) {
+            case State.Scene_3_13:
+              this.blockInput.enabled = true;
+              this.uiContainer.active = false;
+              this.MC.grayscale = true;
+              this.speechName.string = this.enemyName;
+              this.setLabelAnimation(storyContent[0].content_3_13, this.speechContent);
+              break;
+
+            case State.Scene_3_14:
+              this.MC.grayscale = false;
+              this.NPC.grayscale = true;
+              this.speechName.string = this.mcName;
+              this.setLabelAnimation(storyContent[0].content_3_14, this.speechContent);
+              break;
+
+            case State.Scene_3_15:
+              this.MC.node.active = false;
+              this.NPC.node.active = false;
+              this.speechBubble.active = false;
+              this.uiContainer.active = true;
+              this.quizManager.setCurState(GameState.PLAYING);
+              setTimeout(function () {
+                _this2.setState(State.Scene_3_16);
+              }, 1500);
+              break;
+
+            case State.Scene_3_16:
+              this.speechBubble.active = true;
+              this.NPCPortrait.active = true;
+              this.speechName.string = this.npcName;
+              this.setLabelAnimation(storyContent[0].content_3_16, this.speechContent);
+              this.speechBubble.position = new Vec3(50, 200, 0);
+              break;
+
+            case State.Scene_3_17:
+              this.setLabelAnimation(storyContent[0].content_3_17, this.speechContent);
+              this.overlay.active = true;
+              this.ansButton.active = true;
+              this.ansButton.on(Button.EventType.CLICK, this.finishTutorial, this);
+              break;
+
+            case State.Scene_3_18:
+              this.blockInput.enabled = false;
+              this.overlay.active = false;
+              this.ansButton.active = false;
+              this.setLabelAnimation(storyContent[0].content_3_18, this.speechContent);
+              this.speechBubble.position = new Vec3(0, -150, 0);
+              break;
+
+            case State.Scene_3_19:
+              this.quizManager.showNextQuestion();
+              this.speechBubble.active = false;
+              this.MC.node.active = false;
+              this.NPC.node.active = false;
+              this.node.active = false;
+              break;
+          }
+        };
+
+        _proto.showQuizStory = function showQuizStory(value) {
+          this.setState(value);
+        };
+
+        _proto.setStoryChars = function setStoryChars(mcName, enemyName, lvl) {
+          var _this3 = this;
+
+          this.mcName = mcName;
+          this.enemyName = enemyName;
+          var path = "sprites/Boss_Lv" + lvl.toString() + "/spriteFrame";
+          resources.load(path, SpriteFrame, function (err, spriteFrame) {
+            switch (lvl) {
+              case 0:
+                _this3.NPC.getComponent(UITransform).setContentSize(205 * 3, 262 * 3);
+
+                break;
+
+              case 1:
+                _this3.NPC.getComponent(UITransform).setContentSize(567 * 3, 250 * 3);
+
+                break;
+
+              case 2:
+                _this3.NPC.getComponent(UITransform).setContentSize(250 * 3, 248 * 3);
+
+                break;
+            } // this.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
+
+
+            _this3.NPC.spriteFrame = spriteFrame;
+          });
+        };
+
+        _proto.finishTutorial = function finishTutorial() {
+          this.quizManager.onAnswerSelected(0);
+          this.setState(State.Scene_3_18);
+        } //#endregion
+        ;
+
+        return QuizStory;
+      }(Story), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "uiContainer", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "ansButton", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "overlay", [_dec4], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      })), _class2)) || _class));
+
+      cclegacy._RF.pop();
+    }
+  };
+});
+
+System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
+  var _inheritsLoose, cclegacy, _decorator, director, Component;
+
+  return {
+    setters: [function (module) {
+      _inheritsLoose = module.inheritsLoose;
+    }, function (module) {
+      cclegacy = module.cclegacy;
+      _decorator = module._decorator;
+      director = module.director;
+      Component = module.Component;
+    }],
+    execute: function () {
+      var _dec, _class;
+
+      cclegacy._RF.push({}, "74dab9+9tBMCYHzimuwDzuH", "start", undefined);
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var start = exports('start', (_dec = ccclass('start'), _dec(_class = /*#__PURE__*/function (_Component) {
+        _inheritsLoose(start, _Component);
+
+        function start() {
+          return _Component.apply(this, arguments) || this;
+        }
+
+        var _proto = start.prototype;
+
+        _proto.start = function start() {
+          console.log('ver 0.0.4');
+          director.preloadScene('home');
+          director.preloadScene('mazeGame');
+          director.preloadScene('quizGame');
+        };
+
+        _proto.update = function update(deltaTime) {} //PUBLIC
+        ;
+
+        _proto.onClickStart = function onClickStart() {
+          director.loadScene('home');
+        };
+
+        return start;
+      }(Component)) || _class));
 
       cclegacy._RF.pop();
     }
@@ -3246,6 +3664,644 @@ System.register("chunks:///_virtual/StatsBoard.ts", ['./rollupPluginModLoBabelHe
   };
 });
 
+System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, BlockInputEvents, Node, Sprite, Label, Camera, Input, director, tween, Tween, Component, userProfile;
+
+  return {
+    setters: [function (module) {
+      _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
+      _inheritsLoose = module.inheritsLoose;
+      _initializerDefineProperty = module.initializerDefineProperty;
+      _assertThisInitialized = module.assertThisInitialized;
+    }, function (module) {
+      cclegacy = module.cclegacy;
+      _decorator = module._decorator;
+      BlockInputEvents = module.BlockInputEvents;
+      Node = module.Node;
+      Sprite = module.Sprite;
+      Label = module.Label;
+      Camera = module.Camera;
+      Input = module.Input;
+      director = module.director;
+      tween = module.tween;
+      Tween = module.Tween;
+      Component = module.Component;
+    }, function (module) {
+      userProfile = module.userProfile;
+    }],
+    execute: function () {
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12;
+
+      cclegacy._RF.push({}, "4960fuq1h9Pi7eErNV6jU3w", "Story", undefined);
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var Define = {
+        MCName: 'Hiệp Sĩ Nước',
+        NPCName: 'NPC name',
+        Scene_1_2_speechContent: 'Trái Đất đang dần bị ô nhiễm nặng? Có chuyện gì đang xảy ra?',
+        Scene_1_3_speechContent: 'Trái đất đang bị một binh đoàn quái vật xâm chiếm, chúng có âm mưu tiêu diệt mọi sự sống nơi đây.',
+        Scene_1_4_speechContent: 'Cầm đầu binh đoàn quái vật là GOBA, hắn cùng các tên thuộc hạ đang dần hủy hoại nguồn nước sạch của Trái Đất',
+        Scene_1_5_speechContent: 'Xin hãy giúp đỡ chúng tôi! Không có nguồn nước sạch, sự sống trên Trái đất sẽ bị đe dọa!',
+        Scene_1_6_speechContent: 'Xin hãy nói tôi biết rằng làm sao để có thể đánh bại GOBA',
+        Scene_1_7_1_speechContent: 'Để tiêu diệt được GOBA và các thuộc hạ của hắn, bạn cần phải được trang bị những bảo vật và bí kíp nâng cấp sức mạnh bản thân.',
+        Scene_1_7_2_speechContent: 'Những bí kíp này được giấu ở khắp nơi trên TĐ. Thu thập chúng giúp gia tăng sức mạnh và trí tuệ, mới có thể đánh đuổi quái vật',
+        Scene_1_8_1_speechContent: 'Bí kíp đầu tiên chính là Bí kíp Sử dụng nước hiệu quả - được giấu sâu trong Hang Động Suối Nguồn.',
+        Scene_1_8_2_speechContent: 'Nơi đây từng là nguồn cung cấp nước của cả hành tinh, nhưng giờ đã bị xâm chiếm và canh gác nghiêm ngặt bởi thuộc hạ của GOBA.',
+        Scene_1_8_3_speechContent: 'Thu được bí kíp này sẽ giúp Hiệp sĩ sử dụng nước tiết kiệm và hiệu quả, gia tăng sát thương và khả năng chiến đấu!',
+        Scene_1_8_4_speechContent: 'Hiệp sĩ hãy cẩn thận, tuyệt đối đừng để bọn chúng phát hiện!',
+        Scene_2_1_speechContent: 'Bạn cần thu thập đủ 3 mảnh của Bí kíp, chúng sẽ giúp nâng cấp sức mạnh và hỗ trợ bạn hạ gục GoBa và đám thuộc hạ!',
+        Scene_2_2_speechContent: 'Lưu ý hãy né tránh bọn lâu la của GoBa và thu thập thật nhiều giọt nước để nhận được hỗ trợ từ nguồn nước',
+        Scene_3_1_speechContent: 'Chặng đường của chúng ta chỉ mới bắt đầu. Muốn đánh bại GoBa chúng ta phải vượt qua Sa Mạc Nóng Chảy trước mặt. Đây là nơi mà tướng CaKi đang nắm quyền kiểm soát.',
+        Scene_3_2_speechContent: 'Hắn ta là 1 trong 2 tên tướng lĩnh ghê gớm của GoBa. CaKi có khả năng hút cạn nước ở bất cứ nơi đâu, làm suy kiệt nguồn nước trên Trái Đất, biến khắp mọi nơi thành Sa Mạc. Đánh bại hắn, con người mới có đầy đủ nước dùng!',
+        Scene_3_3_speechContent: 'Xin Hiệp sĩ hãy cẩn thận với các lựa chọn của mình khi giao chiến với CaKi!'
+      };
+      var Layer = {
+        mazeGameEnemy: 1 << 1,
+        mazeGameStatsBoard: 1 << 2
+      };
+      var State = exports('State', /*#__PURE__*/function (State) {
+        State[State["Inactive"] = 0] = "Inactive";
+        State[State["Scene_1_1"] = 1] = "Scene_1_1";
+        State[State["Scene_1_2"] = 2] = "Scene_1_2";
+        State[State["Scene_1_3"] = 3] = "Scene_1_3";
+        State[State["Scene_1_4"] = 4] = "Scene_1_4";
+        State[State["Scene_1_5"] = 5] = "Scene_1_5";
+        State[State["Scene_1_6"] = 6] = "Scene_1_6";
+        State[State["Scene_1_7_1"] = 7] = "Scene_1_7_1";
+        State[State["Scene_1_7_2"] = 8] = "Scene_1_7_2";
+        State[State["Scene_1_8_1"] = 9] = "Scene_1_8_1";
+        State[State["Scene_1_8_2"] = 10] = "Scene_1_8_2";
+        State[State["Scene_1_8_3"] = 11] = "Scene_1_8_3";
+        State[State["Scene_1_8_4"] = 12] = "Scene_1_8_4";
+        State[State["Scene_1_8_5"] = 13] = "Scene_1_8_5";
+        State[State["Scene_1_9"] = 14] = "Scene_1_9";
+        State[State["Scene_3_13"] = 15] = "Scene_3_13";
+        State[State["Scene_3_14"] = 16] = "Scene_3_14";
+        State[State["Scene_3_15"] = 17] = "Scene_3_15";
+        State[State["Scene_3_16"] = 18] = "Scene_3_16";
+        State[State["Scene_3_17"] = 19] = "Scene_3_17";
+        State[State["Scene_3_18"] = 20] = "Scene_3_18";
+        State[State["Scene_3_19"] = 21] = "Scene_3_19";
+        State[State["Scene_3_21"] = 22] = "Scene_3_21";
+        State[State["Scene_2_1"] = 23] = "Scene_2_1";
+        State[State["Scene_2_2"] = 24] = "Scene_2_2";
+        State[State["Scene_2_3"] = 25] = "Scene_2_3";
+        State[State["Scene_3_1"] = 26] = "Scene_3_1";
+        State[State["Scene_3_2"] = 27] = "Scene_3_2";
+        State[State["Scene_3_3"] = 28] = "Scene_3_3";
+        State[State["Scene_3_4"] = 29] = "Scene_3_4";
+        State[State["Scene_3_5"] = 30] = "Scene_3_5";
+        return State;
+      }({}));
+      console.log('State', State);
+      var Story = exports('Story', (_dec = ccclass('Story'), _dec2 = property(BlockInputEvents), _dec3 = property(Node), _dec4 = property(Sprite), _dec5 = property(Sprite), _dec6 = property(Node), _dec7 = property(Node), _dec8 = property(Label), _dec9 = property(Label), _dec10 = property(Node), _dec11 = property(Node), _dec12 = property(Camera), _dec13 = property(Camera), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+        _inheritsLoose(Story, _Component);
+
+        function Story() {
+          var _this;
+
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+          _initializerDefineProperty(_this, "blockInput", _descriptor, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "earth", _descriptor2, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "MC", _descriptor3, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "NPC", _descriptor4, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "NPCPortrait", _descriptor5, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "speechBubble", _descriptor6, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "speechName", _descriptor7, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "speechContent", _descriptor8, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "firstLevelButton", _descriptor9, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "secondLevelButton", _descriptor10, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "mazeGameCameraGame", _descriptor11, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "mazeGameCameraUI", _descriptor12, _assertThisInitialized(_this));
+
+          _this.state = 0;
+          _this.labelTweenObject = {
+            length: 0,
+            isDone: false,
+            label: null,
+            text: ''
+          };
+          return _this;
+        }
+
+        var _proto = Story.prototype;
+
+        _proto.onEnable = function onEnable() {
+          this.node.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
+        };
+
+        _proto.onDisable = function onDisable() {
+          this.node.off(Input.EventType.TOUCH_START, this.onTouchStart, this);
+        };
+
+        _proto.start = function start() {// this.setState(State.Scene_1_1);
+        };
+
+        _proto.update = function update(deltaTime) {};
+
+        _proto.setState = function setState(value) {
+          var _this2 = this; //start new state
+
+
+          this.state = value;
+
+          switch (this.state) {
+            case State.Inactive:
+              {
+                this.node.active = false;
+              }
+              break;
+
+            case State.Scene_1_1:
+              {
+                //1
+                //Start scene này sau khi người chơi bấm vào nút Chơi (hoặc chơi mới)	
+                //Người chơi bắt đầu với khung cảnh trái đất hoang tàn
+                this.node.active = true;
+                this.node.children.forEach(function (child) {
+                  return child.active = false;
+                }); //inactive all children when at first step of scene
+
+                this.earth.active = true;
+                setTimeout(function () {
+                  _this2.setState(State.Scene_1_2);
+                }, 2000);
+              }
+              break;
+
+            case State.Scene_1_2:
+              {
+                //2
+                // Sau 2s khi người chơi start phân cảnh 1	
+                // "Hiển thị MC cùng đoạn hội thoại: ""Trái Đất đang dần bị ô nhiễm nặng? Có chuyện gì đang xảy ra?"""
+                this.MC.node.active = true;
+                this.MC.grayscale = false;
+                this.speechBubble.active = true;
+                this.speechName.string = Define.MCName;
+                this.setLabelAnimation(Define.Scene_1_2_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_3:
+              {
+                // 3	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 2	
+                // "NPC xuất hiện và hiển thị hội thoại 1:""Trái đất đang bị một binh đoàn quái vật xâm chiếm, chúng có âm mưu tiêu diệt mọi sự sống nơi đây."""
+                this.MC.grayscale = true;
+                this.NPC.node.active = true;
+                this.NPC.grayscale = false;
+                this.speechName.string = Define.NPCName;
+                this.setLabelAnimation(Define.Scene_1_3_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_4:
+              {
+                // 4
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 3
+                // "Hiển thị hội thoại 2 của NPC:""Cầm đầu binh đoàn quái vật là GOBA, hắn cùng các tên thuộc hạ đang dần hủy hoại nguồn nước sạch của Trái Đất"""
+                this.setLabelAnimation(Define.Scene_1_4_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_5:
+              {
+                // 5	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 4	
+                // "Hiển thị hội thoại 3 của NPC:""Xin hãy giúp đỡ chúng tôi! Không có nguồn nước sạch, sự sống trên Trái đất sẽ bị đe dọa!"""
+                this.setLabelAnimation(Define.Scene_1_5_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_6:
+              {
+                // 6	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 5	
+                // "Hiển thị MC cùng hội thoại:""Xin hãy nói tôi biết rằng làm sao để có thể đánh bại GOBA"""
+                this.MC.grayscale = false;
+                this.NPC.grayscale = true;
+                this.speechName.string = Define.MCName;
+                this.setLabelAnimation(Define.Scene_1_6_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_7_1:
+              {
+                // 7	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 6	
+                // "Hiển thị NPC cùng hội thoại:
+                // [1] ""Để tiêu diệt được GOBA và các thuộc hạ của hắn, bạn cần phải được trang bị những bảo vật và bí kíp nâng cấp sức mạnh bản thân.""
+                this.MC.grayscale = true;
+                this.NPC.grayscale = false;
+                this.speechName.string = Define.NPCName;
+                this.setLabelAnimation(Define.Scene_1_7_1_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_7_2:
+              {
+                // [2]  ""Những bí kíp này được giấu ở khắp nơi trên TĐ. Thu thập chúng giúp gia tăng sức mạnh và trí tuệ, mới có thể đánh đuổi quái vật""
+                // Đồng thời chuyển BG sang màn hình chọn map"
+                this.earth.active = false;
+                this.setLabelAnimation(Define.Scene_1_7_2_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_8_1:
+              {
+                // 8	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 7	
+                // "Hiển thị popup thoại của NPC (kèm avatar):
+                // [1]  ""Bí kíp đầu tiên chính là Bí kíp Sử dụng nước hiệu quả - được giấu sâu trong Hang Động Suối Nguồn.""
+                this.setLabelAnimation(Define.Scene_1_8_1_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_8_2:
+              {
+                // [2]  ""Nơi đây từng là nguồn cung cấp nước của cả hành tinh, nhưng giờ đã bị xâm chiếm và canh gác nghiêm ngặt bởi thuộc hạ của GOBA.""
+                this.setLabelAnimation(Define.Scene_1_8_2_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_8_3:
+              {
+                // [3]  ""Thu được bí kíp này sẽ giúp Hiệp sĩ sử dụng nước tiết kiệm và hiệu quả, gia tăng sát thương và khả năng chiến đấu!""
+                this.setLabelAnimation(Define.Scene_1_8_3_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_8_4:
+              {
+                // [4] ""Hiệp sĩ hãy cẩn thận, tuyệt đối đừng để bọn chúng phát hiện! ""
+                // Hiển thị Asset bàn tay trỏ vào map 1"
+                this.setLabelAnimation(Define.Scene_1_8_4_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_1_8_5:
+              {
+                //wait user click to play level 1
+                this.firstLevelButton.active = true;
+                this.firstLevelButton.once('click', this.onClickFirstLevelButton, this);
+              }
+              break;
+
+            case State.Scene_1_9:
+              {
+                //finish scene 1
+                userProfile.storyCompleteStatus.scene1 = true;
+                userProfile.currentLevel = 0;
+                director.loadScene('mazeGame');
+              }
+              break;
+
+            case State.Scene_2_1:
+              {
+                // 9	
+                // Sau khi người chơi click vào Map 1	
+                // "Hiển thị map 1. 
+                // Lưu ý: lúc này sẽ ẩn các quái vật và UI đi để dẫn chuyện
+                // Hiển thị popup thoại của NPC (kèm avatar):
+                // ""Bạn cần thu thập đủ 3 mảnh của Bí kíp, chúng sẽ giúp nâng cấp sức mạnh và hỗ trợ bạn hạ gục GoBa và đám thuộc hạ!""
+                // Effect làm nổi bật 3 mảnh kiến thức"
+                this.node.active = true;
+                this.node.children.forEach(function (child) {
+                  return child.active = false;
+                }); //inactive all children when at first step of scene
+
+                this.speechBubble.active = true;
+                this.speechName.string = Define.NPCName;
+                this.setLabelAnimation(Define.Scene_2_1_speechContent, this.speechContent);
+                this.NPC.node.active = true;
+                this.NPC.grayscale = false; //HIDE ENEMY
+
+                if (this.mazeGameCameraGame) {
+                  this.mazeGameCameraGame.visibility |= Layer.mazeGameEnemy;
+                  this.mazeGameCameraGame.visibility ^= Layer.mazeGameEnemy;
+                } //HIDE STATS BOARD
+
+
+                if (this.mazeGameCameraUI) {
+                  this.mazeGameCameraUI.visibility |= Layer.mazeGameStatsBoard;
+                  this.mazeGameCameraUI.visibility ^= Layer.mazeGameStatsBoard;
+                } //
+
+              }
+              break;
+
+            case State.Scene_2_2:
+              {
+                // 11	
+                // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 9	
+                // "Lúc này sẽ hiển thị các bọn quái vật trên map 1
+                // Hiển thị popup thoại của NPC (kèm avatar):
+                // ""Lưu ý hãy né tránh bọn lâu la của GoBa và thu thập thật nhiều giọt nước để nhận được hỗ trợ từ nguồn nước"""
+                this.setLabelAnimation(Define.Scene_2_2_speechContent, this.speechContent); //SHOW ENEMY
+
+                if (this.mazeGameCameraGame) {
+                  this.mazeGameCameraGame.visibility |= Layer.mazeGameEnemy;
+                }
+              }
+              break;
+
+            case State.Scene_2_3:
+              {
+                //SHOW STATS BOARD
+                if (this.mazeGameCameraUI) {
+                  this.mazeGameCameraUI.visibility |= Layer.mazeGameStatsBoard;
+                } //finish scene 2
+
+
+                userProfile.storyCompleteStatus.scene2 = true;
+                this.setStateInactive();
+              }
+              break;
+
+            case State.Scene_3_1:
+              {
+                // 12	
+                // "Người chơi đã vượt qua map 1 (Thu thập đủ 3 mảnh)
+                // Quay trở về màn hình chọn map và unlock map 2"	
+                // "NPC sẽ xuất hiện kèm hội thoại:
+                // [1] ""Chặng đường của chúng ta chỉ mới bắt đầu. Muốn đánh bại GoBa chúng ta phải vượt qua Sa Mạc Nóng Chảy trước mặt. Đây là nơi mà tướng CaKi đang nắm quyền kiểm soát.""
+                this.node.active = true;
+                this.node.children.forEach(function (child) {
+                  return child.active = false;
+                }); //inactive all children when at first step of scene
+
+                this.NPC.node.active = true;
+                this.NPC.grayscale = false;
+                this.speechBubble.active = true;
+                this.speechName.string = Define.NPCName;
+                this.setLabelAnimation(Define.Scene_3_1_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_3_2:
+              {
+                // [2] ""Hắn ta là 1 trong 2 tên tướng lĩnh ghê gớm của GoBa. CaKi có khả năng hút cạn nước ở bất cứ nơi đâu, làm suy kiệt nguồn nước trên Trái Đất, biến khắp mọi nơi thành Sa Mạc. Đánh bại hắn, con người mới có đầy đủ nước dùng!""
+                this.setLabelAnimation(Define.Scene_3_2_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_3_3:
+              {
+                // [3] ""Xin Hiệp sĩ hãy cẩn thận với các lựa chọn của mình khi giao chiến với CaKi! ""
+                this.setLabelAnimation(Define.Scene_3_3_speechContent, this.speechContent);
+              }
+              break;
+
+            case State.Scene_3_4:
+              {
+                // Sau khi kết thúc 3 đoạn hội thoại sẽ hiển thị asset bàn tay chỉ vào map 2"
+                this.secondLevelButton.active = true;
+                this.secondLevelButton.once('click', this.onClickSecondLevelButton, this);
+              }
+              break;
+
+            case State.Scene_3_5:
+              {
+                //finish scene 3
+                userProfile.storyCompleteStatus.scene3 = true;
+                userProfile.currentLevel = 1;
+                director.loadScene('quizGame');
+              }
+              break;
+          }
+        } //PUBLIC
+        ;
+
+        _proto.setStateInactive = function setStateInactive() {
+          this.setState(State.Inactive);
+        };
+
+        _proto.startScene1 = function startScene1() {
+          this.setState(State.Scene_1_1);
+        };
+
+        _proto.startScene2 = function startScene2() {
+          this.setState(State.Scene_2_1);
+        };
+
+        _proto.startScene3 = function startScene3() {
+          this.setState(State.Scene_3_1);
+        } //PRIVATE
+        ;
+
+        _proto.onTouchStart = function onTouchStart() {
+          // switch (this.state) {
+          //     case State.Scene_1_2:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_3);
+          //         break;
+          //     case State.Scene_1_3:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_4);
+          //         break
+          //     case State.Scene_1_4:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_5);
+          //         break;
+          //     case State.Scene_1_5:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_6);
+          //         break;
+          //     case State.Scene_1_6:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_7_1);
+          //         break;
+          //     case State.Scene_1_7_1:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_7_2);
+          //         break;
+          //     case State.Scene_1_7_2:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_8_1);
+          //         break;
+          //     case State.Scene_1_8_1:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_8_2);
+          //         break;
+          //     case State.Scene_1_8_2:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_8_3);
+          //         break;
+          //     case State.Scene_1_8_3:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_8_4);
+          //         break;
+          //     case State.Scene_1_8_4:
+          //         this.checkLabelAnimationDoneToChangeState(State.Scene_1_8_5);
+          //         break;
+          // }
+          switch (this.state) {
+            case State.Scene_1_2:
+            case State.Scene_1_3:
+            case State.Scene_1_4:
+            case State.Scene_1_5:
+            case State.Scene_1_6:
+            case State.Scene_1_7_1:
+            case State.Scene_1_7_2:
+            case State.Scene_1_8_1:
+            case State.Scene_1_8_2:
+            case State.Scene_1_8_3:
+            case State.Scene_1_8_4:
+            case State.Scene_3_13:
+            case State.Scene_3_14:
+            case State.Scene_3_16:
+            case State.Scene_3_18:
+              this.checkLabelAnimationDoneToChangeState(this.state + 1);
+              break;
+
+            case State.Scene_2_1:
+              this.checkLabelAnimationDoneToChangeState(State.Scene_2_2);
+              break;
+
+            case State.Scene_2_2:
+              this.checkLabelAnimationDoneToChangeState(State.Scene_2_3);
+              break;
+
+            case State.Scene_3_1:
+              this.checkLabelAnimationDoneToChangeState(State.Scene_3_2);
+              break;
+
+            case State.Scene_3_2:
+              this.checkLabelAnimationDoneToChangeState(State.Scene_3_3);
+              break;
+
+            case State.Scene_3_3:
+              this.checkLabelAnimationDoneToChangeState(State.Scene_3_4);
+              break;
+          }
+        };
+
+        _proto.setLabelAnimation = function setLabelAnimation(text, label) {
+          var _this3 = this;
+
+          var lengthTarget = text.length;
+          this.labelTweenObject.length = 0;
+          this.labelTweenObject.isDone = false;
+          this.labelTweenObject.label = label;
+          this.labelTweenObject.text = text;
+          tween(this.labelTweenObject).to(lengthTarget / 40, {
+            length: lengthTarget
+          }, {
+            onUpdate: function onUpdate(_ref) {
+              var label = _ref.label,
+                  text = _ref.text,
+                  length = _ref.length;
+              label.string = text.slice(0, Math.floor(length));
+            },
+            onComplete: function onComplete() {
+              _this3.labelTweenObject.isDone = true;
+            }
+          }).start();
+        };
+
+        _proto.checkLabelAnimationDoneToChangeState = function checkLabelAnimationDoneToChangeState(targetState) {
+          if (this.labelTweenObject.isDone) {
+            this.setState(targetState);
+          } else {
+            Tween.stopAllByTarget(this.labelTweenObject);
+            this.labelTweenObject.isDone = true;
+            this.labelTweenObject.label.string = this.labelTweenObject.text;
+          }
+        } //call by firstLevelButton
+        ;
+
+        _proto.onClickFirstLevelButton = function onClickFirstLevelButton() {
+          switch (this.state) {
+            case State.Scene_1_8_5:
+              this.setState(State.Scene_1_9);
+              break;
+          }
+        } //call by secondLevelButton
+        ;
+
+        _proto.onClickSecondLevelButton = function onClickSecondLevelButton() {
+          switch (this.state) {
+            case State.Scene_3_4:
+              this.setState(State.Scene_3_5);
+              break;
+          }
+        };
+
+        return Story;
+      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "blockInput", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "earth", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "MC", [_dec4], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "NPC", [_dec5], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "NPCPortrait", [_dec6], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "speechBubble", [_dec7], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "speechName", [_dec8], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "speechContent", [_dec9], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "firstLevelButton", [_dec10], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "secondLevelButton", [_dec11], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraGame", [_dec12], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraUI", [_dec13], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      })), _class2)) || _class));
+
+      cclegacy._RF.pop();
+    }
+  };
+});
+
 System.register("chunks:///_virtual/TileMapControl.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Define.ts', './UserProfile.ts'], function (exports) {
   var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, TiledMap, TiledMapAsset, Component, CellSize, userProfile;
 
@@ -3344,6 +4400,11 @@ System.register("chunks:///_virtual/UserProfile.ts", ['./rollupPluginModLoBabelH
           this.maxLevel = 0;
           this.currentLevel = 0;
           this.mazeGameSection = new MazeGameSection();
+          this.storyCompleteStatus = {
+            scene1: false,
+            scene2: false,
+            scene3: false
+          };
           this._waterDrops = 0;
         }
 

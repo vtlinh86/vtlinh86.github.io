@@ -5,8 +5,16 @@
         "platform": "web-mobile",
         "customLayers": [
             {
-                "name": "GAME_OBJECTS",
+                "name": "MAZE_GAME_OBJECTS",
                 "bit": 0
+            },
+            {
+                "name": "MAZE_GAME_ENEMY",
+                "bit": 1
+            },
+            {
+                "name": "MAZE_GAME_STATS_BOARD",
+                "bit": 2
             }
         ],
         "sortingLayers": [],
