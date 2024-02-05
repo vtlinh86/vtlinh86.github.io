@@ -1,3 +1,179 @@
+System.register("chunks:///_virtual/AudioMgr.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
+  var _createClass, cclegacy, _decorator, AudioClip, resources, Node, director, AudioSource;
+
+  return {
+    setters: [function (module) {
+      _createClass = module.createClass;
+    }, function (module) {
+      cclegacy = module.cclegacy;
+      _decorator = module._decorator;
+      AudioClip = module.AudioClip;
+      resources = module.resources;
+      Node = module.Node;
+      director = module.director;
+      AudioSource = module.AudioSource;
+    }],
+    execute: function () {
+      cclegacy._RF.push({}, "e26872y7ypKPpXQXu0mfb2z", "AudioMgr", undefined);
+
+      var ccclass = _decorator.ccclass,
+          property = _decorator.property;
+      var AudioDefine = exports('AudioDefine', {
+        menuBGM: 'sfx/Menu_BGM_1',
+        mazeCollectWaterDrop: 'sfx/Maze_CollectWaterDrop',
+        mazeCollectKnowledgePiece: 'sfx/Maze_CollectKnowledgePiece_1',
+        mazeHitMonster: 'sfx/Maze_HitMonster',
+        mazeBGM: 'sfx/Maze_BGM_1',
+        losePopupSfx: 'sfx/lose_popup_sfx',
+        winTheGame: 'sfx/WinTheGame',
+        tapButton: 'sfx/TapButton',
+        tapBack: 'sfx/TapBack',
+        quizBGM: 'sfx/Quiz_BGM_2',
+        quizStart: 'sfx/Quiz_StartGame',
+        quizSkim: 'sfx/Quiz_UsingBooster_50-50',
+        quizSkip: 'sfx/Quiz_UsingBooster_Change',
+        quizShield: 'sfx/Quiz_UsingBooster_50-50',
+        quizEnemyHit: 'sfx/Monster_Hit',
+        quizMCHit: 'sfx/User_Hit',
+        quizCorrectAns: 'sfx/CorrectAnswer_2',
+        quizWrongAns: 'sfx/WrongAnswer_1'
+      });
+      var AudioMgr = exports('AudioMgr', /*#__PURE__*/function () {
+        function AudioMgr() {
+          this._audioSource = void 0; //@en create a node as audioMgr
+          //@zh 创建一个节点作为 audioMgr
+
+          var audioMgr = new Node();
+          audioMgr.name = '__audioMgr__'; //@en add to the scene.
+          //@zh 添加节点到场景
+
+          director.getScene().addChild(audioMgr); //@en make it as a persistent node, so it won't be destroied when scene change.
+          //@zh 标记为常驻节点，这样场景切换的时候就不会被销毁了
+
+          director.addPersistRootNode(audioMgr); //@en add AudioSource componrnt to play audios.
+          //@zh 添加 AudioSource 组件，用于播放音频。
+
+          this._audioSource = audioMgr.addComponent(AudioSource);
+        }
+
+        var _proto = AudioMgr.prototype;
+        /**
+         * @en
+         * play short audio, such as strikes,explosions
+         * @zh
+         * 播放短音频,比如 打击音效，爆炸音效等
+         * @param sound clip or url for the audio
+         * @param volume 
+         */
+
+        _proto.playOneShot = function playOneShot(sound, volume) {
+          var _this = this;
+
+          if (volume === void 0) {
+            volume = 1.0;
+          }
+
+          if (sound instanceof AudioClip) {
+            this._audioSource.playOneShot(sound, volume);
+          } else {
+            resources.load(sound, function (err, clip) {
+              if (err) {
+                console.log(err);
+              } else {
+                _this._audioSource.playOneShot(clip, volume);
+              }
+            });
+          }
+        }
+        /**
+         * @en
+         * play long audio, such as the bg music
+         * @zh
+         * 播放长音频，比如 背景音乐
+         * @param sound clip or url for the sound
+         * @param volume 
+         */
+        ;
+
+        _proto.play = function play(sound, volume) {
+          var _this2 = this;
+
+          if (volume === void 0) {
+            volume = 0.5;
+          }
+
+          if (sound instanceof AudioClip) {
+            this._audioSource.clip = sound;
+
+            this._audioSource.play();
+
+            this.audioSource.volume = volume;
+          } else {
+            resources.load(sound, function (err, clip) {
+              if (err) {
+                console.log(err);
+              } else {
+                _this2._audioSource.clip = clip;
+
+                _this2._audioSource.play();
+
+                _this2.audioSource.volume = volume;
+              }
+            });
+          }
+        }
+        /**
+         * stop the audio play
+         */
+        ;
+
+        _proto.stop = function stop() {
+          this._audioSource.stop();
+
+          this._audioSource.clip = null;
+        }
+        /**
+         * pause the audio play
+         */
+        ;
+
+        _proto.pause = function pause() {
+          this._audioSource.pause();
+        }
+        /**
+         * resume the audio play
+         */
+        ;
+
+        _proto.resume = function resume() {
+          this._audioSource.play();
+        };
+
+        _createClass(AudioMgr, [{
+          key: "audioSource",
+          get: function get() {
+            return this._audioSource;
+          }
+        }], [{
+          key: "inst",
+          get: function get() {
+            if (this._inst == null) {
+              this._inst = new AudioMgr();
+            }
+
+            return this._inst;
+          }
+        }]);
+
+        return AudioMgr;
+      }());
+      AudioMgr._inst = void 0;
+
+      cclegacy._RF.pop();
+    }
+  };
+});
+
 System.register("chunks:///_virtual/BaseObject.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Define.ts', './LevelDefine.ts'], function (exports) {
   var _inheritsLoose, _createClass, cclegacy, _decorator, Collider2D, Vec2, Component, MapSize, CellSize, ObjectType;
 
@@ -175,8 +351,8 @@ System.register("chunks:///_virtual/ButtonAnswer.ts", ['./rollupPluginModLoBabel
   };
 });
 
-System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Sprite, Label, Vec3, tween, Color, resources, SpriteFrame, UITransform, Component;
+System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Sprite, Label, Vec3, tween, Color, resources, SpriteFrame, UITransform, Component, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -196,6 +372,9 @@ System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHel
       SpriteFrame = module.SpriteFrame;
       UITransform = module.UITransform;
       Component = module.Component;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
@@ -262,6 +441,8 @@ System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHel
           }, {
             easing: "backIn"
           }).call(function () {
+            _this2.playHitAudio();
+
             target.takeDamage(_this2.atk);
           }).to(0.8, {
             position: oldPos
@@ -297,6 +478,10 @@ System.register("chunks:///_virtual/Character.ts", ['./rollupPluginModLoBabelHel
               sprite.color = tar;
             }
           }).start();
+        };
+
+        _proto.playHitAudio = function playHitAudio() {
+          AudioMgr.inst.playOneShot(AudioDefine.quizEnemyHit);
         };
 
         _proto.resetStats = function resetStats() {
@@ -956,9 +1141,9 @@ System.register("chunks:///_virtual/EventManager.ts", ['cc'], function (exports)
         EventName[EventName["onPlayerCurrentHealthChange"] = 2] = "onPlayerCurrentHealthChange";
         EventName[EventName["onKnowledgePieceMaxChange"] = 3] = "onKnowledgePieceMaxChange";
         EventName[EventName["onKnowledgePieceChange"] = 4] = "onKnowledgePieceChange";
-        EventName[EventName["onMazeGameWin"] = 5] = "onMazeGameWin";
-        EventName[EventName["onMazeGameLose"] = 6] = "onMazeGameLose";
-        EventName[EventName["onShowHandOnLevel"] = 7] = "onShowHandOnLevel";
+        EventName[EventName["onMazeGameLose"] = 5] = "onMazeGameLose";
+        EventName[EventName["onShowHandOnLevel"] = 6] = "onShowHandOnLevel";
+        EventName[EventName["onShowKnowledgePopup"] = 7] = "onShowKnowledgePopup";
         return EventName;
       }({}));
 
@@ -967,8 +1152,8 @@ System.register("chunks:///_virtual/EventManager.ts", ['cc'], function (exports)
   };
 });
 
-System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './Story.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, clamp, director, Component, userProfile, Story, State;
+System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './Story.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, clamp, director, Component, userProfile, Story, State, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -987,6 +1172,9 @@ System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.
     }, function (module) {
       Story = module.Story;
       State = module.State;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _dec2, _class, _class2, _descriptor;
@@ -1013,6 +1201,14 @@ System.register("chunks:///_virtual/home.ts", ['./rollupPluginModLoBabelHelpers.
         }
 
         var _proto = home.prototype;
+
+        _proto.onEnable = function onEnable() {
+          AudioMgr.inst.play(AudioDefine.menuBGM);
+        };
+
+        _proto.onDisable = function onDisable() {
+          AudioMgr.inst.stop();
+        };
 
         _proto.start = function start() {
           this.checkToShowStory();
@@ -1116,6 +1312,7 @@ System.register("chunks:///_virtual/KnowledgePiece.ts", ['./rollupPluginModLoBab
 
           _this = _BaseObject.call.apply(_BaseObject, [this].concat(args)) || this;
           _this.objectType = ObjectType.knowledgePiece;
+          _this.content = '';
           return _this;
         }
 
@@ -1137,8 +1334,8 @@ System.register("chunks:///_virtual/KnowledgePiece.ts", ['./rollupPluginModLoBab
   };
 });
 
-System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './EventManager.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Button, Label, Node, Sprite, Color, director, Component, userProfile, eventManager, EventName;
+System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './EventManager.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Button, Label, Node, Sprite, Color, director, Component, userProfile, eventManager, EventName, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -1161,6 +1358,9 @@ System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelH
     }, function (module) {
       eventManager = module.eventManager;
       EventName = module.EventName;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
@@ -1197,6 +1397,7 @@ System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelH
 
           _initializerDefineProperty(_this, "hand", _descriptor8, _assertThisInitialized(_this));
 
+          _this.showHandCallback = void 0;
           return _this;
         }
 
@@ -1225,12 +1426,26 @@ System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelH
         _proto.update = function update(deltaTime) {} //PRIVATE
         ;
 
-        _proto.showHand = function showHand() {
+        _proto.showHand = function showHand(params) {
           this.hand.active = this.level === userProfile.maxLevel;
+
+          if (this.hand.active) {
+            this.showHandCallback = params;
+          }
         };
 
         _proto.onClick = function onClick() {
-          if (this.level !== userProfile.maxLevel) return;
+          if (this.level !== userProfile.maxLevel) return; //
+
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
+
+          if (this.hand.active) {
+            var _this$showHandCallbac;
+
+            (_this$showHandCallbac = this.showHandCallback) == null ? void 0 : _this$showHandCallbac.call(this);
+          } //
+
+
           var level = this.level;
           console.log('onPlayLevel', level);
           userProfile.currentLevel = level;
@@ -1294,8 +1509,8 @@ System.register("chunks:///_virtual/LevelButton.ts", ['./rollupPluginModLoBabelH
   };
 });
 
-System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelDefine.ts', './BaseObject.ts', './Player.ts', './Enemy.ts', './UserProfile.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Prefab, Node, Vec2, instantiate, Component, ObjectType, level1, level2, level3, levelEnemy1, levelEnemy2, levelEnemy3, levelInfo1, levelInfo2, levelInfo3, BaseObject, Player, Enemy, userProfile;
+System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelDefine.ts', './BaseObject.ts', './Player.ts', './Enemy.ts', './UserProfile.ts', './KnowledgePiece.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Prefab, Node, Vec2, instantiate, Component, ObjectType, levelInfo1, levelInfo2, levelInfo3, level1, level2, level3, levelEnemy1, levelEnemy2, levelEnemy3, BaseObject, Player, Enemy, userProfile, KnowledgePiece;
 
   return {
     setters: [function (module) {
@@ -1313,15 +1528,15 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
       Component = module.Component;
     }, function (module) {
       ObjectType = module.ObjectType;
+      levelInfo1 = module.levelInfo1;
+      levelInfo2 = module.levelInfo2;
+      levelInfo3 = module.levelInfo3;
       level1 = module.level1;
       level2 = module.level2;
       level3 = module.level3;
       levelEnemy1 = module.levelEnemy1;
       levelEnemy2 = module.levelEnemy2;
       levelEnemy3 = module.levelEnemy3;
-      levelInfo1 = module.levelInfo1;
-      levelInfo2 = module.levelInfo2;
-      levelInfo3 = module.levelInfo3;
     }, function (module) {
       BaseObject = module.BaseObject;
     }, function (module) {
@@ -1330,6 +1545,8 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
       Enemy = module.Enemy;
     }, function (module) {
       userProfile = module.userProfile;
+    }, function (module) {
+      KnowledgePiece = module.KnowledgePiece;
     }],
     execute: function () {
       var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
@@ -1385,8 +1602,12 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
         };
 
         _proto.initMap = function initMap() {
-          var _this2 = this;
+          var _arrLevelInfo$userPro,
+              _arrLevelInfo$userPro2,
+              _this2 = this;
 
+          var knowledgePieceContents = (_arrLevelInfo$userPro = (_arrLevelInfo$userPro2 = arrLevelInfo[userProfile.currentLevel]) == null ? void 0 : _arrLevelInfo$userPro2.knowledgePieceContents) != null ? _arrLevelInfo$userPro : [];
+          var knowledgePieceContentIndex = 0;
           var levelDefine = arrLevelDefine[userProfile.currentLevel];
           this.player.setCurrentMap(levelDefine);
           levelDefine.forEach(function (row, rowIndex) {
@@ -1423,6 +1644,14 @@ System.register("chunks:///_virtual/LevelControl.ts", ['./rollupPluginModLoBabel
                     var _obj = _this2.getObject(ObjectType.knowledgePiece, _this2.knowledgePiecePrefab, _this2.objects, _this2.world);
 
                     _obj.mapPosition = mapPosition;
+
+                    var knowledgePiece = _obj.getComponent(KnowledgePiece);
+
+                    if (knowledgePiece) {
+                      var _knowledgePieceConten;
+
+                      knowledgePiece.content = (_knowledgePieceConten = knowledgePieceContents == null ? void 0 : knowledgePieceContents[knowledgePieceContentIndex++]) != null ? _knowledgePieceConten : '';
+                    }
                   }
                   break;
               }
@@ -1632,13 +1861,16 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
         path: [new Vec2(14, 5), new Vec2(14, 11), new Vec2(11, 11), new Vec2(11, 13), new Vec2(8, 13), new Vec2(8, 8), new Vec2(9, 8), new Vec2(9, 3), new Vec2(12, 3), new Vec2(12, 1), new Vec2(17, 1), new Vec2(17, 5)]
       }]);
       var levelInfo1 = exports('levelInfo1', {
-        playerMaxHealth: 3
+        playerMaxHealth: 3,
+        knowledgePieceContents: ["1 l\xEDt n\u01B0\u1EDBc \u0111\xE1 nh\u1EB9 h\u01A1n 1 l\xEDt n\u01B0\u1EDBc \nth\xF4ng th\u01B0\u1EDDng. N\u01B0\u1EDBc \u0111\xF3ng b\u0103ng \n<color=#ff0000>nh\u1EB9 h\u01A1n n\u01B0\u1EDBc 9%</color>, \u0111i\u1EC1u n\xE0y gi\u1EA3i \nth\xEDch t\u1EA1i sao b\u0103ng l\u1EA1i n\u1ED5i tr\xEAn m\u1EB7t \nn\u01B0\u1EDBc.", "Tr\xEAn Th\u1EBF gi\u1EDBi, m\u1ED7i ng\xE0y c\xF3 <color=#ff0000>2 tri\u1EC7u</color> \nt\u1EA5n n\u01B0\u1EDBc th\u1EA3i v\xE0 c\xE1c ch\u1EA5t th\u1EA3i kh\xE1c \n\u0111\u1ED5 v\xE0o ngu\u1ED3n n\u01B0\u1EDBc, v\xE0 c\u1EE9 9 ng\u01B0\u1EDDi \nth\xEC c\xF3 1 ng\u01B0\u1EDDi s\u1EED d\u1EE5ng n\u01B0\u1EDBc u\u1ED1ng \nt\u1EEB c\xE1c ngu\u1ED3n kh\xF4ng h\u1EE3p v\u1EC7 sinh \nv\xE0 kh\xF4ng an to\xE0n.", "N\u01B0\u1EDBc n\xF3ng c\xF3 th\u1EC3 \u0111\xF3ng b\u0103ng\nnhanh h\u01A1n n\u01B0\u1EDBc l\u1EA1nh trong m\u1ED9t\ns\u1ED1 \u0111i\u1EC1u ki\u1EC7n (th\u01B0\u1EDDng \u0111\u01B0\u1EE3c g\u1ECDi l\xE0\nhi\u1EC7u \u1EE9ng Mpemba). Hi\u1EC7u \u1EE9ng \nMpemba \u0111\u01B0\u1EE3c \u0111\u1EB7t theo t\xEAn c\u1EE7a\nnh\xE0 khoa h\u1ECDc ng\u01B0\u1EDDi Tanzania, \n\xF4ng quan s\xE1t th\u1EA5y m\u1ED9t ch\u1EA5t l\u1ECFng \n(th\u01B0\u1EDDng l\xE0 n\u01B0\u1EDBc) c\xF3 nhi\u1EC7t \u0111\u1ED9 cao \nc\xF3 th\u1EC3 \u0111\xF3ng b\u0103ng nhanh h\u01A1n \nch\u1EA5t l\u1ECFng c\xF3 nhi\u1EC7t \u0111\u1ED9 th\u1EA5p, \ntrong c\xF9ng \u0111i\u1EC1u ki\u1EC7n gi\u1ED1ng nhau."]
       });
       var levelInfo2 = exports('levelInfo2', {
-        playerMaxHealth: 4
+        playerMaxHealth: 3,
+        knowledgePieceContents: ["V\u1EC7 sinh tay k\u1ECBp th\u1EDDi ng\u0103n ng\u1EEBa t\u1EDBi \n<color=#ff0000>50%</color> c\xE1c b\u1EC7nh nhi\u1EC5m tr\xF9ng c\xF3 th\u1EC3 \ntr\xE1nh \u0111\u01B0\u1EE3c trong qu\xE1 tr\xECnh cung \nc\u1EA5p d\u1ECBch v\u1EE5 ch\u0103m s\xF3c s\u1EE9c kh\u1ECFe, \nbao g\u1ED3m c\u1EA3 nh\u1EEFng b\u1EC7nh \u1EA3nh \nh\u01B0\u1EDFng \u0111\u1EBFn l\u1EF1c l\u01B0\u1EE3ng lao \u0111\u1ED9ng \ny t\u1EBF. (WHO/UNICEF, 2021) ", "Theo Li\xEAn H\u1EE3p Qu\u1ED1c, \u1EDF m\u1ED9t s\u1ED1 \nn\u01B0\u1EDBc k\xE9m ph\xE1t tri\u1EC3n <color=#ff0000>95%</color> l\u01B0\u1EE3ng \nn\u01B0\u1EDBc th\u1EA3i tr\u1EF1c ti\u1EBFp ra m\xF4i tr\u01B0\u1EDDng \nkh\xF4ng qua x\u1EED l\xFD.", "N\u01B0\u1EDBc, v\u1EC7 sinh v\xE0 v\u1EC7 sinh kh\xF4ng \nan to\xE0n l\xE0 nguy\xEAn nh\xE2n g\xE2y ra c\xE1i \nch\u1EBFt c\u1EE7a kho\u1EA3ng <color=#ff0000>1.000</color> tr\u1EBB em d\u01B0\u1EDBi \n5 tu\u1ED5i m\u1ED7i ng\xE0y. (UNICEF, 2023)"]
       });
       var levelInfo3 = exports('levelInfo3', {
-        playerMaxHealth: 5
+        playerMaxHealth: 3,
+        knowledgePieceContents: ["Hi\u1EC7n t\u1EA1i, h\u01A1n <color=#ff0000>80 qu\u1ED1c gia</color> (chi\u1EBFm \nkho\u1EA3ng <color=#ff0000>40% d\xE2n s\u1ED1 th\u1EBF gi\u1EDBi</color>) \n\u0111ang \u0111\u1ED1i m\u1EB7t v\u1EDBi t\xECnh tr\u1EA1ng thi\u1EBFu \nn\u01B0\u1EDBc nghi\xEAm tr\u1ECDng.", "M\u1EF1c n\u01B0\u1EDBc bi\u1EC3n t\u1EA1i Vi\u1EC7t Nam trong \ngiai \u0111o\u1EA1n 1993 - 2018 <color=#ff0000>t\u0103ng trung \nb\xECnh 4,1 mm/n\u0103m.</color>", "Hi\u1EC7n c\u1EE9 3 ng\u01B0\u1EDDi th\xEC s\u1EBD c\xF3 1 ng\u01B0\u1EDDi \ns\u1ED1ng trong t\xECnh tr\u1EA1ng thi\u1EBFu n\u01B0\u1EDBc.", "D\xE2y chuy\u1EC1n c\xF4ng ngh\u1EC7 thu\u1ED9c d\u1EF1 \xE1n \n<color=#ff0000>NEWater (Singapore)</color> c\xF3 th\u1EC3 l\u1ECDc \nn\u01B0\u1EDBc \xF4 nhi\u1EC5m th\xE0nh n\u01B0\u1EDBc u\u1ED1ng \ntr\u1EF1c ti\u1EBFp."]
       });
 
       cclegacy._RF.pop();
@@ -1646,15 +1878,15 @@ System.register("chunks:///_virtual/LevelDefine.ts", ['cc'], function (exports) 
   };
 });
 
-System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './EventManager.ts', './UserProfile.ts', './LevelButton.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './QuizManager.ts', './ShieldEffect.ts', './start.ts', './QuizStory.ts', './Story.ts'], function () {
+System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', './AudioMgr.ts', './EventManager.ts', './UserProfile.ts', './LevelButton.ts', './home.ts', './BaseObject.ts', './Define.ts', './Enemy.ts', './KnowledgePiece.ts', './LevelControl.ts', './LevelDefine.ts', './Platform.ts', './Player.ts', './StatsBoard.ts', './TileMapControl.ts', './WaterDrop.ts', './mazeGame.ts', './ButtonAnswer.ts', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './QuizManager.ts', './ShieldEffect.ts', './start.ts', './QuizStory.ts', './Story.ts'], function () {
   return {
-    setters: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    setters: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     execute: function () {}
   };
 });
 
-System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Character;
+System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Character, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -1668,6 +1900,9 @@ System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabe
       Node = module.Node;
     }, function (module) {
       Character = module.Character;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _dec2, _class, _class2, _descriptor;
@@ -1711,6 +1946,10 @@ System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabe
           _Character.prototype.takeDamage.call(this, dmg);
         };
 
+        _proto.playHitAudio = function playHitAudio() {
+          AudioMgr.inst.playOneShot(AudioDefine.quizMCHit);
+        };
+
         _proto.resetStats = function resetStats() {
           _Character.prototype.resetStats.call(this);
 
@@ -1731,8 +1970,8 @@ System.register("chunks:///_virtual/MainCharacter.ts", ['./rollupPluginModLoBabe
   };
 });
 
-System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelControl.ts', './Player.ts', './UserProfile.ts', './EventManager.ts', './Story.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, director, PhysicsSystem2D, EPhysics2DDrawFlags, Component, LevelControl, Player, userProfile, eventManager, EventName, Story;
+System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './LevelControl.ts', './Player.ts', './UserProfile.ts', './EventManager.ts', './Story.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, RichText, director, PhysicsSystem2D, EPhysics2DDrawFlags, Component, LevelControl, Player, userProfile, eventManager, EventName, Story, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -1744,6 +1983,7 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
       Node = module.Node;
+      RichText = module.RichText;
       director = module.director;
       PhysicsSystem2D = module.PhysicsSystem2D;
       EPhysics2DDrawFlags = module.EPhysics2DDrawFlags;
@@ -1759,9 +1999,12 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
       EventName = module.EventName;
     }, function (module) {
       Story = module.Story;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
-      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
 
       cclegacy._RF.push({}, "69024ABHwpF159GAbOeWB9v", "mazeGame", undefined);
 
@@ -1781,7 +2024,7 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
 
       var mazeGame = exports('mazeGame', (_dec = ccclass('mazeGame'), _dec2 = property({
         type: LevelControl
-      }), _dec3 = property(Player), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Node), _dec7 = property(Story), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+      }), _dec3 = property(Player), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Node), _dec7 = property(Node), _dec8 = property(RichText), _dec9 = property(Story), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(mazeGame, _Component);
 
         function mazeGame() {
@@ -1803,7 +2046,11 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
 
           _initializerDefineProperty(_this, "losePopup", _descriptor5, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "story", _descriptor6, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "knowledgePiecePopup", _descriptor6, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "knowledgePieceContent", _descriptor7, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "story", _descriptor8, _assertThisInitialized(_this));
 
           _this.state = State.Null;
           _this.resumeState = State.Null;
@@ -1813,13 +2060,14 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         var _proto = mazeGame.prototype;
 
         _proto.onEnable = function onEnable() {
-          eventManager.on(EventName.onMazeGameWin, this.onWin, this);
           eventManager.on(EventName.onMazeGameLose, this.onLose, this);
+          eventManager.on(EventName.onShowKnowledgePopup, this.onShowKnowledgePopup, this);
         };
 
         _proto.onDisable = function onDisable() {
-          eventManager.off(EventName.onMazeGameWin, this.onWin, this);
           eventManager.off(EventName.onMazeGameLose, this.onLose, this);
+          eventManager.off(EventName.onShowKnowledgePopup, this.onShowKnowledgePopup, this);
+          AudioMgr.inst.stop();
         };
 
         _proto.start = function start() {
@@ -1830,7 +2078,9 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         };
 
         _proto.setState = function setState(value) {
-          //end old state
+          var _this2 = this; //end old state
+
+
           switch (this.state) {
             case State.Win:
               this.winPopup.active = false;
@@ -1853,6 +2103,10 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
               this.levelControl.initEnemys();
               this.levelControl.initLevelInfo();
               this.player.setStateStart();
+              this.winPopup.active = false;
+              this.losePopup.active = false;
+              this.knowledgePiecePopup.active = false;
+              AudioMgr.inst.play(AudioDefine.mazeBGM);
               break;
 
             case State.StoryScene2:
@@ -1868,12 +2122,19 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
               this.winPopup.active = true;
               this.levelControl.pause();
               this.player.pause();
+              AudioMgr.inst.stop();
+              AudioMgr.inst.playOneShot(AudioDefine.winTheGame);
+              setTimeout(function () {
+                _this2.onClickGameWinMenuButton();
+              }, 3000);
               break;
 
             case State.Lose:
               this.losePopup.active = true;
               this.levelControl.pause();
               this.player.pause();
+              AudioMgr.inst.stop();
+              AudioMgr.inst.playOneShot(AudioDefine.losePopupSfx);
               break;
           }
         };
@@ -1901,22 +2162,26 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         ;
 
         _proto.onClickButtonExit = function onClickButtonExit() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
           this.exitConfirmPopup.active = true;
           this.pause();
         };
 
         _proto.onClickCancleExitGame = function onClickCancleExitGame() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
           this.exitConfirmPopup.active = false;
           this.resume();
         };
 
         _proto.onClickOkExitGame = function onClickOkExitGame() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
           director.loadScene('home');
         };
 
         _proto.onClickGameWinMenuButton = function onClickGameWinMenuButton() {
           switch (this.state) {
             case State.Win:
+              AudioMgr.inst.playOneShot(AudioDefine.tapButton);
               director.loadScene('home');
               break;
           }
@@ -1925,6 +2190,7 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         _proto.onClickGameLoseMenuButton = function onClickGameLoseMenuButton() {
           switch (this.state) {
             case State.Lose:
+              AudioMgr.inst.playOneShot(AudioDefine.tapButton);
               director.loadScene('home');
               break;
           }
@@ -1933,8 +2199,20 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         _proto.onClickGameLoseReplayButton = function onClickGameLoseReplayButton() {
           switch (this.state) {
             case State.Lose:
+              AudioMgr.inst.playOneShot(AudioDefine.tapButton);
               this.setState(State.Start);
               break;
+          }
+        } //call by cta button in knowledge piece popup
+        ;
+
+        _proto.onHideKnowledgePopup = function onHideKnowledgePopup() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
+          this.resume();
+          this.knowledgePiecePopup.active = false; //check win game
+
+          if (userProfile.mazeGameSection.knowledgePieces >= userProfile.mazeGameSection.knowledgePiecesMax) {
+            this.onWin();
           }
         } //PRIVATE
         ;
@@ -1973,6 +2251,13 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
           }
         };
 
+        _proto.onShowKnowledgePopup = function onShowKnowledgePopup(content) {
+          // console.log(content);
+          this.pause();
+          this.knowledgePiecePopup.active = true;
+          this.knowledgePieceContent.string = content;
+        };
+
         return mazeGame;
       }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "levelControl", [_dec2], {
         configurable: true,
@@ -2009,7 +2294,21 @@ System.register("chunks:///_virtual/mazeGame.ts", ['./rollupPluginModLoBabelHelp
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "story", [_dec7], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "knowledgePiecePopup", [_dec7], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return null;
+        }
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "knowledgePieceContent", [_dec8], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return null;
+        }
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "story", [_dec9], {
         configurable: true,
         enumerable: true,
         writable: true,
@@ -2077,8 +2376,8 @@ System.register("chunks:///_virtual/Platform.ts", ['./rollupPluginModLoBabelHelp
   };
 });
 
-System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './BaseObject.ts', './Define.ts', './LevelDefine.ts', './UserProfile.ts', './EventManager.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Collider2D, Vec2, Contact2DType, input, Input, Tween, tween, KeyCode, BaseObject, Direction, MapSize, PlayerSpeed, ObjectType, userProfile, eventManager, EventName;
+System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './BaseObject.ts', './Define.ts', './LevelDefine.ts', './UserProfile.ts', './EventManager.ts', './KnowledgePiece.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _createClass, cclegacy, _decorator, Collider2D, Animation, Vec2, Contact2DType, input, Input, Tween, tween, KeyCode, BaseObject, Direction, MapSize, PlayerSpeed, ObjectType, userProfile, eventManager, EventName, KnowledgePiece, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -2086,10 +2385,12 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
       _inheritsLoose = module.inheritsLoose;
       _initializerDefineProperty = module.initializerDefineProperty;
       _assertThisInitialized = module.assertThisInitialized;
+      _createClass = module.createClass;
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
       Collider2D = module.Collider2D;
+      Animation = module.Animation;
       Vec2 = module.Vec2;
       Contact2DType = module.Contact2DType;
       input = module.input;
@@ -2110,9 +2411,14 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
     }, function (module) {
       eventManager = module.eventManager;
       EventName = module.EventName;
+    }, function (module) {
+      KnowledgePiece = module.KnowledgePiece;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
-      var _dec, _dec2, _class, _class2, _descriptor;
+      var _dec, _dec2, _dec3, _class, _class2, _descriptor, _descriptor2;
 
       cclegacy._RF.push({}, "2721eh2xclCgrLV/J4WuHqH", "Player", undefined);
 
@@ -2130,7 +2436,15 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
         return State;
       }(State || {});
 
-      var Player = exports('Player', (_dec = ccclass('Player'), _dec2 = property(Collider2D), _dec(_class = (_class2 = /*#__PURE__*/function (_BaseObject) {
+      var AnimationName = /*#__PURE__*/function (AnimationName) {
+        AnimationName["undefine"] = "";
+        AnimationName["idle"] = "mcIdle";
+        AnimationName["move"] = "mcRun";
+        AnimationName["death"] = "mcDeath";
+        return AnimationName;
+      }(AnimationName || {});
+
+      var Player = exports('Player', (_dec = ccclass('Player'), _dec2 = property(Collider2D), _dec3 = property(Animation), _dec(_class = (_class2 = /*#__PURE__*/function (_BaseObject) {
         _inheritsLoose(Player, _BaseObject);
 
         function Player() {
@@ -2144,16 +2458,19 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
 
           _initializerDefineProperty(_this, "collider", _descriptor, _assertThisInitialized(_this));
 
+          _initializerDefineProperty(_this, "animation", _descriptor2, _assertThisInitialized(_this));
+
           _this.objectType = ObjectType.player;
           _this.state = State.Inactive;
           _this.resumeState = State.Inactive;
           _this.currentMap = [];
           _this.isTouchDown = false;
-          _this.moveDirection = Direction.Null;
+          _this._moveDirection = Direction.Null;
           _this.nextDirection = [];
           _this.rootPosition = new Vec2();
           _this.isMovingDone = false;
           _this.isDeathDone = false;
+          _this.currentAnimationName = AnimationName.undefine;
 
           _this.calcTarget = function (map, currentPos, direction) {
             var _map;
@@ -2228,14 +2545,17 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
 
             case State.Start:
               this.isTouchDown = false;
+              this.currentAnimationName = AnimationName.undefine;
               break;
 
             case State.Idle:
+              this.setAnimation(AnimationName.idle);
               this.moveDirection = Direction.Null;
               break;
 
             case State.Moving:
               {
+                this.setAnimation(AnimationName.move);
                 var target; //check to use next direction
 
                 if (this.nextDirection.length > 0) {
@@ -2305,6 +2625,7 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
               break;
 
             case State.Death:
+              this.setAnimation(AnimationName.death);
               userProfile.mazeGameSection.playerCurrentHealth--;
               this.isDeathDone = false;
               setTimeout(function () {
@@ -2455,8 +2776,10 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
         };
 
         _proto.onBeginContact = function onBeginContact(selfCollider, otherCollider, contact) {
-          // console.log(selfCollider, otherCollider, contact);
+          var _this3 = this; // console.log(selfCollider, otherCollider, contact);
           // console.log(otherCollider.tag);
+
+
           switch (this.state) {
             case State.Idle:
             case State.Moving:
@@ -2465,22 +2788,28 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
                   setTimeout(function () {
                     otherCollider.node.active = false;
                     userProfile.waterDrops++;
+                    AudioMgr.inst.playOneShot(AudioDefine.mazeCollectWaterDrop);
                   }, 1);
                   break;
 
                 case ObjectType.knowledgePiece:
                   setTimeout(function () {
-                    otherCollider.node.active = false;
-                    userProfile.mazeGameSection.knowledgePieces++; //check win game
+                    var _otherCollider$node;
 
-                    if (userProfile.mazeGameSection.knowledgePieces >= userProfile.mazeGameSection.knowledgePiecesMax) {
-                      eventManager.emit(EventName.onMazeGameWin);
-                    }
+                    otherCollider.node.active = false;
+                    userProfile.mazeGameSection.knowledgePieces++;
+
+                    _this3.setState(State.Idle);
+
+                    AudioMgr.inst.playOneShot(AudioDefine.mazeCollectKnowledgePiece); //show knowledge popup
+
+                    eventManager.emit(EventName.onShowKnowledgePopup, otherCollider == null || (_otherCollider$node = otherCollider.node) == null || (_otherCollider$node = _otherCollider$node.getComponent(KnowledgePiece)) == null ? void 0 : _otherCollider$node.content);
                   }, 1);
                   break;
 
                 case ObjectType.enemy:
-                  this.setState(State.Death); //check lose game
+                  this.setState(State.Death);
+                  AudioMgr.inst.playOneShot(AudioDefine.mazeHitMonster); //check lose game
 
                   if (userProfile.mazeGameSection.playerCurrentHealth <= 0) {
                     eventManager.emit(EventName.onMazeGameLose);
@@ -2493,23 +2822,56 @@ System.register("chunks:///_virtual/Player.ts", ['./rollupPluginModLoBabelHelper
           }
         };
 
+        _proto.setAnimation = function setAnimation(name) {
+          if (this.currentAnimationName === name) return;
+          this.currentAnimationName = name;
+          this.animation.play(name);
+        };
+
+        _createClass(Player, [{
+          key: "moveDirection",
+          get: function get() {
+            return this._moveDirection;
+          },
+          set: function set(value) {
+            this._moveDirection = value;
+
+            switch (value) {
+              case Direction.Left:
+                this.animation.node.setScale(-1, 1);
+                break;
+
+              case Direction.Right:
+                this.animation.node.setScale(1, 1);
+                break;
+            }
+          }
+        }]);
+
         return Player;
-      }(BaseObject), _descriptor = _applyDecoratedDescriptor(_class2.prototype, "collider", [_dec2], {
+      }(BaseObject), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "collider", [_dec2], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _class2)) || _class));
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "animation", [_dec3], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return null;
+        }
+      })), _class2)) || _class));
 
       cclegacy._RF.pop();
     }
   };
 });
 
-System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Label, Node, Button, Component, userProfile;
+System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Button, Sprite, RichText, SpriteFrame, Label, director, Component, userProfile, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -2520,21 +2882,31 @@ System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
-      Label = module.Label;
       Node = module.Node;
       Button = module.Button;
+      Sprite = module.Sprite;
+      RichText = module.RichText;
+      SpriteFrame = module.SpriteFrame;
+      Label = module.Label;
+      director = module.director;
       Component = module.Component;
     }, function (module) {
       userProfile = module.userProfile;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
-      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
 
       cclegacy._RF.push({}, "6d6f4KmEZxLcavSC5KU977w", "Popup", undefined);
 
       var ccclass = _decorator.ccclass,
           property = _decorator.property;
-      var Popup = exports('Popup', (_dec = ccclass('Popup'), _dec2 = property(Label), _dec3 = property(Node), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Button), _dec7 = property(Button), _dec8 = property(Button), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+      var rankTexts = ["Xếp hạng: <color=#00ff00>Tập Sự</color>", "Xếp hạng: <color=#0000ff>Siêu Sao</color>", "Xếp hạng: <color=#ff00ff>Anh Hùng</color>"];
+      var Popup = exports('Popup', (_dec = ccclass('Popup'), _dec2 = property(Node), _dec3 = property(Node), _dec4 = property(Node), _dec5 = property(Node), _dec6 = property(Node), _dec7 = property(Button), _dec8 = property(Button), _dec9 = property(Button), _dec10 = property(Sprite), _dec11 = property(RichText), _dec12 = property({
+        type: SpriteFrame
+      }), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(Popup, _Component);
 
         function Popup() {
@@ -2546,19 +2918,28 @@ System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers
 
           _this = _Component.call.apply(_Component, [this].concat(args)) || this;
 
-          _initializerDefineProperty(_this, "labelContent", _descriptor, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "backContainer", _descriptor, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "backContainer", _descriptor2, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "winContainer", _descriptor2, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "winContainer", _descriptor3, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "loseContainer", _descriptor3, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "loseContainer", _descriptor4, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "buttonContainer", _descriptor4, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "buttonLeft", _descriptor5, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "rankContainer", _descriptor5, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "buttonRight", _descriptor6, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "buttonLeft", _descriptor6, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "buttonReturn", _descriptor7, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "buttonRight", _descriptor7, _assertThisInitialized(_this)); // @property(Button) private buttonShowRank: Button;
+
+
+          _initializerDefineProperty(_this, "buttonReturn", _descriptor8, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "spriteRank", _descriptor9, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "rtRank", _descriptor10, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "rankSprites", _descriptor11, _assertThisInitialized(_this));
 
           _this.leftCb = void 0;
           _this.rightCb = void 0;
@@ -2574,7 +2955,8 @@ System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers
           var _this$buttonLeft, _this$buttonRight, _this$buttonReturn;
 
           (_this$buttonLeft = this.buttonLeft) == null ? void 0 : _this$buttonLeft.node.on(Button.EventType.CLICK, this.onButtonLeft, this);
-          (_this$buttonRight = this.buttonRight) == null ? void 0 : _this$buttonRight.node.on(Button.EventType.CLICK, this.onButtonRight, this);
+          (_this$buttonRight = this.buttonRight) == null ? void 0 : _this$buttonRight.node.on(Button.EventType.CLICK, this.onButtonRight, this); // this.buttonShowRank?.node.on(Button.EventType.CLICK, this.showPopupRank, this);
+
           (_this$buttonReturn = this.buttonReturn) == null ? void 0 : _this$buttonReturn.node.on(Button.EventType.CLICK, this.returnToMap, this);
         };
 
@@ -2582,42 +2964,100 @@ System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers
           var _this$buttonLeft2, _this$buttonRight2, _this$buttonReturn2;
 
           (_this$buttonLeft2 = this.buttonLeft) == null ? void 0 : _this$buttonLeft2.node.off(Button.EventType.CLICK, this.onButtonLeft, this);
-          (_this$buttonRight2 = this.buttonRight) == null ? void 0 : _this$buttonRight2.node.off(Button.EventType.CLICK, this.onButtonRight, this);
+          (_this$buttonRight2 = this.buttonRight) == null ? void 0 : _this$buttonRight2.node.off(Button.EventType.CLICK, this.onButtonRight, this); // this.buttonShowRank?.node.off(Button.EventType.CLICK, this.showPopupRank, this);
+
           (_this$buttonReturn2 = this.buttonReturn) == null ? void 0 : _this$buttonReturn2.node.off(Button.EventType.CLICK, this.returnToMap, this);
         };
 
         _proto.update = function update(deltaTime) {} //#endregion
         //#region Utils
+        // showPopupBack(txtContent: string, txtLeft: string, txtRight: string, lCb: () => void, rCb: () => void) {
         ;
 
-        _proto.showPopupBack = function showPopupBack(txtContent, txtLeft, txtRight, lCb, rCb) {
-          this.labelContent.string = txtContent;
-          this.buttonLeft.getComponentInChildren(Label).string = txtLeft;
-          this.buttonRight.getComponentInChildren(Label).string = txtRight;
-          this.leftCb = lCb;
-          this.rightCb = rCb;
+        _proto.showPopupBack = function showPopupBack() {
+          var _this2 = this; // this.labelContent.string = txtContent;
+
+
+          this.buttonLeft.getComponentInChildren(Label).string = "Thoát";
+          this.buttonRight.getComponentInChildren(Label).string = "Tiếp tục";
+          this.leftCb = this.returnToMap;
+          this.rightCb = this.hidePopup;
           this.node.active = true;
-          this.backContainer.active = true;
-          this.winContainer.active = false;
-          this.loseContainer.active = false;
+          this.node.children.forEach(function (c) {
+            c.active = c.name == _this2.backContainer.name || c.name == _this2.buttonContainer.name || c == _this2.node.children[0];
+          });
+          AudioMgr.inst.playOneShot(AudioDefine.tapBack);
+        };
+
+        _proto.showPopupLose = function showPopupLose() {
+          var _this3 = this;
+
+          this.buttonLeft.getComponentInChildren(Label).string = "Thoát";
+          this.buttonRight.getComponentInChildren(Label).string = "Thử lại";
+          this.leftCb = this.showPopupRank;
+          this.rightCb = this.restartGame;
+          this.node.active = true;
+          this.node.children.forEach(function (c) {
+            c.active = c.name == _this3.loseContainer.name || c.name == _this3.buttonContainer.name || c == _this3.node.children[0];
+          });
+          AudioMgr.inst.stop();
+          AudioMgr.inst.playOneShot(AudioDefine.losePopupSfx);
         };
 
         _proto.showPopupWin = function showPopupWin() {
+          var _this4 = this;
+
           this.node.active = true;
-          this.backContainer.active = false;
-          this.winContainer.active = true;
-          this.loseContainer.active = false;
+          this.node.children.forEach(function (c) {
+            c.active = c.name == _this4.winContainer.name || c == _this4.node.children[0];
+          });
+          AudioMgr.inst.stop();
+          AudioMgr.inst.playOneShot(AudioDefine.winTheGame);
+          setTimeout(function () {
+            _this4.showPopupRank();
+          }, 2000);
         };
 
-        _proto.showPopupLose = function showPopupLose(txtLeft, txtRight, lCb, rCb) {
-          this.buttonLeft.getComponentInChildren(Label).string = txtLeft;
-          this.buttonRight.getComponentInChildren(Label).string = txtRight;
-          this.leftCb = lCb;
-          this.rightCb = rCb;
+        _proto.showPopupRank = function showPopupRank() {
+          var _this5 = this;
+
           this.node.active = true;
-          this.backContainer.active = false;
-          this.winContainer.active = false;
-          this.loseContainer.active = true;
+          var isWin = this.winContainer.active;
+          this.node.children.forEach(function (c) {
+            c.active = c.name == _this5.rankContainer.name || c == _this5.node.children[0];
+          });
+
+          switch (userProfile.maxLevel) {
+            case 0:
+            case 1:
+            case 2:
+              this.spriteRank.spriteFrame = this.rankSprites[0];
+              this.rtRank.string = rankTexts[0];
+              break;
+
+            case 3:
+              if (!isWin) {
+                this.spriteRank.spriteFrame = this.rankSprites[0];
+                this.rtRank.string = rankTexts[0];
+                break;
+              }
+
+            case 4:
+              this.spriteRank.spriteFrame = this.rankSprites[1];
+              this.rtRank.string = rankTexts[1];
+              break;
+
+            case 5:
+              if (!isWin) {
+                this.spriteRank.spriteFrame = this.rankSprites[1];
+                this.rtRank.string = rankTexts[1];
+                break;
+              }
+
+              this.spriteRank.spriteFrame = this.rankSprites[2];
+              this.rtRank.string = rankTexts[2];
+              break;
+          }
         };
 
         _proto.hidePopup = function hidePopup() {
@@ -2627,60 +3067,87 @@ System.register("chunks:///_virtual/Popup.ts", ['./rollupPluginModLoBabelHelpers
         _proto.onButtonLeft = function onButtonLeft() {
           var _this$leftCb;
 
-          (_this$leftCb = this.leftCb) == null ? void 0 : _this$leftCb.apply(this.quizManager);
-          this.hidePopup();
+          AudioMgr.inst.playOneShot(AudioDefine.tapBack);
+          (_this$leftCb = this.leftCb) == null ? void 0 : _this$leftCb.apply(this);
         };
 
         _proto.onButtonRight = function onButtonRight() {
           var _this$rightCb;
 
-          (_this$rightCb = this.rightCb) == null ? void 0 : _this$rightCb.apply(this.quizManager);
-          this.hidePopup();
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
+          (_this$rightCb = this.rightCb) == null ? void 0 : _this$rightCb.apply(this);
         };
 
         _proto.returnToMap = function returnToMap() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
           userProfile.storyCompleteStatus.scene4 = true;
-          this.quizManager.backToMap();
+          director.loadScene('home');
+        };
+
+        _proto.restartGame = function restartGame() {
+          this.quizManager.restartGame();
           this.hidePopup();
         } //#endregion
         ;
 
         return Popup;
-      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "labelContent", [_dec2], {
+      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "backContainer", [_dec2], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "backContainer", [_dec3], {
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "winContainer", [_dec3], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "winContainer", [_dec4], {
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "loseContainer", [_dec4], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "loseContainer", [_dec5], {
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "buttonContainer", [_dec5], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "buttonLeft", [_dec6], {
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "rankContainer", [_dec6], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "buttonRight", [_dec7], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "buttonLeft", [_dec7], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "buttonReturn", [_dec8], {
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "buttonRight", [_dec8], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "buttonReturn", [_dec9], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "spriteRank", [_dec10], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "rtRank", [_dec11], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "rankSprites", [_dec12], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return [];
+        }
       })), _class2)) || _class));
 
       cclegacy._RF.pop();
@@ -2710,6 +3177,7 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
         mcName: "Hiệp Sĩ PoWa",
         hp: 12,
         atk: 3,
+        // atk: 15,
         enemyName: "ONi",
         enemyHp: 30,
         enemyAtk: 4
@@ -2717,6 +3185,7 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
         mcName: "Hiệp Sĩ PoWa",
         hp: 16,
         atk: 3,
+        // atk: 15,
         enemyName: "GoBa",
         enemyHp: 30,
         enemyAtk: 6
@@ -2739,8 +3208,8 @@ System.register("chunks:///_virtual/QuizDefine.ts", ['cc'], function (exports) {
   };
 });
 
-System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './ButtonAnswer.ts', './UserProfile.ts', './Story.ts', './QuizStory.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCString, CCInteger, Sprite, Label, Button, Node, input, Input, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, userProfile, State, QuizStory;
+System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Character.ts', './MainCharacter.ts', './Popup.ts', './QuizDefine.ts', './ButtonAnswer.ts', './UserProfile.ts', './Story.ts', './QuizStory.ts', './AudioMgr.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _initializerDefineProperty, _inheritsLoose, _assertThisInitialized, cclegacy, js, _decorator, CCString, CCInteger, Sprite, Label, Button, Node, resources, JsonAsset, randomRangeInt, director, SpriteFrame, KeyCode, sys, Component, Character, MainCharacter, Popup, shieldCost, skimCost, skipCost, quizLvl, shieldUses, skimUses, skipUses, questionTime, ButtonAnswer, userProfile, State, QuizStory, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -2758,8 +3227,6 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
       Label = module.Label;
       Button = module.Button;
       Node = module.Node;
-      input = module.input;
-      Input = module.Input;
       resources = module.resources;
       JsonAsset = module.JsonAsset;
       randomRangeInt = module.randomRangeInt;
@@ -2791,6 +3258,9 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
       State = module.State;
     }, function (module) {
       QuizStory = module.QuizStory;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _dec2, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class4, _class5, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
@@ -2921,8 +3391,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
 
         var _proto = QuizManager.prototype; //#region Default
 
-        _proto.onLoad = function onLoad() {
-          input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+        _proto.onLoad = function onLoad() {// input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         };
 
         _proto.onEnable = function onEnable() {
@@ -2957,7 +3426,11 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
               this.resetGame();
 
             case GameState.PLAYING:
+              AudioMgr.inst.playOneShot(AudioDefine.quizStart);
               this.showNextQuestion();
+              setTimeout(function () {
+                AudioMgr.inst.play(AudioDefine.quizBGM);
+              }, 1000);
               break;
 
             case GameState.END:
@@ -3087,7 +3560,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.getRandomQuestion = function getRandomQuestion() {
-          if (!userProfile.storyCompleteStatus.scene4) {
+          if (!userProfile.storyCompleteStatus.scene4 && this.level == 0) {
             return this.questions[0];
           }
 
@@ -3114,9 +3587,11 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
           this.unscheduleAllCallbacks();
 
           if (idx == 0) {
+            AudioMgr.inst.playOneShot(AudioDefine.quizCorrectAns);
             btn.showCorrect();
             this.mainChar.animateAttack(this.enemy, this, this.checkEndGame);
           } else {
+            AudioMgr.inst.playOneShot(AudioDefine.quizWrongAns);
             btn.showWrong();
             this.btnAnsCorrect.showCorrect();
             this.enemy.animateAttack(this.mainChar, this, this.checkEndGame);
@@ -3124,7 +3599,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.checkEndGame = function checkEndGame() {
-          if (!userProfile.storyCompleteStatus.scene4) return;
+          if (!userProfile.storyCompleteStatus.scene4 && this.level == 0) return;
 
           if (this.mainChar.hp <= 0 || this.enemy.hp <= 0) {
             this.unscheduleAllCallbacks();
@@ -3162,6 +3637,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         ;
 
         _proto.activateShield = function activateShield() {
+          AudioMgr.inst.playOneShot(AudioDefine.quizShield);
           if (this.currentDrops < shieldCost || this.shieldUsed >= shieldUses) return;
           this.shieldUsed++;
           this.currentDrops -= shieldCost;
@@ -3171,6 +3647,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.skimAnswers = function skimAnswers() {
+          AudioMgr.inst.playOneShot(AudioDefine.quizSkim);
           if (this.currentDrops < skimCost || this.skimsUsed >= skimUses) return;
           this.skimsUsed++;
           this.currentDrops -= skimCost;
@@ -3189,6 +3666,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         };
 
         _proto.skipQuiz = function skipQuiz() {
+          AudioMgr.inst.playOneShot(AudioDefine.quizSkip);
           if (this.currentDrops < skipCost || this.skipsUsed >= skipUses) return;
           this.skipsUsed++;
           this.currentDrops -= skipCost;
@@ -3220,14 +3698,16 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
         ;
 
         _proto.showPopupLose = function showPopupLose() {
-          this.popup.showPopupLose("Replay", "Back to menu", this.restartGame, this.backToMap);
+          this.unscheduleAllCallbacks();
+          this.popup.showPopupLose();
         };
 
         _proto.showPopupBack = function showPopupBack() {
-          this.popup.showPopupBack("Back to menu?", "No", "Yes", null, this.backToMap);
+          this.popup.showPopupBack();
         };
 
         _proto.showPopupWin = function showPopupWin() {
+          this.unscheduleAllCallbacks();
           this.popup.showPopupWin();
         } //#endregion
         //#region Water drops
@@ -3390,7 +3870,7 @@ System.register("chunks:///_virtual/QuizManager.ts", ['./rollupPluginModLoBabelH
 });
 
 System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Story.ts', './QuizManager.ts', './UserProfile.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, Node, Vec3, Button, resources, SpriteFrame, UITransform, State, Story, GameState, userProfile;
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, js, Node, Vec3, Button, resources, SpriteFrame, UITransform, Sprite, State, SpriteFrameId, Story, GameState, userProfile;
 
   return {
     setters: [function (module) {
@@ -3401,14 +3881,17 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
+      js = module.js;
       Node = module.Node;
       Vec3 = module.Vec3;
       Button = module.Button;
       resources = module.resources;
       SpriteFrame = module.SpriteFrame;
       UITransform = module.UITransform;
+      Sprite = module.Sprite;
     }, function (module) {
       State = module.State;
+      SpriteFrameId = module.SpriteFrameId;
       Story = module.Story;
     }, function (module) {
       GameState = module.GameState;
@@ -3422,6 +3905,8 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
 
       var ccclass = _decorator.ccclass,
           property = _decorator.property;
+      var array = js.array;
+      var contains = array.contains;
       var storyContent = [{
         content_3_13A: "Ngươi là tên nào? Sao lại có thể đến được khu vực này?",
         content_3_13AB: "Ta đến đây để đánh bại ngươi và giải cứu Trái Đất!",
@@ -3485,15 +3970,14 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
               this.blockInput.enabled = true;
               this.uiContainer.active = false;
               this.MC.grayscale = true;
+              this.MC.spriteFrame = this.spriteFrames[SpriteFrameId.McAngry];
               this.speechName.string = this.enemyName;
               this.setLabelAnimation(storyContent[0].content_3_13A, this.speechContentRichText);
               break;
 
             case State.Scene_4_13B:
-              this.MC.grayscale = false;
               this.NPC.grayscale = true;
-              this.speechName.string = this.mcName;
-              this.setLabelAnimation(storyContent[0].content_3_13AB, this.speechContentRichText);
+              this.showMCSpeech(SpriteFrameId.McAngryTalk, storyContent[0].content_3_13AB);
               break;
 
             case State.Scene_4_13C:
@@ -3508,14 +3992,13 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
               break;
 
             case State.Scene_4_13D:
-              this.speechBubble.active = true;
-              this.NPCPortrait.active = true;
-              this.speechName.string = this.npcName;
-              this.setLabelAnimation(storyContent[0].content_3_13D, this.speechContentRichText);
+              this.setGrayScale(true, ["Sprite-QuestionBG"]);
+              this.showNPCPortraitSpeech(storyContent[0].content_3_13D);
               this.speechBubble.position = new Vec3(50, 200, 0);
               break;
 
             case State.Scene_4_13E:
+              this.setGrayScale(false);
               this.setLabelAnimation(storyContent[0].content_3_13E, this.speechContentRichText);
               this.background.node.active = true;
               this.ansButton.active = true;
@@ -3526,12 +4009,15 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
               this.blockInput.enabled = false;
               this.background.node.active = false;
               this.ansButton.active = false;
+              this.setGrayScale(true, ["Sprite-MC", "Sprite-Enemy"]);
               this.setLabelAnimation(storyContent[0].content_3_13F, this.speechContentRichText);
               this.speechBubble.position = new Vec3(0, -150, 0);
               break;
 
             case State.Scene_4_13G:
               setTimeout(function () {
+                _this2.setGrayScale(false);
+
                 userProfile.storyCompleteStatus.scene4 = true;
 
                 _this2.hideStory();
@@ -3586,21 +4072,22 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
           resources.load(path, SpriteFrame, function (err, spriteFrame) {
             switch (lvl) {
               case 0:
-                _this3.NPC.getComponent(UITransform).setContentSize(205 * 3, 262 * 3);
+                _this3.NPC.getComponent(UITransform).setContentSize(391 * 1.1, 500 * 1.1);
 
                 break;
 
               case 1:
-                _this3.NPC.getComponent(UITransform).setContentSize(567 * 3, 250 * 3);
+                _this3.NPC.getComponent(UITransform).setContentSize(1135 * 1.1, 500 * 1.1);
 
                 break;
 
               case 2:
-                _this3.NPC.getComponent(UITransform).setContentSize(250 * 3, 248 * 3);
+                _this3.NPC.getComponent(UITransform).setContentSize(507 * 1.1, 500 * 1.1);
 
                 break;
-            } // this.spriteChar.getComponent(UITransform).setContentSize(spriteFrame.width / 4, spriteFrame.height / 4);
+            }
 
+            _this3.NPC.node.setPosition(new Vec3(550, -100, 0));
 
             _this3.NPC.spriteFrame = spriteFrame;
           });
@@ -3619,6 +4106,18 @@ System.register("chunks:///_virtual/QuizStory.ts", ['./rollupPluginModLoBabelHel
           this.NPC.node.active = false;
           this.uiContainer.active = true;
           this.node.active = false;
+        };
+
+        _proto.setGrayScale = function setGrayScale(toTrue, exceptions) {
+          if (exceptions === void 0) {
+            exceptions = null;
+          }
+
+          this.uiContainer.getComponentsInChildren(Sprite).forEach(function (s) {
+            if (!toTrue) {
+              s.grayscale = false;
+            } else if (contains(exceptions, s.node.name) || s.node.name == "Sprite-Hit") s.grayscale = false;else s.grayscale = true;
+          });
         } //#endregion
         ;
 
@@ -3722,8 +4221,8 @@ System.register("chunks:///_virtual/ShieldEffect.ts", ['./rollupPluginModLoBabel
   };
 });
 
-System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
-  var _inheritsLoose, cclegacy, _decorator, director, Component;
+System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './AudioMgr.ts'], function (exports) {
+  var _inheritsLoose, cclegacy, _decorator, director, Component, AudioMgr, AudioDefine;
 
   return {
     setters: [function (module) {
@@ -3733,6 +4232,9 @@ System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers
       _decorator = module._decorator;
       director = module.director;
       Component = module.Component;
+    }, function (module) {
+      AudioMgr = module.AudioMgr;
+      AudioDefine = module.AudioDefine;
     }],
     execute: function () {
       var _dec, _class;
@@ -3750,17 +4252,21 @@ System.register("chunks:///_virtual/start.ts", ['./rollupPluginModLoBabelHelpers
 
         var _proto = start.prototype;
 
-        _proto.start = function start() {
-          console.log('ver 0.0.5');
-          director.preloadScene('home');
-          director.preloadScene('mazeGame');
-          director.preloadScene('quizGame');
+        _proto.onLoad = function onLoad() {
+          console.log('ver 0.0.6');
+          director.preloadScene('home', function () {
+            director.preloadScene('mazeGame');
+            director.preloadScene('quizGame');
+          });
         };
+
+        _proto.start = function start() {};
 
         _proto.update = function update(deltaTime) {} //PUBLIC
         ;
 
         _proto.onClickStart = function onClickStart() {
+          AudioMgr.inst.playOneShot(AudioDefine.tapButton);
           director.loadScene('home');
         };
 
@@ -3910,7 +4416,7 @@ System.register("chunks:///_virtual/StatsBoard.ts", ['./rollupPluginModLoBabelHe
 });
 
 System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './UserProfile.ts', './EventManager.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, BlockInputEvents, Sprite, Node, Label, RichText, Camera, resources, Input, director, tween, Tween, SpriteFrame, Color, Component, userProfile, eventManager, EventName;
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, cclegacy, _decorator, SpriteFrame, BlockInputEvents, Sprite, Node, Label, RichText, Camera, resources, Input, director, tween, Tween, Color, Component, userProfile, eventManager, EventName;
 
   return {
     setters: [function (module) {
@@ -3921,6 +4427,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
     }, function (module) {
       cclegacy = module.cclegacy;
       _decorator = module._decorator;
+      SpriteFrame = module.SpriteFrame;
       BlockInputEvents = module.BlockInputEvents;
       Sprite = module.Sprite;
       Node = module.Node;
@@ -3932,7 +4439,6 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
       director = module.director;
       tween = module.tween;
       Tween = module.Tween;
-      SpriteFrame = module.SpriteFrame;
       Color = module.Color;
       Component = module.Component;
     }, function (module) {
@@ -3942,7 +4448,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
       EventName = module.EventName;
     }],
     execute: function () {
-      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+      var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16;
 
       cclegacy._RF.push({}, "4960fuq1h9Pi7eErNV6jU3w", "Story", undefined);
 
@@ -3950,7 +4456,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
           property = _decorator.property;
       var Define = {
         MCName: 'Hiệp Sĩ PoWa',
-        NPCName: 'Lan',
+        NPCName: 'Nina',
         NPCEmotion: {
           Happy: 'Happy',
           Sad: 'Sad',
@@ -3963,10 +4469,8 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
         Scene_1_6_speechContent: 'Xin hãy nói tôi biết rằng làm sao để có thể đánh bại GoBa.',
         Scene_1_7_1_speechContent: 'Để tiêu diệt được GoBa và các thuộc hạ của hắn, bạn cần phải được trang bị những bảo vật và bí kíp nâng cấp sức mạnh bản thân.',
         Scene_1_7_2_speechContent: 'Những bí kíp này được giấu ở khắp nơi trên Trái Đất. Thu thập chúng giúp gia tăng sức mạnh và trí tuệ, mới có thể đánh đuổi quái vật.',
-        Scene_1_8_1_speechContent: 'Bí kíp đầu tiên chính là Bí kíp Sử dụng nước hiệu quả - được giấu sâu trong Hang Động Suối Nguồn.',
-        Scene_1_8_2_speechContent: 'Nơi đây từng là nguồn cung cấp nước của cả hành tinh, nhưng giờ đã bị xâm chiếm và canh gác nghiêm ngặt bởi thuộc hạ của GoBa.',
+        Scene_1_8_1_speechContent: 'Bí kíp đầu tiên chính là Bí kíp Sử dụng nước hiệu quả - được giấu sâu trong Hang Động Suối Nguồn. Nơi đây từng là nguồn cung cấp nước của cả hành tinh, nhưng giờ đã bị xâm chiếm bởi thuộc hạ của GoBa."',
         Scene_1_8_3_speechContent: 'Thu được bí kíp này sẽ giúp Hiệp sĩ sử dụng nước tiết kiệm và hiệu quả, gia tăng sát thương và khả năng chiến đấu!',
-        Scene_1_8_4_speechContent: 'Hiệp sĩ hãy cẩn thận, tuyệt đối đừng để bọn chúng phát hiện!',
         Scene_2_1_speechContent: 'Bạn cần thu thập đủ 3 mảnh của Bí kíp, chúng sẽ giúp nâng cấp sức mạnh và hỗ trợ bạn hạ gục GoBa và đám thuộc hạ!',
         Scene_2_2_speechContent: 'Lưu ý hãy né tránh bọn lâu la của GoBa và thu thập thật nhiều giọt nước để nhận được hỗ trợ từ nguồn nước.',
         Scene_3_1_speechContent: 'Chặng đường của chúng ta chỉ mới bắt đầu.Muốn đánh bại GoBa chúng ta phải vượt qua Sa Mạc Nóng Chảy trước mặt.Đây là nơi mà tướng CaKi đang nắm quyền kiểm soát.',
@@ -4001,54 +4505,63 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
         State[State["Scene_1_7_1"] = 7] = "Scene_1_7_1";
         State[State["Scene_1_7_2"] = 8] = "Scene_1_7_2";
         State[State["Scene_1_8_1"] = 9] = "Scene_1_8_1";
-        State[State["Scene_1_8_2"] = 10] = "Scene_1_8_2";
-        State[State["Scene_1_8_3"] = 11] = "Scene_1_8_3";
-        State[State["Scene_1_8_4"] = 12] = "Scene_1_8_4";
-        State[State["Scene_1_8_5"] = 13] = "Scene_1_8_5";
-        State[State["Scene_2_1"] = 14] = "Scene_2_1";
-        State[State["Scene_2_2"] = 15] = "Scene_2_2";
-        State[State["Scene_2_3"] = 16] = "Scene_2_3";
-        State[State["Scene_3_1"] = 17] = "Scene_3_1";
-        State[State["Scene_3_2"] = 18] = "Scene_3_2";
-        State[State["Scene_3_3"] = 19] = "Scene_3_3";
-        State[State["Scene_3_4"] = 20] = "Scene_3_4";
-        State[State["Scene_4_13A"] = 21] = "Scene_4_13A";
-        State[State["Scene_4_13B"] = 22] = "Scene_4_13B";
-        State[State["Scene_4_13C"] = 23] = "Scene_4_13C";
-        State[State["Scene_4_13D"] = 24] = "Scene_4_13D";
-        State[State["Scene_4_13E"] = 25] = "Scene_4_13E";
-        State[State["Scene_4_13F"] = 26] = "Scene_4_13F";
-        State[State["Scene_4_13G"] = 27] = "Scene_4_13G";
-        State[State["Scene_5_14A"] = 28] = "Scene_5_14A";
-        State[State["Scene_5_14B"] = 29] = "Scene_5_14B";
-        State[State["Scene_5_14C"] = 30] = "Scene_5_14C";
-        State[State["Scene_5_14D"] = 31] = "Scene_5_14D";
-        State[State["Scene_5_14E"] = 32] = "Scene_5_14E";
-        State[State["Scene_5_14F"] = 33] = "Scene_5_14F";
-        State[State["Scene_5_14G"] = 34] = "Scene_5_14G";
-        State[State["Scene_5_14H"] = 35] = "Scene_5_14H";
-        State[State["Scene_6_15A"] = 36] = "Scene_6_15A";
-        State[State["Scene_6_15B"] = 37] = "Scene_6_15B";
-        State[State["Scene_6_15C"] = 38] = "Scene_6_15C";
-        State[State["Scene_6_15D"] = 39] = "Scene_6_15D";
-        State[State["Scene_7_16"] = 40] = "Scene_7_16";
-        State[State["Scene_8_17A"] = 41] = "Scene_8_17A";
-        State[State["Scene_8_17B"] = 42] = "Scene_8_17B";
-        State[State["Scene_8_17C"] = 43] = "Scene_8_17C";
-        State[State["Scene_8_17D"] = 44] = "Scene_8_17D";
-        State[State["Scene_8_17E"] = 45] = "Scene_8_17E";
-        State[State["Scene_8_17F"] = 46] = "Scene_8_17F";
-        State[State["Scene_9_18A"] = 47] = "Scene_9_18A";
-        State[State["Scene_9_18B"] = 48] = "Scene_9_18B";
-        State[State["Scene_10_19A"] = 49] = "Scene_10_19A";
-        State[State["Scene_10_19B"] = 50] = "Scene_10_19B";
-        State[State["Scene_11_20A"] = 51] = "Scene_11_20A";
-        State[State["Scene_11_20B"] = 52] = "Scene_11_20B";
-        State[State["Scene_11_20C"] = 53] = "Scene_11_20C";
-        State[State["Scene_11_20D"] = 54] = "Scene_11_20D";
+        State[State["Scene_1_8_3"] = 10] = "Scene_1_8_3";
+        State[State["Scene_2_1"] = 11] = "Scene_2_1";
+        State[State["Scene_2_2"] = 12] = "Scene_2_2";
+        State[State["Scene_2_3"] = 13] = "Scene_2_3";
+        State[State["Scene_3_1"] = 14] = "Scene_3_1";
+        State[State["Scene_3_2"] = 15] = "Scene_3_2";
+        State[State["Scene_3_3"] = 16] = "Scene_3_3";
+        State[State["Scene_3_4"] = 17] = "Scene_3_4";
+        State[State["Scene_4_13A"] = 18] = "Scene_4_13A";
+        State[State["Scene_4_13B"] = 19] = "Scene_4_13B";
+        State[State["Scene_4_13C"] = 20] = "Scene_4_13C";
+        State[State["Scene_4_13D"] = 21] = "Scene_4_13D";
+        State[State["Scene_4_13E"] = 22] = "Scene_4_13E";
+        State[State["Scene_4_13F"] = 23] = "Scene_4_13F";
+        State[State["Scene_4_13G"] = 24] = "Scene_4_13G";
+        State[State["Scene_5_14A"] = 25] = "Scene_5_14A";
+        State[State["Scene_5_14B"] = 26] = "Scene_5_14B";
+        State[State["Scene_5_14C"] = 27] = "Scene_5_14C";
+        State[State["Scene_5_14D"] = 28] = "Scene_5_14D";
+        State[State["Scene_5_14E"] = 29] = "Scene_5_14E";
+        State[State["Scene_5_14F"] = 30] = "Scene_5_14F";
+        State[State["Scene_5_14G"] = 31] = "Scene_5_14G";
+        State[State["Scene_5_14H"] = 32] = "Scene_5_14H";
+        State[State["Scene_6_15A"] = 33] = "Scene_6_15A";
+        State[State["Scene_6_15B"] = 34] = "Scene_6_15B";
+        State[State["Scene_6_15C"] = 35] = "Scene_6_15C";
+        State[State["Scene_6_15D"] = 36] = "Scene_6_15D";
+        State[State["Scene_7_16"] = 37] = "Scene_7_16";
+        State[State["Scene_8_17A"] = 38] = "Scene_8_17A";
+        State[State["Scene_8_17B"] = 39] = "Scene_8_17B";
+        State[State["Scene_8_17C"] = 40] = "Scene_8_17C";
+        State[State["Scene_8_17D"] = 41] = "Scene_8_17D";
+        State[State["Scene_8_17E"] = 42] = "Scene_8_17E";
+        State[State["Scene_8_17F"] = 43] = "Scene_8_17F";
+        State[State["Scene_9_18A"] = 44] = "Scene_9_18A";
+        State[State["Scene_9_18B"] = 45] = "Scene_9_18B";
+        State[State["Scene_10_19A"] = 46] = "Scene_10_19A";
+        State[State["Scene_10_19B"] = 47] = "Scene_10_19B";
+        State[State["Scene_11_20A"] = 48] = "Scene_11_20A";
+        State[State["Scene_11_20B"] = 49] = "Scene_11_20B";
+        State[State["Scene_11_20C"] = 50] = "Scene_11_20C";
+        State[State["Scene_11_20D"] = 51] = "Scene_11_20D";
         return State;
       }({}));
-      var Story = exports('Story', (_dec = ccclass('Story'), _dec2 = property(BlockInputEvents), _dec3 = property(Sprite), _dec4 = property(Sprite), _dec5 = property(Sprite), _dec6 = property(Sprite), _dec7 = property(Sprite), _dec8 = property(Node), _dec9 = property(Node), _dec10 = property(Label), _dec11 = property(Label), _dec12 = property(RichText), _dec13 = property(RichText), _dec14 = property(Camera), _dec15 = property(Camera), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
+      var SpriteFrameId = exports('SpriteFrameId', /*#__PURE__*/function (SpriteFrameId) {
+        SpriteFrameId[SpriteFrameId["Mc"] = 0] = "Mc";
+        SpriteFrameId[SpriteFrameId["McAngry"] = 1] = "McAngry";
+        SpriteFrameId[SpriteFrameId["McAngryTalk"] = 2] = "McAngryTalk";
+        SpriteFrameId[SpriteFrameId["McSad"] = 3] = "McSad";
+        SpriteFrameId[SpriteFrameId["NpcHappy"] = 4] = "NpcHappy";
+        SpriteFrameId[SpriteFrameId["NpcSad"] = 5] = "NpcSad";
+        SpriteFrameId[SpriteFrameId["NpcTalk"] = 6] = "NpcTalk";
+        return SpriteFrameId;
+      }({}));
+      var Story = exports('Story', (_dec = ccclass('Story'), _dec2 = property({
+        type: SpriteFrame
+      }), _dec3 = property(BlockInputEvents), _dec4 = property(Sprite), _dec5 = property(Sprite), _dec6 = property(Sprite), _dec7 = property(Sprite), _dec8 = property(Sprite), _dec9 = property(Node), _dec10 = property(Node), _dec11 = property(Node), _dec12 = property(Label), _dec13 = property(Label), _dec14 = property(RichText), _dec15 = property(RichText), _dec16 = property(Camera), _dec17 = property(Camera), _dec(_class = (_class2 = /*#__PURE__*/function (_Component) {
         _inheritsLoose(Story, _Component);
 
         function Story() {
@@ -4060,33 +4573,37 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
 
           _this = _Component.call.apply(_Component, [this].concat(args)) || this;
 
-          _initializerDefineProperty(_this, "blockInput", _descriptor, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "spriteFrames", _descriptor, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "background", _descriptor2, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "blockInput", _descriptor2, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "overlay", _descriptor3, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "background", _descriptor3, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "earth", _descriptor4, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "overlay", _descriptor4, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "MC", _descriptor5, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "earth", _descriptor5, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "NPC", _descriptor6, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "MC", _descriptor6, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "NPCPortrait", _descriptor7, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "NPC", _descriptor7, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "speechBubble", _descriptor8, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "miniNPC", _descriptor8, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "speechName", _descriptor9, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "NPCPortrait", _descriptor9, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "speechContent", _descriptor10, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "speechBubble", _descriptor10, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "speechContentRichText", _descriptor11, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "speechName", _descriptor11, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "narrationRichText", _descriptor12, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "speechContent", _descriptor12, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "mazeGameCameraGame", _descriptor13, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "speechContentRichText", _descriptor13, _assertThisInitialized(_this));
 
-          _initializerDefineProperty(_this, "mazeGameCameraUI", _descriptor14, _assertThisInitialized(_this));
+          _initializerDefineProperty(_this, "narrationRichText", _descriptor14, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "mazeGameCameraGame", _descriptor15, _assertThisInitialized(_this));
+
+          _initializerDefineProperty(_this, "mazeGameCameraUI", _descriptor16, _assertThisInitialized(_this));
 
           _this.state = 0;
           _this.labelTweenObject = {
@@ -4156,6 +4673,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 // "Hiển thị MC cùng đoạn hội thoại: ""Trái Đất đang dần bị ô nhiễm nặng? Có chuyện gì đang xảy ra?"""
                 this.MC.node.active = true;
                 this.MC.grayscale = false;
+                this.MC.spriteFrame = this.spriteFrames[SpriteFrameId.McSad];
                 this.speechBubble.active = true;
                 this.speechName.string = Define.MCName;
                 this.setLabelAnimation(Define.Scene_1_2_speechContent, this.speechContent);
@@ -4170,9 +4688,8 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 this.MC.grayscale = true;
                 this.NPC.node.active = true;
                 this.NPC.grayscale = false;
-                this.speechName.string = Define.NPCName; // this.setLabelAnimation(Define.Scene_1_3_speechContent, this.speechContentRichText);
-
-                this.showNPCSpeech(Define.NPCEmotion.Sad, Define.Scene_1_3_speechContent);
+                this.speechName.string = Define.NPCName;
+                this.showNPCSpeech(SpriteFrameId.NpcSad, Define.Scene_1_3_speechContent, this.speechContent);
               }
               break;
 
@@ -4201,6 +4718,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 5	
                 // "Hiển thị MC cùng hội thoại:""Xin hãy nói tôi biết rằng làm sao để có thể đánh bại GOBA"""
                 this.MC.grayscale = false;
+                this.MC.spriteFrame = this.spriteFrames[SpriteFrameId.McAngryTalk];
                 this.NPC.grayscale = true;
                 this.speechName.string = Define.MCName;
                 this.speechContentRichText.string = '';
@@ -4214,11 +4732,14 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 6	
                 // "Hiển thị NPC cùng hội thoại:
                 // [1] ""Để tiêu diệt được GOBA và các thuộc hạ của hắn, bạn cần phải được trang bị những bảo vật và bí kíp nâng cấp sức mạnh bản thân.""
+                this.background.node.active = false;
+                this.earth.node.active = false;
+                this.MC.node.active = false;
                 this.MC.grayscale = true;
                 this.NPC.grayscale = false;
                 this.speechName.string = Define.NPCName; // this.setLabelAnimation(Define.Scene_1_7_1_speechContent, this.speechContentRichText);
 
-                this.showNPCSpeech(Define.NPCEmotion.Talk, Define.Scene_1_7_1_speechContent);
+                this.showNPCSpeech(SpriteFrameId.NpcTalk, Define.Scene_1_7_1_speechContent, this.speechContent);
               }
               break;
 
@@ -4226,8 +4747,6 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
               {
                 // [2]  ""Những bí kíp này được giấu ở khắp nơi trên TĐ. Thu thập chúng giúp gia tăng sức mạnh và trí tuệ, mới có thể đánh đuổi quái vật""
                 // Đồng thời chuyển BG sang màn hình chọn map"
-                this.background.node.active = false;
-                this.earth.node.active = false;
                 this.setLabelAnimation(Define.Scene_1_7_2_speechContent, this.speechContent);
               }
               break;
@@ -4238,39 +4757,23 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 // Sau khi người chơi click/bấm vào nút bất kỳ ở phân cảnh 7	
                 // "Hiển thị popup thoại của NPC (kèm avatar):
                 // [1]  ""Bí kíp đầu tiên chính là Bí kíp Sử dụng nước hiệu quả - được giấu sâu trong Hang Động Suối Nguồn.""
+                this.NPC.node.active = false;
+                this.miniNPC.active = true;
                 this.setLabelAnimation(Define.Scene_1_8_1_speechContent, this.speechContent);
-              }
-              break;
-
-            case State.Scene_1_8_2:
-              {
-                // [2]  ""Nơi đây từng là nguồn cung cấp nước của cả hành tinh, nhưng giờ đã bị xâm chiếm và canh gác nghiêm ngặt bởi thuộc hạ của GOBA.""
-                this.setLabelAnimation(Define.Scene_1_8_2_speechContent, this.speechContent);
               }
               break;
 
             case State.Scene_1_8_3:
               {
                 // [3]  ""Thu được bí kíp này sẽ giúp Hiệp sĩ sử dụng nước tiết kiệm và hiệu quả, gia tăng sát thương và khả năng chiến đấu!""
-                this.setLabelAnimation(Define.Scene_1_8_3_speechContent, this.speechContent);
-              }
-              break;
+                this.setLabelAnimation(Define.Scene_1_8_3_speechContent, this.speechContent); //wait user click to play level 1
 
-            case State.Scene_1_8_4:
-              {
-                // [4] ""Hiệp sĩ hãy cẩn thận, tuyệt đối đừng để bọn chúng phát hiện! ""
-                // Hiển thị Asset bàn tay trỏ vào map 1"
-                this.setLabelAnimation(Define.Scene_1_8_4_speechContent, this.speechContent);
-              }
-              break;
+                eventManager.emit(EventName.onShowHandOnLevel, function () {
+                  //finish scene 1
+                  userProfile.storyCompleteStatus.scene1 = true;
+                }); //
 
-            case State.Scene_1_8_5:
-              {
-                //wait user click to play level 1
-                eventManager.emit(EventName.onShowHandOnLevel);
-                this.offListenerTouchStart(); //finish scene 1
-
-                userProfile.storyCompleteStatus.scene1 = true;
+                this.offListenerTouchStart();
               }
               break;
 
@@ -4396,13 +4899,13 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
               {
                 this.overlay.node.active = false;
                 this.narrationRichText.node.active = false;
-                this.showNPCSpeech(Define.NPCEmotion.Happy, Define.Scene_5_14C_content);
+                this.showNPCSpeech(SpriteFrameId.NpcHappy, Define.Scene_5_14C_content, this.speechContent);
               }
               break;
 
             case State.Scene_5_14D:
               {
-                this.showNPCSpeech(Define.NPCEmotion.Talk, Define.Scene_5_14D_content);
+                this.showNPCSpeech(SpriteFrameId.NpcTalk, Define.Scene_5_14D_content, this.speechContent);
               }
               break;
 
@@ -4438,7 +4941,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 this.node.children.forEach(function (child) {
                   return child.active = false;
                 });
-                this.showNPCSpeech(Define.NPCEmotion.Talk, Define.Scene_6_15A_content);
+                this.showNPCSpeech(SpriteFrameId.NpcTalk, Define.Scene_6_15A_content, this.speechContent);
               }
               break;
 
@@ -4475,13 +4978,13 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
               {
                 this.overlay.node.active = false;
                 this.narrationRichText.node.active = false;
-                this.showNPCSpeech(Define.NPCEmotion.Sad, Define.Scene_8_17C_content);
+                this.showNPCSpeech(SpriteFrameId.NpcSad, Define.Scene_8_17C_content, this.speechContent);
               }
               break;
 
             case State.Scene_8_17D:
               {
-                this.showNPCSpeech(Define.NPCEmotion.Talk, Define.Scene_8_17D_content);
+                this.showNPCSpeech(SpriteFrameId.NpcTalk, Define.Scene_8_17D_content, this.speechContent);
               }
               break;
 
@@ -4499,7 +5002,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
                 this.node.children.forEach(function (child) {
                   return child.active = false;
                 });
-                this.showNPCSpeech(Define.NPCEmotion.Talk, Define.Scene_9_18A_content);
+                this.showNPCSpeech(SpriteFrameId.NpcTalk, Define.Scene_9_18A_content, this.speechContent);
               }
               break;
 
@@ -4573,9 +5076,7 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
             case State.Scene_1_7_1:
             case State.Scene_1_7_2:
             case State.Scene_1_8_1:
-            case State.Scene_1_8_2:
             case State.Scene_1_8_3:
-            case State.Scene_1_8_4:
             case State.Scene_4_13A:
             case State.Scene_4_13B:
             case State.Scene_4_13D:
@@ -4621,19 +5122,19 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
               break;
 
             case State.Scene_11_20C:
-              userProfile.maxLevel = 0;
-              userProfile.storyCompleteStatus.scene1 = false;
-              userProfile.storyCompleteStatus.scene2 = false;
-              userProfile.storyCompleteStatus.scene3 = false;
-              userProfile.storyCompleteStatus.scene4 = false;
-              userProfile.storyCompleteStatus.scene5 = false;
-              userProfile.storyCompleteStatus.scene6 = false;
-              userProfile.storyCompleteStatus.scene7 = false;
-              userProfile.storyCompleteStatus.scene8 = false;
-              userProfile.storyCompleteStatus.scene9 = false;
-              userProfile.storyCompleteStatus.scene10 = false;
-              userProfile.storyCompleteStatus.scene11 = false;
-              userProfile.waterDrops = 0;
+              // userProfile.maxLevel = 0;
+              // userProfile.storyCompleteStatus.scene1 = false;
+              // userProfile.storyCompleteStatus.scene2 = false;
+              // userProfile.storyCompleteStatus.scene3 = false;
+              // userProfile.storyCompleteStatus.scene4 = false;
+              // userProfile.storyCompleteStatus.scene5 = false;
+              // userProfile.storyCompleteStatus.scene6 = false;
+              // userProfile.storyCompleteStatus.scene7 = false;
+              // userProfile.storyCompleteStatus.scene8 = false;
+              // userProfile.storyCompleteStatus.scene9 = false;
+              // userProfile.storyCompleteStatus.scene10 = false;
+              // userProfile.storyCompleteStatus.scene11 = false;
+              // userProfile.waterDrops = 0;
               director.loadScene('start');
           }
         };
@@ -4760,91 +5261,124 @@ System.register("chunks:///_virtual/Story.ts", ['./rollupPluginModLoBabelHelpers
           this.setLabelAnimation(content, this.narrationRichText, duration);
         };
 
-        _proto.showNPCSpeech = function showNPCSpeech(npcEmotion, content, label) {
-          var _this5 = this;
-
+        _proto.showNPCSpeech = function showNPCSpeech(spriteId, content, label) {
           if (label === void 0) {
-            label = this.speechContent;
+            label = this.speechContentRichText;
           }
 
           this.speechBubble.active = true;
           this.speechName.string = Define.NPCName;
           this.NPC.node.active = true;
           this.NPC.grayscale = false;
-          resources.load("sprites/story/NPC_" + npcEmotion + "/spriteFrame", SpriteFrame, function (err, spriteFrame) {
-            _this5.NPC.spriteFrame = spriteFrame;
+          this.NPC.spriteFrame = this.spriteFrames[spriteId];
+          this.setLabelAnimation(content, label);
+        };
 
-            _this5.setLabelAnimation(content, label);
-          });
+        _proto.showNPCPortraitSpeech = function showNPCPortraitSpeech(content, label) {
+          if (label === void 0) {
+            label = this.speechContentRichText;
+          }
+
+          this.speechBubble.active = true;
+          this.speechName.string = Define.NPCName;
+          this.MC.node.active = false;
+          this.NPC.node.active = false;
+          this.NPCPortrait.active = true;
+          this.setLabelAnimation(content, label);
+        };
+
+        _proto.showMCSpeech = function showMCSpeech(spriteId, content, label) {
+          if (label === void 0) {
+            label = this.speechContentRichText;
+          }
+
+          this.speechBubble.active = true;
+          this.speechName.string = Define.MCName;
+          this.MC.node.active = true;
+          this.MC.grayscale = false;
+          this.MC.spriteFrame = this.spriteFrames[spriteId];
+          this.setLabelAnimation(content, label);
         };
 
         return Story;
-      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "blockInput", [_dec2], {
+      }(Component), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "spriteFrames", [_dec2], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: function initializer() {
+          return [];
+        }
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "blockInput", [_dec3], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "background", [_dec3], {
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "background", [_dec4], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "overlay", [_dec4], {
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "overlay", [_dec5], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "earth", [_dec5], {
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "earth", [_dec6], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "MC", [_dec6], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "MC", [_dec7], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "NPC", [_dec7], {
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "NPC", [_dec8], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "NPCPortrait", [_dec8], {
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "miniNPC", [_dec9], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "speechBubble", [_dec9], {
+      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "NPCPortrait", [_dec10], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "speechName", [_dec10], {
+      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "speechBubble", [_dec11], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "speechContent", [_dec11], {
+      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "speechName", [_dec12], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "speechContentRichText", [_dec12], {
+      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "speechContent", [_dec13], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "narrationRichText", [_dec13], {
+      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "speechContentRichText", [_dec14], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraGame", [_dec14], {
+      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "narrationRichText", [_dec15], {
         configurable: true,
         enumerable: true,
         writable: true,
         initializer: null
-      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraUI", [_dec15], {
+      }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraGame", [_dec16], {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        initializer: null
+      }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "mazeGameCameraUI", [_dec17], {
         configurable: true,
         enumerable: true,
         writable: true,
